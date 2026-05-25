@@ -1,0 +1,27 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Flask / app runtime
+instance/
+scouts_only.db
+*.sqlite
+*.sqlite3
+uploads/
+users.json
+requirements.txt.bak
+
+# Secrets
+.env
+.env.*
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

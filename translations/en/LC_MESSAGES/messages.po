@@ -1,0 +1,404 @@
+# English translations for Scouts Association
+# Copyright (C) 2024 Scouts Association
+# This file is distributed under the same license as the Scouts Association package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Scouts Association 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-04 12:00+0000\n"
+"PO-Revision-Date: 2024-04-04 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "جمعية كشافة فقط | نبني القادة ونخدم المجتمع"
+msgstr "Scouts Association Only | Building Leaders and Serving the Community"
+
+msgid "جمعية كشافة فقط"
+msgstr "Scouts Association Only"
+
+msgid "عن الكشافة"
+msgstr "About Scouting"
+
+msgid "معلومات للآباء"
+msgstr "Information for Parents"
+
+msgid "للمتطوعين"
+msgstr "For Volunteers"
+
+msgid "أهدافنا"
+msgstr "Our Goals"
+
+msgid "إدارة"
+msgstr "Management"
+
+msgid "انضم إلينا"
+msgstr "Join Us"
+
+msgid "Scouts Adventure"
+msgstr "Scouts Adventure"
+
+msgid "جمعية كشافة فقط "
+msgstr "Scouts Association Only "
+
+msgid "رسالتنا نقدم لأبنائكم بيئة آمنة وغنية لتنمية شخصياتهم، من خلال برنامج كشفي وشبابي مصمم بعناية ليمنحهم تربية متوازنة وشاملة. نحن نؤمن بأهمية الجمع بين التطور الجسدي والفكري، وغرس القيم الأصيلة، وصقل المهارات الحياتية الأساسية التي ترافقهم طوال حياتهم."
+msgstr "Our mission is to provide your children with a safe and rich environment for developing their personalities, through a carefully designed scouting and youth program that gives them balanced and comprehensive education. We believe in the importance of combining physical and intellectual development, instilling authentic values, and honing essential life skills that accompany them throughout their lives."
+
+msgid "7-11 سنة"
+msgstr "7-11 years"
+
+msgid "الأشبال والزهرات"
+msgstr "Cubs and Flowers"
+
+msgid "12-14 سنة"
+msgstr "12-14 years"
+
+msgid "الكشافة والمرشدات"
+msgstr "Scouts and Guides"
+
+msgid "15-17 سنة"
+msgstr "15-17 years"
+
+msgid "كشاف متقدم ورائدات"
+msgstr "Advanced Scouts and Pioneers"
+
+msgid "18-24 سنة"
+msgstr "18-24 years"
+
+msgid "جوالة ودليلات"
+msgstr "Rovers and Pathfinders"
+
+msgid "اكتسب مهارات جديدة بينما تساعد الآخرين"
+msgstr "Gain new skills while helping others"
+
+msgid "انضم كقائد"
+msgstr "Join as a Leader"
+
+msgid "رؤيتنا وأهدافنا"
+msgstr "Our Vision and Objectives"
+
+msgid "نبني جيلاً من القادة الواعين والمسؤولين من خلال برامجنا الكشفية والشبابية"
+msgstr "We build a generation of aware and responsible leaders through our scouting and youth programs"
+
+msgid "تنمية متكاملة"
+msgstr "Integrated Development"
+
+msgid "تطوير القدرات الجسدية والفكرية من خلال أنشطة متنوعة ومبتكرة."
+msgstr "Developing physical and intellectual abilities through diverse and innovative activities."
+
+msgid "غرس القيم"
+msgstr "Instilling Values"
+
+msgid "بناء جيل واعٍ ومسؤول يتحلى بالأخلاق الحميدة."
+msgstr "Building an aware and responsible generation with good morals."
+
+msgid "صناعة القادة"
+msgstr "Leadership Manufacturing"
+
+msgid "صقل المهارات الحياتية والقيادية لبناء قادة المستقبل."
+msgstr "Honing life and leadership skills to build future leaders."
+
+msgid "ابحث عن أقرب مجموعة كشفية"
+msgstr "Find the nearest scouting group"
+
+msgid "اختر مدينتك..."
+msgstr "Choose your city..."
+
+msgid "الرباط"
+msgstr "Rabat"
+
+msgid "الدار البيضاء"
+msgstr "Casablanca"
+
+msgid "طنجة"
+msgstr "Tangier"
+
+msgid "بحث"
+msgstr "Search"
+
+msgid "مساراتنا الكشفية"
+msgstr "Our Scouting Paths"
+
+msgid "لكل مرحلة عمرية مغامرتها الخاصة في رحلة التنمية والتعلم"
+msgstr "Each age stage has its own adventure in the journey of development and learning"
+
+msgid "7 - 11 سنة"
+msgstr "7 - 11 years"
+
+msgid "رحلة استكشاف ممتعة في أجواء ودية. يركز البرنامج على الألعاب الجماعية، الفن والإبداع، والرياضة لاكتشاف مواهبهم المبكرة."
+msgstr "A fun exploration journey in a friendly atmosphere. The program focuses on team games, art and creativity, and sports to discover their early talents."
+
+msgid "12 - 14 سنة"
+msgstr "12 - 14 years"
+
+msgid "تجارب مصممة لتحدي قدراتهم وتوسيع آفاقهم. تتضمن أنشطة كشفية متقدمة، تحديات رياضية، وتنمية للثقافة والمعرفة عبر ورش الإلقاء والخطابة."
+msgstr "Experiences designed to challenge their abilities and broaden their horizons. Includes advanced scouting activities, sports challenges, and cultural and knowledge development through public speaking and rhetoric workshops."
+
+msgid "15 - 17 سنة"
+msgstr "15 - 17 years"
+
+msgid "برنامج مخصص لصقل الشخصية القيادية. يتعلم الشباب التواصل الفعال، إدارة الوقت، تقنيات التنشيط، والتصوير والتوثيق الاحترافي."
+msgstr "A program dedicated to honing leadership personality. Young people learn effective communication, time management, activation techniques, and professional photography and documentation."
+
+msgid "18 - 24 سنة"
+msgstr "18 - 24 years"
+
+msgid "إعداد قادة حقيقيين ومؤثرين في مجتمعهم. يركز على الذكاء العاطفي، صنع القرار الاستراتيجي، وتصميم وتنفيذ مشاريع وتنشيط ورش عمل احترافية."
+msgstr "Preparing real and influential leaders in their communities. Focuses on emotional intelligence, strategic decision-making, and designing and implementing projects and professional workshop activation."
+
+msgid "أنديتنا ووحداتنا الفاعلة"
+msgstr "Our Active Clubs and Units"
+
+msgid "تعتمد جمعيتنا على هيكلة تنظيمية متكاملة تضمن تلبية كافة الاهتمامات وتقديم أفضل تجربة كشفية وشبابية."
+msgstr "Our association relies on an integrated organizational structure that ensures meeting all interests and providing the best scouting and youth experience."
+
+msgid "عرض جميع الوحدات"
+msgstr "Show All Units"
+
+msgid "الوحدات الكشفية الأساسية"
+msgstr "Basic Scouting Units"
+
+msgid "وحدة الأشبال والزهرات"
+msgstr "Cubs and Flowers Unit"
+
+msgid "مخصصة لاحتضان ورعاية الفئة العمرية الصغرى في بيئة ودية ومحفزة."
+msgstr "Dedicated to embracing and caring for the younger age group in a friendly and motivating environment."
+
+msgid "وحدة الكشاف والمرشدات"
+msgstr "Scouts and Guides Unit"
+
+msgid "تركز على بناء المهارات الأساسية وتحدي القدرات عبر مغامرات كشفية."
+msgstr "Focuses on building basic skills and challenging abilities through scouting adventures."
+
+msgid "وحدة الكشاف المتقدم والرائدات"
+msgstr "Advanced Scouts and Pioneers Unit"
+
+msgid "مخصصة لشباب المستقبل لصقل شخصيتهم القيادية."
+msgstr "Dedicated to future youth to hone their leadership personality."
+
+msgid "وحدة الجوالة والدليلات"
+msgstr "Rovers and Pathfinders Unit"
+
+msgid "بيئة متقدمة لإعداد قادة المستقبل القادرين على إدارة المشاريع والمبادرات."
+msgstr "An advanced environment for preparing future leaders capable of managing projects and initiatives."
+
+msgid "الأندية والفرق المتخصصة"
+msgstr "Specialized Clubs and Teams"
+
+msgid "أكاديمية كشافة فقط للتعلم والتدريب"
+msgstr "Scouts Only Academy for Learning and Training"
+
+msgid "الذراع الأكاديمي للجمعية، المخصص لصقل المهارات، تقديم الدورات، وتطوير قدرات المنخرطين."
+msgstr "The academic arm of the association, dedicated to honing skills, providing courses, and developing the capabilities of members."
+
+msgid "نادي الغد المشرق للفن والإبداع"
+msgstr "Bright Tomorrow Club for Art and Creativity"
+
+msgid "مساحة حرة وخلاقة تتيح للمواهب إبراز قدراتهم في المسرح، الأناشيد، والفنون المختلفة."
+msgstr "A free and creative space that allows talents to showcase their abilities in theater, hymns, and various arts."
+
+msgid "وحدة الإسعافات الأولية"
+msgstr "First Aid Unit"
+
+msgid "فريق متخصص لضمان سلامة المشاركين وتقديم الرعاية الأولية خلال جميع أنشطتنا ومخيماتنا."
+msgstr "A specialized team to ensure the safety of participants and provide first aid during all our activities and camps."
+
+msgid "فريق كشافة فقط (الموقع الإعلامي)"
+msgstr "Scouts Only Team (Media Site)"
+
+msgid "الواجهة الإعلامية والتوثيقية للجمعية، يعمل على نقل صورتنا وإنجازاتنا باحترافية."
+msgstr "The media and documentary interface of the association, working to convey our image and achievements professionally."
+
+msgid "أنشطتنا"
+msgstr "Our Activities"
+
+msgid "التفاصيل"
+msgstr "Details"
+
+msgid "Activities"
+msgstr "Activities"
+
+msgid "اكتشف الأنشطة"
+msgstr "Discover Activities"
+
+msgid "برامجنا مليئة بالأفكار المبتكرة، من التخييم إلى ركوب القوارب، مصممة لتطوير المهارات القيادية."
+msgstr "Our programs are full of innovative ideas, from camping to boating, designed to develop leadership skills."
+
+msgid "استكشف المزيد"
+msgstr "Explore More"
+
+msgid "Badges"
+msgstr "Badges"
+
+msgid "الأوسمة والشارات"
+msgstr "Badges and Insignia"
+
+msgid "أتقن شيئًا تحبه، أو جرب شيئًا جديدًا تمامًا. تسمح الشارات للشباب بالحصول على تقدير لإنجازاتهم."
+msgstr "Master something you love, or try something completely new. Badges allow youth to receive recognition for their achievements."
+
+msgid "استكشف الشارات"
+msgstr "Explore Badges"
+
+msgid "Nights Away"
+msgstr "Nights Away"
+
+msgid "ليالي في الخلاء"
+msgstr "Nights in Solitude"
+
+msgid "سواء كان تخييمًا أو مبيتًا في الطبيعة، يجب أن يحصل كل شاب على فرصة للمشاركة في مغامرة خارجية."
+msgstr "Whether camping or sleeping in nature, every young person should have the opportunity to participate in an outdoor adventure."
+
+msgid "اكتشف الرحلات"
+msgstr "Discover Trips"
+
+msgid "لماذا تختار الانضمام إلينا؟"
+msgstr "Why Choose to Join Us?"
+
+msgid "الانضمام إلى برنامجنا الكشفي والشبابي ليس مجرد نشاط، بل هو استثمار في مستقبل مشرق!"
+msgstr "Joining our scouting and youth program is not just an activity, but an investment in a bright future!"
+
+msgid "تكوين شخصية متكاملة"
+msgstr "Integrated Personality Formation"
+
+msgid "تنمية شاملة للقدرات الذهنية، البدنية، والاجتماعية."
+msgstr "Comprehensive development of mental, physical, and social abilities."
+
+msgid "نظام شارات تحفيزي"
+msgstr "Motivational Badge System"
+
+msgid "نكافئ التميز ونخلد الإنجازات بنظام شارات متنوع."
+msgstr "We reward excellence and immortalize achievements with a diverse badge system."
+
+msgid "أصدقاء ومغامرات حقيقية"
+msgstr "Real Friends and Adventures"
+
+msgid "اكتساب أصدقاء مدى الحياة يشاركونك نفس الشغف، وعيش تجارب لا تُنسى في الطبيعة."
+msgstr "Gaining lifelong friends who share your passion, and living unforgettable experiences in nature."
+
+msgid "مستعدون لاستقبالكم في موسم مليء بالتعلم والمغامرات!"
+msgstr "We are ready to welcome you in a season full of learning and adventures!"
+
+msgid "يسعدنا استقبالكم للإجابة عن استفساراتكم وإتمام عملية التسجيل"
+msgstr "We are pleased to welcome you to answer your inquiries and complete the registration process"
+
+msgid "انضم إلينا الآن"
+msgstr "Join Us Now"
+
+msgid "ماذا يحدث الآن؟"
+msgstr "What's Happening Now?"
+
+msgid "آخر الأخبار والفعاليات من عالم الكشافة في منطقتك."
+msgstr "Latest news and events from the scouting world in your area."
+
+msgid "حدث قادم"
+msgstr "Upcoming Event"
+
+msgid "15 يونيو"
+msgstr "June 15"
+
+msgid "تحدي القمة للرواد"
+msgstr "Peak Challenge for Pioneers"
+
+msgid "انضم إلينا في رحلة استكشافية عبر جبال الأطلس لتطوير مهارات البقاء والعمل الجماعي."
+msgstr "Join us on an exploratory journey through the Atlas Mountains to develop survival and teamwork skills."
+
+msgid "أخبار"
+msgstr "News"
+
+msgid "مؤخراً"
+msgstr "Recently"
+
+msgid "تكريم قادة المستقبل"
+msgstr "Honoring Future Leaders"
+
+msgid "احتفلنا الأسبوع الماضي بتوزيع أوسمة الاستحقاق على المتميزين في وحداتنا الكشفية."
+msgstr "We celebrated last week by distributing merit badges to the distinguished in our scouting units."
+
+msgid "اقرأ المزيد..."
+msgstr "Read More..."
+
+msgid "بيئة"
+msgstr "Environment"
+
+msgid "قريباً"
+msgstr "Soon"
+
+msgid "حملة تنظيف الشواطئ"
+msgstr "Beach Cleaning Campaign"
+
+msgid "نحن نؤمن بحماية بيئتنا. شارك معنا في حملة التنظيف الكبرى المقررة الشهر المقبل."
+msgstr "We believe in protecting our environment. Join us in the major cleaning campaign scheduled next month."
+
+msgid "الشباب أولاً: السلامة في الكشافة"
+msgstr "Youth First: Safety in Scouting"
+
+msgid "أينما ذهبنا ومهما فعلنا، نضع سلامة ورفاهية الشباب في المقام الأول."
+msgstr "Wherever we go and whatever we do, we put the safety and well-being of youth first."
+
+msgid "سياسة السلامة"
+msgstr "Safety Policy"
+
+msgid "تواصل معنا"
+msgstr "Contact Us"
+
+msgid "المقر الرئيسي"
+msgstr "Headquarters"
+
+msgid "دار الشباب رحال مسكيني، القنيطرة"
+msgstr "Dar Al-Shabab Rhal Meskini, Kenitra"
+
+msgid "أوقات الأنشطة"
+msgstr "Activity Times"
+
+msgid "كل يوم أحد من الساعة 10:00 إلى 12:00 صباحاً"
+msgstr "Every Sunday from 10:00 AM to 12:00 PM"
+
+msgid "Location Map"
+msgstr "Location Map"
+
+msgid "جمعية كشافة"
+msgstr "Scouts Association"
+
+msgid "نحن حركة تربوية تطوعية تسعى لبناء قادة الغد من خلال قيم الأصالة والمغامرة في قلب الطبيعة."
+msgstr "We are a voluntary educational movement seeking to build tomorrow's leaders through the values of authenticity and adventure in the heart of nature."
+
+msgid "روابط سريعة"
+msgstr "Quick Links"
+
+msgid "عن الجمعية"
+msgstr "About the Association"
+
+msgid "تطوع معنا"
+msgstr "Volunteer With Us"
+
+msgid "السياسات والأنظمة"
+msgstr "Policies and Regulations"
+
+msgid "للتواصل"
+msgstr "For Contact"
+
+msgid "المقر القيادة العامة: دار الشباب رحال مسكيني، القنيطرة"
+msgstr "General Headquarters: Dar Al-Shabab Rhal Meskini, Kenitra"
+
+msgid "أوقات الأنشطة: كل سبت وأحد:"
+msgstr "Activity Times: Every Saturday and Sunday:"
+
+msgid "+212 627-64-06-97"
+msgstr "+212 627-64-06-97"
+
+msgid "© 2010-2026 جمعية كشافة فقط. جميع الحقوق محفوظة."
+msgstr "© 2010-2026 Scouts Association Only. All rights reserved."
+
+msgid "الخصوصية"
+msgstr "Privacy"
+
+msgid "ملفات التعريف"
+msgstr "Profiles"
+
+msgid "الشروط والأحكام"
+msgstr "Terms and Conditions"

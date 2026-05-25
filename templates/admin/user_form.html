@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if user %}تعديل مستخدم{% else %}إضافة مستخدم جديد{% endif
+            %}</h1>
+
+        <form method="POST" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold mb-2">اسم المستخدم</label>
+                <input type="text" name="username" required value="{{ user.username if user else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
+                <input type="email" name="email" required value="{{ user.email if user else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الاسم الكامل</label>
+                <input type="text" name="full_name" value="{{ user.full_name if user else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">{% if user %}كلمة مرور جديدة (اترك فارغاً لعدم التغيير){%
+                    else %}كلمة المرور{% endif %}</label>
+                <input type="password" name="password" {% if not user %}required{% endif %}
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الدور</label>
+                <select name="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option value="viewer" {% if user and user.role=='viewer' %}selected{% endif %}>مشاهد (Viewer)
+                    </option>
+                    <option value="editor" {% if user and user.role=='editor' %}selected{% endif %}>محرر (Editor)
+                    </option>
+                    <option value="admin" {% if user and user.role=='admin' %}selected{% endif %}>مسؤول (Admin)</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block flex items-center gap-2 mb-2">
+                    <input type="checkbox" name="is_active" value="1" {% if not user or user.is_active %}checked{% endif
+                        %} class="w-4 h-4">
+                    <span class="text-sm font-bold">نشط</span>
+                </label>
+            </div>
+
+            <div class="flex gap-4">
+                <button type="submit" class="btn-primary">حفظ</button>
+                <a href="{{ url_for('admin_users') }}"
+                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

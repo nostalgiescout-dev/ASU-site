@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% set ui = {
+    'ar': {'title': 'غير مصرح', 'copy': 'لا تملك الصلاحيات اللازمة للوصول إلى هذه الصفحة.', 'back': 'العودة للرئيسية'},
+    'en': {'title': 'Access denied', 'copy': 'You do not have permission to access this page.', 'back': 'Back to home'},
+    'fr': {'title': 'Accès refusé', 'copy': 'Vous n’avez pas les autorisations nécessaires pour accéder à cette page.', 'back': 'Retour à l’accueil'},
+    'es': {'title': 'Acceso denegado', 'copy': 'No tienes permisos para acceder a esta página.', 'back': 'Volver al inicio'}
+} %}
+{% set page = ui.get(current_lang, ui['ar']) %}
+
+{% block content %}
+<div class="flex min-h-screen items-center justify-center bg-gray-50">
+    <div class="text-center">
+        <h1 class="mb-4 text-6xl font-black text-danger">403</h1>
+        <h2 class="mb-2 text-3xl font-bold text-gray-800">{{ page.title }}</h2>
+        <p class="mb-8 text-gray-600">{{ page.copy }}</p>
+        <a href="{{ url_for('home') }}" class="btn-primary">{{ page.back }}</a>
+    </div>
+</div>
+{% endblock %}

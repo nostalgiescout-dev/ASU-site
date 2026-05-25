@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الأندية - لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-black text-gray-800">إدارة الأندية</h1>
+            <a href="{{ url_for('admin_create_club') }}" class="btn-primary flex items-center gap-2">
+                <span class="material-symbols-outlined">add</span>
+                إضافة نادي جديد
+            </a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-100 border-b-2 border-secondary">
+                    <tr>
+                        <th class="px-6 py-4 text-right font-bold">الاسم</th>
+                        <th class="px-6 py-4 text-right font-bold">عدد الأنشطة</th>
+                        <th class="px-6 py-4 text-right font-bold">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for club in clubs %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4">{{ club.name_ar }}</td>
+                        <td class="px-6 py-4">{{ club.activity_count }}</td>
+                        <td class="px-6 py-4 flex gap-2">
+                            <a href="{{ url_for('admin_edit_club', club_id=club.id) }}"
+                                class="text-blue-600 hover:text-blue-800 font-bold text-sm">تعديل</a>
+                            <form method="POST" action="{{ url_for('admin_delete_club', club_id=club.id) }}"
+                                style="display:inline" onsubmit="return confirm('هل تريد حذف هذا النادي؟')">
+                                <button type="submit"
+                                    class="text-red-600 hover:text-red-800 font-bold text-sm">حذف</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

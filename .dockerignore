@@ -1,0 +1,9 @@
+.git
+.github
+.venv
+__pycache__
+*.pyc
+instance
+scouts_only.db
+uploads
+

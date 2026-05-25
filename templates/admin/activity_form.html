@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if activity %}تعديل نشاط{% else %}إضافة نشاط جديد{% endif
+            %}</h1>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold mb-2">العنوان بالعربية</label>
+                <input type="text" name="title_ar" required value="{{ activity.title_ar if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
+                <textarea name="description_ar" rows="4" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_ar if activity else '' }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">العنوان بالإنجليزية</label>
+                <input type="text" name="title_en" required value="{{ activity.title_en if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الوصف بالإنجليزية</label>
+                <textarea name="description_en" rows="4" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_en if activity else '' }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">العنوان بالفرنسية</label>
+                <input type="text" name="title_fr" required value="{{ activity.title_fr if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الوصف بالفرنسية</label>
+                <textarea name="description_fr" rows="4" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_fr if activity else '' }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">العنوان بالإسبانية</label>
+                <input type="text" name="title_es" required value="{{ activity.title_es if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الوصف بالإسبانية</label>
+                <textarea name="description_es" rows="4" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_es if activity else '' }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">التاريخ والوقت</label>
+                <input type="datetime-local" name="date" required
+                    value="{{ activity.date.isoformat() if activity and activity.date else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الموقع بالعربية</label>
+                <input type="text" name="location_ar" value="{{ activity.location_ar if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Location in English</label>
+                <input type="text" name="location_en" value="{{ activity.location_en if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">رابط الفيديو (YouTube)</label>
+                <input type="url" name="video_url" value="{{ activity.video_url if activity else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="https://youtube.com/...">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">النادي المرتبط</label>
+                <select name="club_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option value="">-- بدون نادي --</option>
+                    {% for club in clubs %}
+                    <option value="{{ club.id }}" {% if activity and activity.club_id==club.id %}selected{% endif %}>{{
+                        club.name_ar }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الحالة</label>
+                <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <option value="upcoming" {% if activity and activity.status=='upcoming' %}selected{% endif %}>قادم
+                    </option>
+                    <option value="ongoing" {% if activity and activity.status=='ongoing' %}selected{% endif %}>جاري
+                    </option>
+                    <option value="completed" {% if activity and activity.status=='completed' %}selected{% endif %}>
+                        منتهي</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">صورة النشاط</label>
+                <input type="file" name="image" accept="image/*"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div class="flex gap-4">
+                <button type="submit" class="btn-primary">حفظ</button>
+                <a href="{{ url_for('admin_activities') }}"
+                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

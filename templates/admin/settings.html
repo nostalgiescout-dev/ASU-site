@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}الإعدادات - لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-black text-gray-800 mb-8">إعدادات الموقع</h1>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- Hero Section -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">قسم البطل (Hero)</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">العنوان بالعربية</label>
+                            <input type="text" name="hero_title_ar" value="{{ home_page.hero_title_ar or '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Hero Title in English</label>
+                            <input type="text" name="hero_title_en" value="{{ home_page.hero_title_en or '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
+                            <textarea name="hero_description_ar" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.hero_description_ar or '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Hero Description in English</label>
+                            <textarea name="hero_description_en" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.hero_description_en or '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">صورة البطل</label>
+                            <input type="file" name="hero_image" accept="image/*"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Mission & Vision -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">الرسالة والرؤية</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الرسالة بالعربية</label>
+                            <textarea name="mission_ar" rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.mission_ar or '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Mission in English</label>
+                            <textarea name="mission_en" rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.mission_en or '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الرؤية بالعربية</label>
+                            <textarea name="vision_ar" rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.vision_ar or '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Vision in English</label>
+                            <textarea name="vision_en" rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.vision_en or '' }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Statistics -->
+                <fieldset>
+                    <legend class="font-bold text-lg mb-4">الإحصائيات</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">عدد الكشافين</label>
+                            <input type="number" name="total_members" value="{{ home_page.total_members or 0 }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">عدد الوحدات</label>
+                            <input type="number" name="total_units" value="{{ home_page.total_units or 0 }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">عدد المجموعات</label>
+                            <input type="number" name="total_groups" value="{{ home_page.total_groups or 0 }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">سنة التأسيس</label>
+                            <input type="number" name="established_year"
+                                value="{{ home_page.established_year or 2000 }}" min="1900"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Buttons -->
+                <div class="flex gap-4">
+                    <button type="submit" class="btn-primary">حفظ الإعدادات</button>
+                    <a href="{{ url_for('admin_dashboard') }}"
+                        class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

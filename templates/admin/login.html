@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - A.S.U{% endblock %}
+
+{% block content %}
+<div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary to-teal-600 px-4">
+    <div class="w-full max-w-md">
+        <div class="rounded-2xl bg-white p-8 shadow-2xl">
+            <div class="mb-8 text-center">
+                <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                    <span class="material-symbols-outlined text-4xl text-primary">admin_panel_settings</span>
+                </div>
+                <h1 class="text-2xl font-black text-gray-800">Admin Dashboard</h1>
+                <p class="mt-2 text-gray-600">Scouts Only Association</p>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label class="mb-2 block text-sm font-bold text-gray-700">Username</label>
+                    <input type="text" name="username" required
+                        class="w-full rounded-lg border-2 border-gray-300 px-4 py-3 transition-colors focus:border-primary focus:outline-none"
+                        placeholder="Enter username">
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-bold text-gray-700">Password</label>
+                    <input type="password" name="password" required
+                        class="w-full rounded-lg border-2 border-gray-300 px-4 py-3 transition-colors focus:border-primary focus:outline-none"
+                        placeholder="Enter password">
+                </div>
+
+                <button type="submit" aria-label="Login"
+                    class="btn-primary w-full justify-center py-3 text-2xl hover:bg-primary/90">
+                    🔑
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a href="{{ url_for('home') }}"
+                    class="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    Back to website
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8 rounded-xl border border-white/30 bg-white/20 p-6 text-white backdrop-blur-sm">
+            <p class="mb-2 text-sm font-medium">Demo credentials:</p>
+            <p class="text-xs opacity-90"><strong>Username:</strong> admin</p>
+            <p class="text-xs opacity-90"><strong>Password:</strong> scouts2024</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,404 @@
+# Spanish translations for Scouts Association
+# Copyright (C) 2024 Scouts Association
+# This file is distributed under the same license as the Scouts Association package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Scouts Association 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-04 12:00+0000\n"
+"PO-Revision-Date: 2024-04-04 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "جمعية كشافة فقط | نبني القادة ونخدم المجتمع"
+msgstr "Asociación Scouts Solo | Construyendo Líderes y Sirviendo a la Comunidad"
+
+msgid "جمعية كشافة فقط"
+msgstr "Asociación Scouts Solo"
+
+msgid "عن الكشافة"
+msgstr "Acerca del Scoutismo"
+
+msgid "معلومات للآباء"
+msgstr "Información para Padres"
+
+msgid "للمتطوعين"
+msgstr "Para Voluntarios"
+
+msgid "أهدافنا"
+msgstr "Nuestros Objetivos"
+
+msgid "إدارة"
+msgstr "Administración"
+
+msgid "انضم إلينا"
+msgstr "Únete a Nosotros"
+
+msgid "Scouts Adventure"
+msgstr "Aventura Scouts"
+
+msgid "جمعية كشافة فقط "
+msgstr "Asociación Scouts Solo "
+
+msgid "رسالتنا نقدم لأبنائكم بيئة آمنة وغنية لتنمية شخصياتهم، من خلال برنامج كشفي وشبابي مصمم بعناية ليمنحهم تربية متوازنة وشاملة. نحن نؤمن بأهمية الجمع بين التطور الجسدي والفكري، وغرس القيم الأصيلة، وصقل المهارات الحياتية الأساسية التي ترافقهم طوال حياتهم."
+msgstr "Nuestra misión es proporcionar a sus hijos un entorno seguro y rico para desarrollar su personalidad, a través de un programa scout y juvenil cuidadosamente diseñado para darles una educación equilibrada y completa. Creemos en la importancia de combinar el desarrollo físico e intelectual, inculcar valores auténticos y perfeccionar las habilidades de vida esenciales que los acompañan a lo largo de su vida."
+
+msgid "7-11 سنة"
+msgstr "7-11 años"
+
+msgid "الأشبال والزهرات"
+msgstr "Lobatos y Flores"
+
+msgid "12-14 سنة"
+msgstr "12-14 años"
+
+msgid "الكشافة والمرشدات"
+msgstr "Exploradores y Guías"
+
+msgid "15-17 سنة"
+msgstr "15-17 años"
+
+msgid "كشاف متقدم ورائدات"
+msgstr "Exploradores Avanzados y Pioneras"
+
+msgid "18-24 سنة"
+msgstr "18-24 años"
+
+msgid "جوالة ودليلات"
+msgstr "Rovers y Caminantes"
+
+msgid "اكتسب مهارات جديدة بينما تساعد الآخرين"
+msgstr "Adquiere nuevas habilidades mientras ayudas a otros"
+
+msgid "انضم كقائد"
+msgstr "Únete como Líder"
+
+msgid "رؤيتنا وأهدافنا"
+msgstr "Nuestra Visión y Objetivos"
+
+msgid "نبني جيلاً من القادة الواعين والمسؤولين من خلال برامجنا الكشفية والشبابية"
+msgstr "Construimos una generación de líderes conscientes y responsables a través de nuestros programas scouts y juveniles"
+
+msgid "تنمية متكاملة"
+msgstr "Desarrollo Integral"
+
+msgid "تطوير القدرات الجسدية والفكرية من خلال أنشطة متنوعة ومبتكرة."
+msgstr "Desarrollar las capacidades físicas e intelectuales a través de actividades diversas e innovadoras."
+
+msgid "غرس القيم"
+msgstr "Inculcar Valores"
+
+msgid "بناء جيل واعٍ ومسؤول يتحلى بالأخلاق الحميدة."
+msgstr "Construir una generación consciente y responsable dotada de buenas costumbres."
+
+msgid "صناعة القادة"
+msgstr "Fabricación de Líderes"
+
+msgid "صقل المهارات الحياتية والقيادية لبناء قادة المستقبل."
+msgstr "Perfeccionar las habilidades de vida y liderazgo para construir los líderes del futuro."
+
+msgid "ابحث عن أقرب مجموعة كشفية"
+msgstr "Encuentra el grupo scout más cercano"
+
+msgid "اختر مدينتك..."
+msgstr "Elige tu ciudad..."
+
+msgid "الرباط"
+msgstr "Rabat"
+
+msgid "الدار البيضاء"
+msgstr "Casablanca"
+
+msgid "طنجة"
+msgstr "Tánger"
+
+msgid "بحث"
+msgstr "Buscar"
+
+msgid "مساراتنا الكشفية"
+msgstr "Nuestros Caminos Scouts"
+
+msgid "لكل مرحلة عمرية مغامرتها الخاصة في رحلة التنمية والتعلم"
+msgstr "Cada etapa de edad tiene su propia aventura en el viaje del desarrollo y el aprendizaje"
+
+msgid "7 - 11 سنة"
+msgstr "7 - 11 años"
+
+msgid "رحلة استكشاف ممتعة في أجواء ودية. يركز البرنامج على الألعاب الجماعية، الفن والإبداع، والرياضة لاكتشاف مواهبهم المبكرة."
+msgstr "Un viaje de exploración divertido en un ambiente amigable. El programa se centra en juegos en equipo, arte y creatividad, y deportes para descubrir sus talentos tempranos."
+
+msgid "12 - 14 سنة"
+msgstr "12 - 14 años"
+
+msgid "تجارب مصممة لتحدي قدراتهم وتوسيع آفاقهم. تتضمن أنشطة كشفية متقدمة، تحديات رياضية، وتنمية للثقافة والمعرفة عبر ورش الإلقاء والخطابة."
+msgstr "Experiencias diseñadas para desafiar sus capacidades y ampliar sus horizontes. Incluye actividades scouts avanzadas, desafíos deportivos y desarrollo cultural y de conocimiento a través de talleres de expresión oral y retórica."
+
+msgid "15 - 17 سنة"
+msgstr "15 - 17 años"
+
+msgid "برنامج مخصص لصقل الشخصية القيادية. يتعلم الشباب التواصل الفعال، إدارة الوقت، تقنيات التنشيط، والتصوير والتوثيق الاحترافي."
+msgstr "Un programa dedicado a perfeccionar la personalidad de liderazgo. Los jóvenes aprenden comunicación efectiva, gestión del tiempo, técnicas de animación y fotografía y documentación profesional."
+
+msgid "18 - 24 سنة"
+msgstr "18 - 24 años"
+
+msgid "إعداد قادة حقيقيين ومؤثرين في مجتمعهم. يركز على الذكاء العاطفي، صنع القرار الاستراتيجي، وتصميم وتنفيذ مشاريع وتنشيط ورش عمل احترافية."
+msgstr "Preparar líderes reales e influyentes en su comunidad. Se centra en la inteligencia emocional, la toma de decisiones estratégicas y el diseño y ejecución de proyectos y talleres de animación profesional."
+
+msgid "أنديتنا ووحداتنا الفاعلة"
+msgstr "Nuestros Clubes y Unidades Activas"
+
+msgid "تعتمد جمعيتنا على هيكلة تنظيمية متكاملة تضمن تلبية كافة الاهتمامات وتقديم أفضل تجربة كشفية وشبابية."
+msgstr "Nuestra asociación se basa en una estructura organizacional integrada que garantiza la satisfacción de todos los intereses y ofrece la mejor experiencia scout y juvenil."
+
+msgid "عرض جميع الوحدات"
+msgstr "Mostrar Todas las Unidades"
+
+msgid "الوحدات الكشفية الأساسية"
+msgstr "Unidades Scouts Básicas"
+
+msgid "وحدة الأشبال والزهرات"
+msgstr "Unidad Lobatos y Flores"
+
+msgid "مخصصة لاحتضان ورعاية الفئة العمرية الصغرى في بيئة ودية ومحفزة."
+msgstr "Dedicada a abrazar y cuidar al grupo de edad más joven en un entorno amigable y motivador."
+
+msgid "وحدة الكشاف والمرشدات"
+msgstr "Unidad Exploradores y Guías"
+
+msgid "تركز على بناء المهارات الأساسية وتحدي القدرات عبر مغامرات كشفية."
+msgstr "Se centra en construir habilidades básicas y desafiar capacidades a través de aventuras scouts."
+
+msgid "وحدة الكشاف المتقدم والرائدات"
+msgstr "Unidad Exploradores Avanzados y Pioneras"
+
+msgid "مخصصة لشباب المستقبل لصقل شخصيتهم القيادية."
+msgstr "Dedicada a los jóvenes del futuro para perfeccionar su personalidad de liderazgo."
+
+msgid "وحدة الجوالة والدليلات"
+msgstr "Unidad Rovers y Caminantes"
+
+msgid "بيئة متقدمة لإعداد قادة المستقبل القادرين على إدارة المشاريع والمبادرات."
+msgstr "Un entorno avanzado para preparar a los líderes del futuro capaces de gestionar proyectos e iniciativas."
+
+msgid "الأندية والفرق المتخصصة"
+msgstr "Clubes y Equipos Especializados"
+
+msgid "أكاديمية كشافة فقط للتعلم والتدريب"
+msgstr "Academia Scouts Solo para Aprendizaje y Entrenamiento"
+
+msgid "الذراع الأكاديمي للجمعية، المخصص لصقل المهارات، تقديم الدورات، وتطوير قدرات المنخرطين."
+msgstr "El brazo académico de la asociación, dedicado a perfeccionar habilidades, proporcionar cursos y desarrollar las capacidades de los miembros."
+
+msgid "نادي الغد المشرق للفن والإبداع"
+msgstr "Club Mañana Brillante para el Arte y la Creatividad"
+
+msgid "مساحة حرة وخلاقة تتيح للمواهب إبراز قدراتهم في المسرح، الأناشيد، والفنون المختلفة."
+msgstr "Un espacio libre y creativo que permite a los talentos mostrar sus capacidades en teatro, himnos y diversas artes."
+
+msgid "وحدة الإسعافات الأولية"
+msgstr "Unidad Primeros Auxilios"
+
+msgid "فريق متخصص لضمان سلامة المشاركين وتقديم الرعاية الأولية خلال جميع أنشطتنا ومخيماتنا."
+msgstr "Un equipo especializado para asegurar la seguridad de los participantes y proporcionar atención primaria durante todas nuestras actividades y campamentos."
+
+msgid "فريق كشافة فقط (الموقع الإعلامي)"
+msgstr "Equipo Scouts Solo (Sitio de Medios)"
+
+msgid "الواجهة الإعلامية والتوثيقية للجمعية، يعمل على نقل صورتنا وإنجازاتنا باحترافية."
+msgstr "La interfaz de medios y documental de la asociación, trabajando para transmitir nuestra imagen y logros de manera profesional."
+
+msgid "أنشطتنا"
+msgstr "Nuestras Actividades"
+
+msgid "التفاصيل"
+msgstr "Detalles"
+
+msgid "Activities"
+msgstr "Actividades"
+
+msgid "اكتشف الأنشطة"
+msgstr "Descubre las Actividades"
+
+msgid "برامجنا مليئة بالأفكار المبتكرة، من التخييم إلى ركوب القوارب، مصممة لتطوير المهارات القيادية."
+msgstr "Nuestros programas están llenos de ideas innovadoras, desde acampar hasta navegar, diseñados para desarrollar habilidades de liderazgo."
+
+msgid "استكشف المزيد"
+msgstr "Explorar Más"
+
+msgid "Badges"
+msgstr "Insignias"
+
+msgid "الأوسمة والشارات"
+msgstr "Medallas e Insignias"
+
+msgid "أتقن شيئًا تحبه، أو جرب شيئًا جديدًا تمامًا. تسمح الشارات للشباب بالحصول على تقدير لإنجازاتهم."
+msgstr "Domina algo que amas, o prueba algo completamente nuevo. Las insignias permiten a los jóvenes recibir reconocimiento por sus logros."
+
+msgid "استكشف الشارات"
+msgstr "Explorar Insignias"
+
+msgid "Nights Away"
+msgstr "Noches Lejos"
+
+msgid "ليالي في الخلاء"
+msgstr "Noches en la Soledad"
+
+msgid "سواء كان تخييمًا أو مبيتًا في الطبيعة، يجب أن يحصل كل شاب على فرصة للمشاركة في مغامرة خارجية."
+msgstr "Ya sea acampar o dormir en la naturaleza, cada joven debería tener la oportunidad de participar en una aventura al aire libre."
+
+msgid "اكتشف الرحلات"
+msgstr "Descubre los Viajes"
+
+msgid "لماذا تختار الانضمام إلينا؟"
+msgstr "¿Por Qué Elegir Unirte a Nosotros?"
+
+msgid "الانضمام إلى برنامجنا الكشفي والشبابي ليس مجرد نشاط، بل هو استثمار في مستقبل مشرق!"
+msgstr "¡Unirse a nuestro programa scout y juvenil no es solo una actividad, sino una inversión en un futuro brillante!"
+
+msgid "تكوين شخصية متكاملة"
+msgstr "Formación de Personalidad Integral"
+
+msgid "تنمية شاملة للقدرات الذهنية، البدنية، والاجتماعية."
+msgstr "Desarrollo completo de las capacidades mentales, físicas y sociales."
+
+msgid "نظام شارات تحفيزي"
+msgstr "Sistema de Insignias Motivadoras"
+
+msgid "نكافئ التميز ونخلد الإنجازات بنظام شارات متنوع."
+msgstr "Recompensamos la excelencia e inmortalizamos los logros con un sistema de insignias diversificado."
+
+msgid "أصدقاء ومغامرات حقيقية"
+msgstr "Amigos y Aventuras Reales"
+
+msgid "اكتساب أصدقاء مدى الحياة يشاركونك نفس الشغف، وعيش تجارب لا تُنسى في الطبيعة."
+msgstr "Adquirir amigos de por vida que compartan tu pasión, y vivir experiencias inolvidables en la naturaleza."
+
+msgid "مستعدون لاستقبالكم في موسم مليء بالتعلم والمغامرات!"
+msgstr "¡Estamos listos para recibirlos en una temporada llena de aprendizaje y aventuras!"
+
+msgid "يسعدنا استقبالكم للإجابة عن استفساراتكم وإتمام عملية التسجيل"
+msgstr "Estamos felices de recibirlos para responder sus preguntas y completar el proceso de registro"
+
+msgid "انضم إلينا الآن"
+msgstr "Únete a Nosotros Ahora"
+
+msgid "ماذا يحدث الآن؟"
+msgstr "¿Qué Está Pasando Ahora?"
+
+msgid "آخر الأخبار والفعاليات من عالم الكشافة في منطقتك."
+msgstr "Últimas noticias y eventos del mundo scout en tu área."
+
+msgid "حدث قادم"
+msgstr "Evento Próximo"
+
+msgid "15 يونيو"
+msgstr "15 de Junio"
+
+msgid "تحدي القمة للرواد"
+msgstr "Desafío de la Cumbre para Pioneros"
+
+msgid "انضم إلينا في رحلة استكشافية عبر جبال الأطلس لتطوير مهارات البقاء والعمل الجماعي."
+msgstr "Únete a nosotros en un viaje de exploración a través de las montañas del Atlas para desarrollar habilidades de supervivencia y trabajo en equipo."
+
+msgid "أخبار"
+msgstr "Noticias"
+
+msgid "مؤخراً"
+msgstr "Recientemente"
+
+msgid "تكريم قادة المستقبل"
+msgstr "Homenaje a los Líderes del Futuro"
+
+msgid "احتفلنا الأسبوع الماضي بتوزيع أوسمة الاستحقاق على المتميزين في وحداتنا الكشفية."
+msgstr "Celebramos la semana pasada distribuyendo medallas de mérito a los destacados en nuestras unidades scouts."
+
+msgid "اقرأ المزيد..."
+msgstr "Leer Más..."
+
+msgid "بيئة"
+msgstr "Medio Ambiente"
+
+msgid "قريباً"
+msgstr "Pronto"
+
+msgid "حملة تنظيف الشواطئ"
+msgstr "Campaña de Limpieza de Playas"
+
+msgid "نحن نؤمن بحماية بيئتنا. شارك معنا في حملة التنظيف الكبرى المقررة الشهر المقبل."
+msgstr "Creemos en la protección de nuestro medio ambiente. Únete a nosotros en la gran campaña de limpieza programada para el próximo mes."
+
+msgid "الشباب أولاً: السلامة في الكشافة"
+msgstr "Los Jóvenes Primero: Seguridad en el Scoutismo"
+
+msgid "أينما ذهبنا ومهما فعلنا، نضع سلامة ورفاهية الشباب في المقام الأول."
+msgstr "Adondequiera que vayamos y hagamos lo que hagamos, ponemos la seguridad y el bienestar de los jóvenes en primer lugar."
+
+msgid "سياسة السلامة"
+msgstr "Política de Seguridad"
+
+msgid "تواصل معنا"
+msgstr "Contáctanos"
+
+msgid "المقر الرئيسي"
+msgstr "Sede Central"
+
+msgid "دار الشباب رحال مسكيني، القنيطرة"
+msgstr "Dar Al-Shabab Rhal Meskini, Kenitra"
+
+msgid "أوقات الأنشطة"
+msgstr "Horarios de Actividades"
+
+msgid "كل يوم أحد من الساعة 10:00 إلى 12:00 صباحاً"
+msgstr "Todos los domingos de 10:00 a 12:00"
+
+msgid "Location Map"
+msgstr "Mapa de Ubicación"
+
+msgid "جمعية كشافة"
+msgstr "Asociación Scouts"
+
+msgid "نحن حركة تربوية تطوعية تسعى لبناء قادة الغد من خلال قيم الأصالة والمغامرة في قلب الطبيعة."
+msgstr "Somos un movimiento educativo voluntario que busca construir los líderes del mañana a través de los valores de autenticidad y aventura en el corazón de la naturaleza."
+
+msgid "روابط سريعة"
+msgstr "Enlaces Rápidos"
+
+msgid "عن الجمعية"
+msgstr "Acerca de la Asociación"
+
+msgid "تطوع معنا"
+msgstr "Voluntariado Con Nosotros"
+
+msgid "السياسات والأنظمة"
+msgstr "Políticas y Reglamentos"
+
+msgid "للتواصل"
+msgstr "Para Contacto"
+
+msgid "المقر القيادة العامة: دار الشباب رحال مسكيني، القنيطرة"
+msgstr "Sede General: Dar Al-Shabab Rhal Meskini, Kenitra"
+
+msgid "أوقات الأنشطة: كل سبت وأحد:"
+msgstr "Horarios de Actividades: Todos los sábados y domingos:"
+
+msgid "+212 627-64-06-97"
+msgstr "+212 627-64-06-97"
+
+msgid "© 2010-2026 جمعية كشافة فقط. جميع الحقوق محفوظة."
+msgstr "© 2010-2026 Asociación Scouts Solo. Todos los derechos reservados."
+
+msgid "الخصوصية"
+msgstr "Privacidad"
+
+msgid "ملفات التعريف"
+msgstr "Perfiles"
+
+msgid "الشروط والأحكام"
+msgstr "Términos y Condiciones"

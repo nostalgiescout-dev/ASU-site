@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+{% set ui = {
+    'ar': {
+        'meta_description': 'جمعية كشافة فقط - منظمة شبابية تركز على تطوير الكفاءات والقيادة',
+        'meta_keywords': 'كشافة, scouts, scout association, youth organization',
+        'default_title': 'جمعية كشافة فقط - A.S.U',
+        'brand_name': 'جمعية كشافة فقط',
+        'nav_home': 'الرئيسية',
+        'nav_units': 'الوحدات',
+        'nav_clubs': 'الأندية',
+        'nav_activities': 'الأنشطة',
+        'nav_find_group': 'البحث عن مجموعة',
+        'nav_about': 'عن الجمعية',
+        'choose_language': 'اختيار اللغة',
+        'lang_ar': 'العربية',
+        'lang_en': 'English',
+        'lang_fr': 'Français',
+        'lang_es': 'Español',
+        'dashboard': 'لوحة التحكم',
+        'logout': 'خروج',
+        'login': 'تسجيل الدخول',
+        'footer_tagline': 'مساحة رقمية بروح كشفية معاصرة',
+        'footer_copy': 'نرافق الشباب في مسار من التعلم والخدمة والمغامرة، عبر تجربة رقمية أكثر دفئًا ووضوحًا وقربًا من روح الكشافة.',
+        'links': 'روابط',
+        'contact': 'تواصل',
+        'location': 'الرباط، المغرب',
+        'copyright': 'جمعية كشافة فقط',
+        'footer_note': 'كل خطوة جديدة تبدأ من أثر طيب.'
+    },
+    'en': {
+        'meta_description': 'Scouts Only Association - a youth organization focused on skills, leadership, and service.',
+        'meta_keywords': 'scouts, scout association, youth organization, leadership, volunteering',
+        'default_title': 'Scouts Only Association - A.S.U',
+        'brand_name': 'Scouts Only Association',
+        'nav_home': 'Home',
+        'nav_units': 'Units',
+        'nav_clubs': 'Clubs',
+        'nav_activities': 'Activities',
+        'nav_find_group': 'Find a Group',
+        'nav_about': 'About Us',
+        'choose_language': 'Choose language',
+        'lang_ar': 'العربية',
+        'lang_en': 'English',
+        'lang_fr': 'Français',
+        'lang_es': 'Español',
+        'dashboard': 'Dashboard',
+        'logout': 'Logout',
+        'login': 'Login',
+        'footer_tagline': 'A digital space with a modern scouting spirit',
+        'footer_copy': 'We support young people through learning, service, and adventure in a warmer, clearer digital experience rooted in scouting values.',
+        'links': 'Links',
+        'contact': 'Contact',
+        'location': 'Rabat, Morocco',
+        'copyright': 'Scouts Only Association',
+        'footer_note': 'Every new step begins with a positive impact.'
+    },
+    'fr': {
+        'meta_description': 'Association Scouts Only - une organisation de jeunesse axée sur les compétences, le leadership et le service.',
+        'meta_keywords': 'scoutisme, association scoute, organisation de jeunesse, leadership, bénévolat',
+        'default_title': 'Association Scouts Only - A.S.U',
+        'brand_name': 'Association Scouts Only',
+        'nav_home': 'Accueil',
+        'nav_units': 'Unités',
+        'nav_clubs': 'Clubs',
+        'nav_activities': 'Activités',
+        'nav_find_group': 'Trouver un groupe',
+        'nav_about': 'À propos',
+        'choose_language': 'Choisir la langue',
+        'lang_ar': 'العربية',
+        'lang_en': 'English',
+        'lang_fr': 'Français',
+        'lang_es': 'Español',
+        'dashboard': 'Tableau de bord',
+        'logout': 'Déconnexion',
+        'login': 'Connexion',
+        'footer_tagline': 'Un espace numérique animé par un esprit scout contemporain',
+        'footer_copy': 'Nous accompagnons les jeunes dans un parcours d’apprentissage, de service et d’aventure grâce à une expérience numérique plus chaleureuse, plus claire et fidèle à l’esprit scout.',
+        'links': 'Liens',
+        'contact': 'Contact',
+        'location': 'Rabat, Maroc',
+        'copyright': 'Association Scouts Only',
+        'footer_note': 'Chaque nouvelle étape commence par une belle empreinte.'
+    },
+    'es': {
+        'meta_description': 'Asociación Scouts Only: una organización juvenil centrada en las competencias, el liderazgo y el servicio.',
+        'meta_keywords': 'scouts, asociación scout, organización juvenil, liderazgo, voluntariado',
+        'default_title': 'Asociación Scouts Only - A.S.U',
+        'brand_name': 'Asociación Scouts Only',
+        'nav_home': 'Inicio',
+        'nav_units': 'Unidades',
+        'nav_clubs': 'Clubes',
+        'nav_activities': 'Actividades',
+        'nav_find_group': 'Buscar un grupo',
+        'nav_about': 'Sobre la asociación',
+        'choose_language': 'Elegir idioma',
+        'lang_ar': 'العربية',
+        'lang_en': 'English',
+        'lang_fr': 'Français',
+        'lang_es': 'Español',
+        'dashboard': 'Panel',
+        'logout': 'Salir',
+        'login': 'Iniciar sesión',
+        'footer_tagline': 'Un espacio digital con espíritu scout contemporáneo',
+        'footer_copy': 'Acompañamos a los jóvenes en un camino de aprendizaje, servicio y aventura mediante una experiencia digital más cercana, clara y fiel al espíritu scout.',
+        'links': 'Enlaces',
+        'contact': 'Contacto',
+        'location': 'Rabat, Marruecos',
+        'copyright': 'Asociación Scouts Only',
+        'footer_note': 'Cada nuevo paso comienza con una huella positiva.'
+    }
+} %}
+{% set text = ui.get(current_lang, ui['ar']) %}
+<html dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}" lang="{{ current_lang }}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{ text.meta_description }}" />
+    <meta name="keywords" content="{{ text.meta_keywords }}" />
+    <title>{% block title %}{{ text.default_title }}{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,line-clamp"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Be+Vietnam+Pro:wght@400;700;900&family=Cairo:wght@300;400;600;700;900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0d631b',
+                        'primary-container': '#2e7d32',
+                        secondary: '#77574d',
+                        surface: '#fbfbe2',
+                        'surface-low': '#f5f5dc',
+                        'surface-high': '#f0efd3',
+                        'surface-highest': '#fffef3',
+                        'on-surface': '#1b1d0e',
+                        'outline-ghost': 'rgba(191, 202, 186, 0.15)',
+                        'secondary-container': '#fed3c7',
+                        success: '#3f7d47',
+                        accent: '#c78b52'
+                    },
+                    fontFamily: {
+                        headline: ['Cairo', 'Be Vietnam Pro', 'sans-serif'],
+                        body: ['Almarai', 'Plus Jakarta Sans', 'sans-serif']
+                    },
+                    boxShadow: {
+                        ambient: '0 8px 32px rgba(13, 99, 27, 0.06)'
+                    },
+                    borderRadius: {
+                        '4xl': '2rem'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary: #0d631b;
+            --primary-container: #2e7d32;
+            --secondary: #77574d;
+            --surface: #fbfbe2;
+            --surface-low: #f5f5dc;
+            --surface-high: #f0efd3;
+            --surface-highest: #fffef3;
+            --on-surface: #1b1d0e;
+            --ghost-border: rgba(191, 202, 186, 0.15);
+            --glass: rgba(251, 251, 226, 0.72);
+            --shadow-soft: 0 8px 32px rgba(13, 99, 27, 0.06);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top right, rgba(46, 125, 50, 0.16), transparent 28%),
+                radial-gradient(circle at left 20%, rgba(119, 87, 77, 0.10), transparent 24%),
+                linear-gradient(180deg, #fffef3 0%, var(--surface) 42%, #f7f6df 100%);
+            color: var(--on-surface);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .site-shell {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .site-shell::before,
+        .site-shell::after {
+            content: "";
+            position: fixed;
+            width: 24rem;
+            height: 24rem;
+            border-radius: 9999px;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        .site-shell::before {
+            top: -8rem;
+            right: -6rem;
+            background: rgba(46, 125, 50, 0.18);
+        }
+
+        .site-shell::after {
+            left: -8rem;
+            bottom: 10rem;
+            background: rgba(119, 87, 77, 0.14);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+        }
+
+        .glass-nav {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .surface-card {
+            background: var(--surface-highest);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .surface-panel {
+            background: var(--surface-low);
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            transition: transform 0.22s ease, opacity 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1b6d24 0%, #0d631b 100%);
+            color: white;
+            box-shadow: 0 8px 32px rgba(13, 99, 27, 0.16);
+        }
+
+        .btn-secondary {
+            background: #fed3c7;
+            color: #795950;
+        }
+
+        .btn-primary:focus-visible,
+        .btn-secondary:focus-visible {
+            outline: 2px solid rgba(13, 99, 27, 0.55);
+            outline-offset: 4px;
+        }
+
+        .nav-link {
+            position: relative;
+            font-weight: 800;
+            color: rgba(27, 29, 14, 0.85);
+            transition: color 0.18s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.is-active {
+            color: var(--primary);
+        }
+
+        .nav-link.is-active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -0.35rem;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(13, 99, 27, 0), rgba(13, 99, 27, 0.9), rgba(13, 99, 27, 0));
+        }
+
+        .mobile-nav-link {
+            border-radius: 1rem;
+            padding: 0.55rem 0.75rem;
+            font-weight: 800;
+            color: rgba(27, 29, 14, 0.88);
+            transition: background-color 0.18s ease, color 0.18s ease;
+        }
+
+        .mobile-nav-link:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .mobile-nav-link.is-active {
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--primary);
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            transform: translateY(-140%);
+            padding: 0.65rem 1rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+            color: var(--on-surface);
+            font-weight: 800;
+            z-index: 100;
+            transition: transform 0.18s ease;
+        }
+
+        .skip-link:focus-visible {
+            transform: translateY(0);
+            outline: 2px solid rgba(13, 99, 27, 0.55);
+            outline-offset: 4px;
+        }
+
+        .section-kicker {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(27, 29, 14, 0.58);
+        }
+
+        .section-title {
+            font-family: 'Cairo', 'Be Vietnam Pro', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .section-copy {
+            color: rgba(27, 29, 14, 0.72);
+            line-height: 1.95;
+        }
+
+        .section-subtitle {
+            color: rgba(27, 29, 14, 0.72);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .card-hover {
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 55px rgba(15, 23, 42, 0.12);
+        }
+
+        .editorial-grid {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-surface {
+            background: linear-gradient(180deg, #2f3e23 0%, #202915 100%);
+        }
+
+        .lang-menu {
+            position: relative;
+        }
+
+        .lang-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 9999px;
+            color: var(--primary);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .lang-button:hover {
+            background: rgba(13, 99, 27, 0.08);
+            transform: scale(1.03);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            right: 0;
+            min-width: 8rem;
+            background: #ffffff;
+            border-radius: 0.85rem;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+            padding: 0.6rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px);
+            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+            z-index: 70;
+        }
+
+        .lang-menu:hover .lang-dropdown,
+        .lang-menu:focus-within .lang-dropdown,
+        .lang-menu.is-open .lang-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-option {
+            display: block;
+            padding: 0.7rem 1.25rem;
+            color: #111827;
+            font-size: 1.05rem;
+            transition: background-color 0.18s ease, color 0.18s ease;
+        }
+
+        .lang-option:hover {
+            background: #f8fafc;
+            color: var(--primary);
+        }
+
+        .lang-option.is-active {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                line-height: 1.15;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="font-body text-on-surface antialiased selection:bg-primary selection:text-white">
+    <div class="site-shell min-h-screen">
+        <a href="#content" class="skip-link">Skip to content</a>
+        {% include "partials/navbar.html" %}
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="fixed inset-x-0 top-24 z-[60] mx-auto flex max-w-xl flex-col gap-3 px-4">
+            {% for category, message in messages %}
+            <div class="surface-card rounded-3xl px-5 py-4 text-sm font-bold text-on-surface">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary">
+                        {% if category == 'error' %}error{% elif category == 'success' %}check_circle{% else %}info{% endif %}
+                    </span>
+                    <span class="flex-1">{{ message }}</span>
+                    <button onclick="this.closest('div.surface-card').remove()" class="text-on-surface/40 hover:text-on-surface">
+                        <span class="material-symbols-outlined text-base">close</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <main id="content" class="relative z-10 pt-20">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include "partials/footer.html" %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

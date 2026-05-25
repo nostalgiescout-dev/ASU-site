@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% set ui = {
+'ar': {
+'title': 'الوحدات الكشفية - جمعية كشافة فقط',
+'page_title': 'الوحدات الكشفية',
+'age': 'العمر',
+'details': 'تفاصيل'
+},
+'en': {
+'title': 'Scout Units - A.S.U',
+'page_title': 'Scout Units',
+'age': 'Age',
+'details': 'Details'
+},
+'fr': {
+'title': 'Unités scoutes - A.S.U',
+'page_title': 'Unités scoutes',
+'age': "Âge",
+'details': 'Détails'
+},
+'es': {
+'title': 'Unidades scout - A.S.U',
+'page_title': 'Unidades scout',
+'age': 'Edad',
+'details': 'Detalles'
+}
+} %}
+{% set text = ui.get(current_lang, ui['ar']) %}
+
+{% block title %}{{ text.title }}{% endblock %}
+
+{% block content %}
+<section class="py-10 sm:py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <h1 class="mb-8 text-center font-headline text-3xl font-black text-on-surface sm:text-4xl">
+            {{ text.page_title }}
+        </h1>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for unit in units %}
+            <div class="surface-card card-hover rounded-3xl p-6">
+                <div class="mb-4 flex justify-center">
+                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <span class="material-symbols-outlined text-[30px]">{{ unit.icon or 'group' }}</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <h5 class="mb-3 text-xl font-black text-primary">{{ translate_field(unit, 'name') }}</h5>
+                    <p class="mb-2 text-sm font-bold text-on-surface/75">
+                        {{ text.age }}: {{ unit.age_range }}
+                    </p>
+                    <p class="mb-5 text-sm leading-7 text-on-surface/65">
+                        {{ translate_field(unit, 'description') }}
+                    </p>
+                    <a href="{{ url_for('unit_detail', unit_id=unit.id) }}"
+                        class="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-sm font-bold text-primary transition hover:bg-primary hover:text-white">
+                        {{ text.details }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

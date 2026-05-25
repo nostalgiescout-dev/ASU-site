@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% set ui = {
+    'ar': {'title': 'خطأ في الخادم', 'copy': 'حدث خطأ غير متوقع. يرجى المحاولة لاحقًا.', 'back': 'العودة للرئيسية'},
+    'en': {'title': 'Server error', 'copy': 'An unexpected error occurred. Please try again later.', 'back': 'Back to home'},
+    'fr': {'title': 'Erreur du serveur', 'copy': 'Une erreur inattendue s’est produite. Veuillez réessayer plus tard.', 'back': 'Retour à l’accueil'},
+    'es': {'title': 'Error del servidor', 'copy': 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.', 'back': 'Volver al inicio'}
+} %}
+{% set page = ui.get(current_lang, ui['ar']) %}
+
+{% block content %}
+<div class="flex min-h-screen items-center justify-center bg-gray-50">
+    <div class="text-center">
+        <h1 class="mb-4 text-6xl font-black text-danger">500</h1>
+        <h2 class="mb-2 text-3xl font-bold text-gray-800">{{ page.title }}</h2>
+        <p class="mb-8 text-gray-600">{{ page.copy }}</p>
+        <a href="{{ url_for('home') }}" class="btn-primary">{{ page.back }}</a>
+    </div>
+</div>
+{% endblock %}

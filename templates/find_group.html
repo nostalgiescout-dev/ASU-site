@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% set ui = {
+    'ar': {
+        'title': 'البحث عن مجموعة - جمعية كشافة فقط',
+        'page_title': 'البحث عن مجموعة كشفية',
+        'page_copy': 'ابحث عن أقرب مجموعة إليك واحصل على معلومات التواصل.',
+        'nearby_groups': 'المجموعات القريبة',
+        'use_location': 'استخدم موقعي الحالي',
+        'members': 'عضو',
+        'location': 'الموقع',
+        'phone': 'رقم الهاتف',
+        'email': 'البريد الإلكتروني',
+        'leader': 'قائد المجموعة',
+        'active_units': 'الوحدات النشطة',
+        'coordinates': 'إحداثيات الموقع:',
+        'contact_us': 'اتصل بنا',
+        'close': 'إغلاق',
+        'unspecified': 'غير محدد',
+        'your_location': 'موقعك الحالي',
+        'browser_no_geo': 'المتصفح لا يدعم تحديد الموقع'
+    },
+    'en': {
+        'title': 'Find a Group - A.S.U',
+        'page_title': 'Find a Scout Group',
+        'page_copy': 'Search for the nearest group and get contact information.',
+        'nearby_groups': 'Nearby groups',
+        'use_location': 'Use my current location',
+        'members': 'members',
+        'location': 'Location',
+        'phone': 'Phone',
+        'email': 'Email',
+        'leader': 'Group leader',
+        'active_units': 'Active units',
+        'coordinates': 'Location coordinates:',
+        'contact_us': 'Contact us',
+        'close': 'Close',
+        'unspecified': 'Not specified',
+        'your_location': 'Your current location',
+        'browser_no_geo': 'Your browser does not support geolocation'
+    },
+    'fr': {
+        'title': 'Trouver un groupe - A.S.U',
+        'page_title': 'Trouver un groupe scout',
+        'page_copy': 'Recherchez le groupe le plus proche et obtenez ses coordonnées.',
+        'nearby_groups': 'Groupes proches',
+        'use_location': 'Utiliser ma position actuelle',
+        'members': 'membres',
+        'location': 'Adresse',
+        'phone': 'Téléphone',
+        'email': 'E-mail',
+        'leader': 'Responsable du groupe',
+        'active_units': 'Unités actives',
+        'coordinates': 'Coordonnées du lieu :',
+        'contact_us': 'Nous contacter',
+        'close': 'Fermer',
+        'unspecified': 'Non précisé',
+        'your_location': 'Votre position actuelle',
+        'browser_no_geo': 'Votre navigateur ne prend pas en charge la géolocalisation'
+    },
+    'es': {
+        'title': 'Buscar un grupo - A.S.U',
+        'page_title': 'Buscar un grupo scout',
+        'page_copy': 'Busca el grupo más cercano y obtén su información de contacto.',
+        'nearby_groups': 'Grupos cercanos',
+        'use_location': 'Usar mi ubicación actual',
+        'members': 'miembros',
+        'location': 'Ubicación',
+        'phone': 'Teléfono',
+        'email': 'Correo electrónico',
+        'leader': 'Responsable del grupo',
+        'active_units': 'Unidades activas',
+        'coordinates': 'Coordenadas del lugar:',
+        'contact_us': 'Contactarnos',
+        'close': 'Cerrar',
+        'unspecified': 'No especificado',
+        'your_location': 'Tu ubicación actual',
+        'browser_no_geo': 'Tu navegador no admite geolocalización'
+    }
+} %}
+{% set page = ui.get(current_lang, ui['ar']) %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-r from-primary to-teal-600 py-14 text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <p class="text-sm font-black uppercase tracking-[0.3em] text-white/75">{{ page.page_title }}</p>
+        <h1 class="mt-3 font-headline text-4xl font-black md:text-5xl">{{ page.page_title }}</h1>
+        <p class="mt-4 max-w-3xl text-lg text-white/85">{{ page.page_copy }}</p>
+    </div>
+</section>
+
+<section class="surface-panel py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="grid gap-8 md:grid-cols-3">
+            <div class="md:col-span-2">
+                <div class="surface-card overflow-hidden rounded-[2rem]">
+                    <div id="map" class="h-[420px] sm:h-[520px]"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="surface-card sticky top-28 rounded-[2rem] p-6">
+                    <h2 class="mb-4 text-lg font-black text-on-surface">{{ page.nearby_groups }}</h2>
+
+                    <button onclick="getUserLocation()" class="btn-primary mb-4 w-full px-4 py-3 text-sm">
+                        <span class="material-symbols-outlined text-base">my_location</span>
+                        {{ page.use_location }}
+                    </button>
+
+                    <div id="groups-list" class="max-h-96 space-y-3 overflow-y-auto">
+                        {% for group in groups %}
+                        <div class="card-hover cursor-pointer rounded-2xl border border-on-surface/10 bg-surface-highest/80 p-4" onclick="highlightGroup('{{ group.id }}')">
+                            <h3 class="text-sm font-black text-on-surface">{{ group.name }}</h3>
+                            <p class="mt-1 text-xs text-on-surface/60">{{ group.city.ar if group.city is mapping else group.city_ar }}</p>
+                            <p class="mt-2 inline-flex items-center gap-2 text-xs text-on-surface/55">
+                                <span class="material-symbols-outlined text-xs">people</span>
+                                {{ group.members_count }} {{ page.members }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="selected-group" class="surface-card mt-8 hidden rounded-[2rem] p-8">
+            <div class="grid gap-8 md:grid-cols-2">
+                <div>
+                    <h2 id="group-name" class="mb-4 text-3xl font-black text-on-surface"></h2>
+
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">location_on</span>
+                            <div>
+                                <p class="text-sm text-on-surface/60">{{ page.location }}</p>
+                                <p id="group-address" class="font-bold text-on-surface"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">phone</span>
+                            <div>
+                                <p class="text-sm text-on-surface/60">{{ page.phone }}</p>
+                                <p id="group-phone" class="font-bold text-on-surface"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">email</span>
+                            <div>
+                                <p class="text-sm text-on-surface/60">{{ page.email }}</p>
+                                <p id="group-email" class="font-bold text-on-surface"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">person</span>
+                            <div>
+                                <p class="text-sm text-on-surface/60">{{ page.leader }}</p>
+                                <p id="group-leader" class="font-bold text-on-surface"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <span class="material-symbols-outlined text-primary">groups</span>
+                            <div>
+                                <p class="text-sm text-on-surface/60">{{ page.active_units }}</p>
+                                <p id="group-units" class="font-bold text-on-surface"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex h-full flex-col justify-center rounded-3xl bg-white/55 p-6 text-center shadow-sm">
+                        <span class="material-symbols-outlined mb-4 inline-block text-8xl text-on-surface/20">location_on</span>
+                        <p class="font-bold text-on-surface/70">{{ page.coordinates }}</p>
+                        <p id="group-coords" class="mt-2 font-mono text-sm text-on-surface/55"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex gap-4">
+                <a id="group-contact-btn" href="#" class="btn-primary px-6 py-3 text-sm" target="_blank">{{ page.contact_us }}</a>
+                <button onclick="document.getElementById('selected-group').classList.add('hidden')" class="rounded-full bg-white/70 px-6 py-3 text-sm font-black text-on-surface shadow-sm transition hover:bg-white">
+                    {{ page.close }}
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    let map;
+    let markers = {};
+    const groupsData = {{ groups | tojson }};
+    const i18n = {{ page | tojson }};
+
+    function localizedCity(group) {
+        if (group.city && typeof group.city === 'object') {
+            return group.city[currentLang()] || group.city.ar || '';
+        }
+        return group.city_ar || group.city || '';
+    }
+
+    function currentLang() {
+        return document.documentElement.lang || 'ar';
+    }
+
+    function initMap() {
+        map = L.map('map').setView([31.7917, -7.0926], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        groupsData.forEach(group => {
+            const marker = L.marker([group.latitude, group.longitude]).addTo(map);
+            marker.bindPopup(`<strong>${group.name}</strong><br>${localizedCity(group)}`);
+            marker.on('click', () => showGroupDetails(group));
+            markers[group.id] = marker;
+        });
+    }
+
+    function fallback(value) {
+        return value || i18n.unspecified;
+    }
+
+    function showGroupDetails(group) {
+        document.getElementById('group-name').textContent = group.name;
+        document.getElementById('group-address').textContent = fallback(group.address);
+        document.getElementById('group-phone').innerHTML = `<a href="tel:${group.phone || ''}" class="text-primary hover:text-primary/80">${fallback(group.phone)}</a>`;
+        document.getElementById('group-email').innerHTML = `<a href="mailto:${group.email || ''}" class="text-primary hover:text-primary/80">${fallback(group.email)}</a>`;
+        document.getElementById('group-leader').textContent = fallback(group.leader_name);
+        document.getElementById('group-units').textContent = fallback(group.units_active);
+        document.getElementById('group-coords').textContent = `${group.latitude.toFixed(4)}, ${group.longitude.toFixed(4)}`;
+        document.getElementById('group-contact-btn').href = group.phone ? `tel:${group.phone}` : '#';
+
+        document.getElementById('selected-group').classList.remove('hidden');
+        map.setView([group.latitude, group.longitude], 14);
+        markers[group.id].openPopup();
+    }
+
+    function highlightGroup(groupId) {
+        const group = groupsData.find(g => g.id === groupId);
+        if (group) showGroupDetails(group);
+    }
+
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                map.setView([latitude, longitude], 12);
+                L.marker([latitude, longitude], { title: i18n.your_location }).addTo(map);
+            });
+        } else {
+            alert(i18n.browser_no_geo);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %}

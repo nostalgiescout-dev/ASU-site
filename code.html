@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>جمعية كشافة فقط | نبني القادة ونخدم المجتمع</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Be+Vietnam+Pro:wght@400;700;900&amp;family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#2c160e",
+                        "surface-variant": "#f1f1f1",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-primary-fixed-variant": "#5b4100",
+                        "on-surface": "#1b1d0e",
+                        "surface-container": "#f8f9fa",
+                        "on-secondary-container": "#795950",
+                        "surface": "#ffffff",
+                        "primary-container": "#ffd966",
+                        "on-tertiary-fixed-variant": "#5b4137",
+                        "secondary-container": "#fed3c7",
+                        "on-surface-variant": "#40493d",
+                        "on-background": "#1b1d0e",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#e6b800",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5d4037",
+                        "secondary-fixed-dim": "#e7bdb1",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#ffcc33",
+                        "inverse-surface": "#303221",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffeee8",
+                        "on-primary-fixed": "#2c160e",
+                        "surface-container-highest": "#e4e4cc",
+                        "inverse-on-surface": "#f2f2d9",
+                        "primary-fixed": "#ffe082",
+                        "on-secondary-fixed": "#2c160e",
+                        "on-primary-container": "#4d3d00",
+                        "secondary": "#77574d",
+                        "outline": "#707a6c",
+                        "surface-dim": "#dbdcc3",
+                        "on-tertiary-fixed": "#2b160f",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#6b4f45",
+                        "inverse-primary": "#ffd966",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-bright": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#ffd966",
+                        "surface-container-high": "#eaead1",
+                        "surface-container-low": "#f8f9fa",
+                        "background": "#ffffff",
+                        "tertiary-container": "#85675c",
+                        "tertiary-fixed-dim": "#e4beb2",
+                        "outline-variant": "#bfcaba",
+                        "scout-green": "#0d631b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Cairo", "Be Vietnam Pro"],
+                        "body": ["Cairo", "Plus Jakarta Sans"],
+                        "label": ["Cairo", "Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .scout-card-shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1));
+        }
+    </style>
+</head>
+
+<body class="bg-white text-on-surface selection:bg-primary selection:text-on-primary">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-12">
+                <a class="text-2xl font-black text-primary" href="#">
+                    <img alt="جمعية كشافة فقط" class="h-16 w-auto object-contain"
+                        src="{{ url_for('static', filename='images/Image1.png') }}" />
+                </a>
+                <nav class="hidden lg:flex items-center gap-8">
+                    <a class="font-bold text-gray-700 hover:text-primary transition-colors" href="#">عن الكشافة</a>
+                    <a class="font-bold text-gray-700 hover:text-primary transition-colors" href="#">معلومات للآباء</a>
+                    <a class="font-bold text-gray-700 hover:text-primary transition-colors" href="#">للمتطوعين</a>
+                    <a class="font-bold text-gray-700 hover:text-primary transition-colors" href="#">أهدافنا</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex gap-2 text-sm font-bold text-gray-400">
+                    <a class="hover:text-primary" href="#">EN</a>
+                    <span>|</span>
+                    <a class="hover:text-primary" href="#">FR</a>
+                    <span>|</span>
+                    <a class="hover:text-primary" href="#">ES</a>
+                    <span>|</span>
+                    <a class="text-primary" href="#">AR</a>
+                </div>
+                <a href="/admin/login" class="text-gray-500 hover:text-primary text-sm font-bold transition-colors">
+                    إدارة
+                </a>
+                <button
+                    class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold hover:brightness-95 transition-all">
+                    انضم إلينا
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="relative h-[650px] overflow-hidden">
+        <img alt="Scouts Adventure" class="absolute inset-0 w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMbs9ChbRSrbrh0pj3KKWT-yfMeiLZGVdyZVHewnPBaSdhFxXrexB_Tnq_cygb5SCu_xp6kFmiYxuTj4N_0jnb_8FYTMeLPio-qq2lgSm8u_W0JCxMmvLzAxOdNgPijDCktvnr4ds83ADfM7HfLtEJPcQNvxOfk1KjBr2X6_Qk3CQkcnFTOu5-xsmyGNafUfpqJdWodACI4NX2wrrmhI8jhUn0iqL7ThTHwt_yfL_NDR8UbPgf0m-zM1lvPMmtnzLsEHp4iF3q4T-W" />
+        <div class="absolute inset-0 hero-overlay"></div>
+        <div class="relative max-w-7xl mx-auto px-6 h-full flex items-center">
+            <div class="max-w-2xl text-white space-y-6">
+                <h1 class="text-6xl font-black leading-tight">جمعية كشافة فقط </h1>
+                <p class="text-xl font-medium leading-relaxed opacity-90">
+                    رسالتنا نقدم لأبنائكم بيئة آمنة وغنية لتنمية شخصياتهم، من خلال برنامج كشفي وشبابي مصمم بعناية
+                    ليمنحهم تربية متوازنة وشاملة. نحن نؤمن بأهمية الجمع بين التطور الجسدي والفكري، وغرس القيم الأصيلة،
+                    وصقل المهارات الحياتية الأساسية التي ترافقهم طوال حياتهم.
+                </p>
+                <div class="flex gap-4">
+                    <button
+                        class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform">
+                        انضم إلينا
+                    </button>
+                </div>
+            </div>
+            <!-- Unit Selector Card -->
+            <div
+                class="hidden lg:block absolute left-6 top-1/2 -translate-y-1/2 bg-[#2c160e]/90 p-8 rounded-2xl w-80 text-white border border-white/10 backdrop-blur-md">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="font-bold">7-11 سنة</span>
+                        <span class="text-primary font-black">الأشبال والزهرات</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="font-bold">12-14 سنة</span>
+                        <span class="text-primary font-black">الكشافة والمرشدات</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="font-bold">15-17 سنة</span>
+                        <span class="text-primary font-black">كشاف متقدم ورائدات</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <span class="font-bold">18-25 سنة</span>
+                        <span class="text-primary font-black">جوالة ودليلات</span>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-white/20">
+                    <p class="text-sm opacity-70 mb-4">اكتسب مهارات جديدة بينما تساعد الآخرين</p>
+                    <button class="w-full bg-white text-[#2c160e] py-2 rounded-full font-bold">انضم كقائد</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Vision & Objectives Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black mb-4">رؤيتنا وأهدافنا</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">نبني جيلاً من القادة الواعين والمسؤولين من خلال برامجنا
+                    الكشفية والشبابية</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">school</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">تنمية متكاملة</h3>
+                    <p class="text-gray-600 leading-relaxed">تطوير القدرات الجسدية والفكرية من خلال أنشطة متنوعة
+                        ومبتكرة.</p>
+                </div>
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-scout-green/10 rounded-2xl flex items-center justify-center text-scout-green mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">psychology</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">غرس القيم</h3>
+                    <p class="text-gray-600 leading-relaxed">بناء جيل واعٍ ومسؤول يتحلى بالأخلاق الحميدة.</p>
+                </div>
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-[#2c160e]/10 rounded-2xl flex items-center justify-center text-[#2c160e] mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">military_tech</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">صناعة القادة</h3>
+                    <p class="text-gray-600 leading-relaxed">صقل المهارات الحياتية والقيادية لبناء قادة المستقبل.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Search/Find Group Section -->
+    <section class="bg-scout-green py-12">
+        <div class="max-w-4xl mx-auto px-6 text-center text-white">
+            <h2 class="text-3xl font-black mb-8">ابحث عن أقرب مجموعة كشفية</h2>
+            <div class="flex gap-4 max-w-xl mx-auto">
+                <select
+                    class="flex-1 rounded-full border-none py-4 px-6 text-gray-800 font-bold focus:ring-2 focus:ring-primary">
+                    <option>اختر مدينتك...</option>
+                    <option>الرباط</option>
+                    <option>الدار البيضاء</option>
+                    <option>طنجة</option>
+                </select>
+                <button class="bg-primary text-on-primary px-8 rounded-full font-bold">بحث</button>
+            </div>
+        </div>
+    </section>
+    <!-- Scouting Paths Section -->
+    <section class="py-24 bg-surface-container-low">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black mb-4">مساراتنا الكشفية</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">لكل مرحلة عمرية مغامرتها الخاصة في رحلة التنمية والتعلم</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-3xl scout-card-shadow">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">child_care</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">الأشبال والزهرات</h3>
+                        <p class="text-primary font-bold text-sm">7 - 11 سنة</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">رحلة استكشاف ممتعة في أجواء ودية. يركز البرنامج على
+                        الألعاب الجماعية، الفن والإبداع، والرياضة لاكتشاف مواهبهم المبكرة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl scout-card-shadow">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-scout-green/10 rounded-full flex items-center justify-center text-scout-green mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">hiking</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">الكشافة والمرشدات</h3>
+                        <p class="text-scout-green font-bold text-sm">12 - 14 سنة</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">تجارب مصممة لتحدي قدراتهم وتوسيع آفاقهم. تتضمن
+                        أنشطة كشفية متقدمة، تحديات رياضية، وتنمية للثقافة والمعرفة عبر ورش الإلقاء والخطابة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl scout-card-shadow">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-[#2c160e]/10 rounded-full flex items-center justify-center text-[#2c160e] mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">leaderboard</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">كشاف متقدم ورائدات</h3>
+                        <p class="text-[#2c160e] font-bold text-sm">15 - 17 سنة</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">برنامج مخصص لصقل الشخصية القيادية. يتعلم الشباب
+                        التواصل الفعال، إدارة الوقت، تقنيات التنشيط، والتصوير والتوثيق الاحترافي.</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl scout-card-shadow">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">groups</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">جوالة ودليلات</h3>
+                        <p class="text-primary font-bold text-sm">18 - 24 سنة</p>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">إعداد قادة حقيقيين ومؤثرين في مجتمعهم. يركز على
+                        الذكاء العاطفي، صنع القرار الاستراتيجي، وتصميم وتنفيذ مشاريع وتنشيط ورش عمل احترافية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Clubs Section -->
+    <section class="py-24 bg-surface-container">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                <div>
+                    <h2 class="text-4xl font-black mb-4">أنديتنا ووحداتنا الفاعلة</h2>
+                    <p class="text-gray-600 max-w-xl">تعتمد جمعيتنا على هيكلة تنظيمية متكاملة تضمن تلبية كافة الاهتمامات
+                        وتقديم أفضل تجربة كشفية وشبابية.</p>
+                </div>
+                <a class="text-scout-green font-bold flex items-center gap-2 hover:underline" href="#">عرض جميع الوحدات
+                    <span class="material-symbols-outlined">arrow_back</span></a>
+            </div>
+            <div class="mb-16">
+                <h3 class="text-2xl font-black mb-8 text-center">الوحدات الكشفية الأساسية</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">child_care</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">وحدة الأشبال والزهرات</h4>
+                        <p class="text-gray-600 text-sm">مخصصة لاحتضان ورعاية الفئة العمرية الصغرى في بيئة ودية ومحفزة.
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-scout-green/10 rounded-full flex items-center justify-center text-scout-green mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">hiking</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">وحدة الكشاف والمرشدات</h4>
+                        <p class="text-gray-600 text-sm">تركز على بناء المهارات الأساسية وتحدي القدرات عبر مغامرات
+                            كشفية.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-[#2c160e]/10 rounded-full flex items-center justify-center text-[#2c160e] mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">leaderboard</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">وحدة الكشاف المتقدم والرائدات</h4>
+                        <p class="text-gray-600 text-sm">مخصصة لشباب المستقبل لصقل شخصيتهم القيادية.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">groups</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">وحدة الجوالة والدليلات</h4>
+                        <p class="text-gray-600 text-sm">بيئة متقدمة لإعداد قادة المستقبل القادرين على إدارة المشاريع
+                            والمبادرات.</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black mb-8 text-center">الأندية والفرق المتخصصة</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">school</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">أكاديمية كشافة فقط للتعلم والتدريب</h4>
+                        <p class="text-gray-600 text-sm">الذراع الأكاديمي للجمعية، المخصص لصقل المهارات، تقديم الدورات،
+                            وتطوير قدرات المنخرطين.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-scout-green/10 rounded-full flex items-center justify-center text-scout-green mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">palette</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">نادي الغد المشرق للفن والإبداع</h4>
+                        <p class="text-gray-600 text-sm">مساحة حرة وخلاقة تتيح للمواهب إبراز قدراتهم في المسرح،
+                            الأناشيد، والفنون المختلفة.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-[#2c160e]/10 rounded-full flex items-center justify-center text-[#2c160e] mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">medical_services</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">وحدة الإسعافات الأولية</h4>
+                        <p class="text-gray-600 text-sm">فريق متخصص لضمان سلامة المشاركين وتقديم الرعاية الأولية خلال
+                            جميع أنشطتنا ومخيماتنا.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl scout-card-shadow text-center">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl">photo_camera</span>
+                        </div>
+                        <h4 class="text-lg font-black mb-2">فريق كشافة فقط (الموقع الإعلامي)</h4>
+                        <p class="text-gray-600 text-sm">الواجهة الإعلامية والتوثيقية للجمعية، يعمل على نقل صورتنا
+                            وإنجازاتنا باحترافية.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Activities Grid -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-black text-center mb-16">أنشطتنا</h2>
+            <!-- ACTIVITIES_PLACEHOLDER -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="rounded-3xl overflow-hidden mb-6 h-64">
+                        <img alt="Activities"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT62Ai6gZFbReSpdt8s7kcCFk1OHtA-dIcvwPsH0MXrehxIRiYIKnxsVvmfEGmZroqaXmCXUJOSV7718XY2DIlwNEUfnmYPnshdmK-2mfbKK8kCmvQ57AQqJu12hz-pl4URfNUWABvsexeIVLegkcjgusP05ABkM2jhAVAA9XRMSTnkKKEg6Qq1EQowamdYWNITPFdxepY8dmWo40JN7xh7kb4vGTxvAKwoS0NeJjephAKRasfMcUmoo-EAKrAUnxcTe8ZHnKvaJzF" />
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">اكتشف الأنشطة</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">برامجنا مليئة بالأفكار المبتكرة، من التخييم إلى ركوب
+                        القوارب، مصممة لتطوير المهارات القيادية.</p>
+                    <a class="text-primary font-bold inline-flex items-center gap-2" href="#">استكشف المزيد <span
+                            class="material-symbols-outlined text-sm">arrow_back</span></a>
+                </div>
+                <!-- Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="rounded-3xl overflow-hidden mb-6 h-64">
+                        <img alt="Badges" class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAxwOOw2gE9fdZRhQIAg7m7oQYD8ETdfbmGPQxcwlmfWh13YUpDJNaIw_Ftl1YrL5ELwSH144s33L3tEE8AsPA0Ccoj8gKgfVPSBmPyGAnsJDkAeu2O8mRqAt2Mn-27AWyFNZleEXJ7caPD1ZHV2hIooVooFvKlynksJSYVBPoy2-OFtTm_SOhftbRc1FlMwQYycyanOwuO2j7_-xx1T41vLSPAhqytzzINcC1qlxpNdHVNQAclfoPDaY3McDd9yTSCXQB4ON3eJWZ" />
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">الأوسمة والشارات</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">أتقن شيئًا تحبه، أو جرب شيئًا جديدًا تمامًا. تسمح
+                        الشارات للشباب بالحصول على تقدير لإنجازاتهم.</p>
+                    <a class="text-primary font-bold inline-flex items-center gap-2" href="#">استكشف الشارات <span
+                            class="material-symbols-outlined text-sm">arrow_back</span></a>
+                </div>
+                <!-- Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="rounded-3xl overflow-hidden mb-6 h-64">
+                        <img alt="Nights Away"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYKRS3H5Xh2BUCeFqabB7sObtUKs54XwWZEMLjBf_vZfX7I1LzapSzDd-hMshGD-CY3uN7AW9YDCnQBIp8HXbZJnk7KNHmdH0sn58V71hk7h5imL0MFVmDH0w0L_975ttyHQxqw7f_582IPDAsufQDTQGwpcxKZ6aZDSyfOYcslX7DrYRAqGA0_WS988Nivuno8GTTIL2kUuM2eE_MAV2VduVdB7yBJ7Rsg70F85D3BIn1gHTBQ2nCBsB-ovOO8NEVqQVQQLZSK6FG" />
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">ليالي في الخلاء</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">سواء كان تخييمًا أو مبيتًا في الطبيعة، يجب أن يحصل كل
+                        شاب على فرصة للمشاركة في مغامرة خارجية.</p>
+                    <a class="text-primary font-bold inline-flex items-center gap-2" href="#">اكتشف الرحلات <span
+                            class="material-symbols-outlined text-sm">arrow_back</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Why Join Us Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black mb-4">لماذا تختار الانضمام إلينا؟</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">الانضمام إلى برنامجنا الكشفي والشبابي ليس مجرد نشاط، بل هو
+                    استثمار في مستقبل مشرق!</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">person</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">تكوين شخصية متكاملة</h3>
+                    <p class="text-gray-600 leading-relaxed">تنمية شاملة للقدرات الذهنية، البدنية، والاجتماعية.</p>
+                </div>
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-scout-green/10 rounded-2xl flex items-center justify-center text-scout-green mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">military_tech</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">نظام شارات تحفيزي</h3>
+                    <p class="text-gray-600 leading-relaxed">نكافئ التميز ونخلد الإنجازات بنظام شارات متنوع.</p>
+                </div>
+                <div class="bg-surface-container p-8 rounded-3xl text-center">
+                    <div
+                        class="w-16 h-16 bg-[#2c160e]/10 rounded-2xl flex items-center justify-center text-[#2c160e] mx-auto mb-6">
+                        <span class="material-symbols-outlined text-4xl">group</span>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4">أصدقاء ومغامرات حقيقية</h3>
+                    <p class="text-gray-600 leading-relaxed">اكتساب أصدقاء مدى الحياة يشاركونك نفس الشغف، وعيش تجارب لا
+                        تُنسى في الطبيعة.</p>
+                </div>
+            </div>
+            <div class="bg-primary rounded-3xl p-12 text-center text-on-primary">
+                <h3 class="text-3xl font-black mb-4">مستعدون لاستقبالكم في موسم مليء بالتعلم والمغامرات!</h3>
+                <p class="text-xl opacity-90 mb-8">يسعدنا استقبالكم للإجابة عن استفساراتكم وإتمام عملية التسجيل</p>
+                <button
+                    class="bg-on-primary text-primary px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform">
+                    انضم إلينا الآن
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Events Section -->
+    <section class="py-24 bg-surface-container-low">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-black text-center mb-4">ماذا يحدث الآن؟</h2>
+            <p class="text-gray-600 text-center mb-16 max-w-2xl mx-auto">آخر الأخبار والفعاليات من عالم الكشافة في
+                منطقتك.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Event 1 -->
+                <div class="bg-white rounded-3xl overflow-hidden scout-card-shadow flex flex-col">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-6xl text-primary">volunteer_activism</span>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span
+                                class="bg-primary/20 text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-bold">حدث
+                                قادم</span>
+                            <span class="text-gray-400 text-xs font-bold">15 يونيو</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">تحدي القمة للرواد</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">انضم إلينا في رحلة استكشافية عبر جبال
+                            الأطلس لتطوير مهارات البقاء والعمل الجماعي.</p>
+                        <a class="mt-auto font-bold text-sm text-primary" href="#">اقرأ المزيد...</a>
+                    </div>
+                </div>
+                <!-- Event 2 -->
+                <div class="bg-white rounded-3xl overflow-hidden scout-card-shadow flex flex-col">
+                    <img alt="Event" class="h-48 w-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmV5PnwsP-y4iBIcwTaUXMT4ygva0mL9d0stVJ-NRGAnIdelSG6_vAVgUUSwOimJwEvYyXZPqVsAVtVncmrj4JRKxTJruBWAsQpM4Tm1Nnpg6GXaaLV7inyeMQEmOpPGbSL8Aoe2UDqM4vgaAge4p34aNP9tLAgWh2ZIuFXcgr9dFWR057BD5s5aP-wby8GioU_qI2admpKinQoVbRDIPCsacitmJyceOlVGauIhB-vDv_ESfwHBW9Q4-afsXHUfRUDzmwST6TItkf" />
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span
+                                class="bg-primary/20 text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-bold">أخبار</span>
+                            <span class="text-gray-400 text-xs font-bold">مؤخراً</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">تكريم قادة المستقبل</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">احتفلنا الأسبوع الماضي بتوزيع أوسمة
+                            الاستحقاق على المتميزين في وحداتنا الكشفية.</p>
+                        <a class="mt-auto font-bold text-sm text-primary" href="#">اقرأ المزيد...</a>
+                    </div>
+                </div>
+                <!-- Event 3 -->
+                <div class="bg-white rounded-3xl overflow-hidden scout-card-shadow flex flex-col">
+                    <div class="h-48 bg-scout-green/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-6xl text-scout-green">eco</span>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <span
+                                class="bg-primary/20 text-on-primary-fixed-variant px-3 py-1 rounded-full text-xs font-bold">بيئة</span>
+                            <span class="text-gray-400 text-xs font-bold">قريباً</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">حملة تنظيف الشواطئ</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">نحن نؤمن بحماية بيئتنا. شارك معنا في حملة
+                            التنظيف الكبرى المقررة الشهر المقبل.</p>
+                        <a class="mt-auto font-bold text-sm text-primary" href="#">اقرأ المزيد...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner -->
+    <section class="max-w-7xl mx-auto px-6 mb-24">
+        <div class="bg-primary rounded-3xl p-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="space-y-4 text-on-primary">
+                <h2 class="text-3xl font-black">الشباب أولاً: السلامة في الكشافة</h2>
+                <p class="text-lg font-medium opacity-90">أينما ذهبنا ومهما فعلنا، نضع سلامة ورفاهية الشباب في المقام
+                    الأول.</p>
+            </div>
+            <button
+                class="bg-on-primary text-primary px-8 py-4 rounded-full font-bold text-lg whitespace-nowrap hover:scale-105 transition-transform">
+                سياسة السلامة
+            </button>
+        </div>
+    </section>
+    <!-- Map & Contact -->
+    <section class="py-24 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="space-y-8">
+                    <h2 class="text-4xl font-black">تواصل معنا</h2>
+                    <div class="grid gap-6">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined">location_on</span>
+                            </div>
+                            <div>
+                                <p class="font-bold">المقر الرئيسي</p>
+                                <p class="text-gray-600">دار الشباب رحال مسكيني، القنيطرة</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined">schedule</span>
+                            </div>
+                            <div>
+                                <p class="font-bold">أوقات الأنشطة</p>
+                                <p class="text-gray-600">كل يوم أحد من الساعة 10:00 إلى 12:00 صباحاً</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined text-sm">public</span>
+                        </a>
+                        <a class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined text-sm">share</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="h-[400px] rounded-3xl overflow-hidden scout-card-shadow border-4 border-white">
+                    <img alt="Location Map" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZaeZ6aUfTxuRB899wJslEdLjUk6IWICPq2I1SfF2Wk5JKMXDbC78t7F6_D2X_LftW3apzqJv96FpVv2neBVte5950zV8U8lRFcDtc6wlkWyiwMKeVxWqyWAIsgNYYJ2O_b_cT6Aq5zq_LyLZgzbUsEv3ms7QwXS7qntVoFNbMG-D6gunDFdYQ-6Bckjjnuwbfv4rpT3Q64MXg2fCbQgITSjuiB0pQMgLwgbrZgb_FZ9sGyuM56CNBexEZwPM5FJpJtCIRaEy2qQbJ" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-[#2c160e] text-white pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-2">
+                    <div class="mb-6">
+                        <img alt="جمعية كشافة" class="h-24 w-auto object-contain"
+                            src="https://lh3.googleusercontent.com/aida/ADBb0uh47dvSHl9ITpKEaIR1WgRg38S80Jc0kWZZeD81DVkeNnZUPbTuTePjJIaLjwhQiarZUeqS9p2MmfyXhLCOkr4Yxw3ucoJ1tXlyED8sJF8tAn3BKIOZETRWxcjXp3YEvRP5Y59u_JBcRrOQaEFhndq4z3XlOyxWY2ysMGBsZAbSosV2LeocgsLCoKTy2XFyBdniVJp_rHukqtP4K3be5p-EKH_ryzrR_Enz0OniQMK6VhKw42FL6czuv2BFzm7ksoFQsHs-RDIIq7E" />
+                    </div>
+                    <p class="text-white/60 leading-relaxed max-w-sm">
+                        نحن حركة تربوية تطوعية تسعى لبناء قادة الغد من خلال قيم الأصالة والمغامرة في قلب الطبيعة.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 text-primary">روابط سريعة</h4>
+                    <ul class="space-y-4 text-white/60">
+                        <li><a class="hover:text-white transition-colors" href="#">عن الجمعية</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">انضم إلينا</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">تطوع معنا</a></li>
+                        <li><a class="hover:text-white transition-colors" href="#">السياسات والأنظمة</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 text-primary">للتواصل</h4>
+                    <p class="text-white/60 mb-2">المقر القيادة العامة: دار الشباب رحال مسكيني، القنيطرة</p>
+                    <p class="text-white/60 mb-2">أوقات الأنشطة: كل سبت وأحد:</p>
+                    <p class="text-white/60" dir="ltr">+212 627-64-06-97</p>
+                </div>
+                <div
+                    class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
+                    <p>© 2010-2026 جمعية كشافة فقط. جميع الحقوق محفوظة.</p>
+                    <div class="flex gap-6">
+                        <a class="hover:text-white" href="#">الخصوصية</a>
+                        <a class="hover:text-white" href="#">ملفات التعريف</a>
+                        <a class="hover:text-white" href="#">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+    </footer>
+</body>
+
+</html>
+'@
+Set-Content -Path $path -Value $text -Encoding utf8

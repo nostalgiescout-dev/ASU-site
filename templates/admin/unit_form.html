@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}{% if unit %}تعديل الوحدة{% else %}إضافة وحدة جديدة{% endif %} - لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-black text-gray-800 mb-8">
+                {% if unit %}تعديل الوحدة{% else %}إضافة وحدة جديدة{% endif %}
+            </h1>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- Arabic Fields -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">بيانات عربية</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الاسم بالعربية</label>
+                            <input type="text" name="name_ar" required value="{{ unit.name_ar if unit else '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
+                            <textarea name="description_ar" rows="4" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_ar if unit else '' }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- English Fields -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">English Fields</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Name in English</label>
+                            <input type="text" name="name_en" required value="{{ unit.name_en if unit else '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Description in English</label>
+                            <textarea name="description_en" rows="4" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_en if unit else '' }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- French Fields -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">Champs Français</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Nom en Français</label>
+                            <input type="text" name="name_fr" required value="{{ unit.name_fr if unit else '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Description en Français</label>
+                            <textarea name="description_fr" rows="4" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_fr if unit else '' }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Spanish Fields -->
+                <fieldset class="border-b-2 pb-6">
+                    <legend class="font-bold text-lg mb-4">Campos en Español</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Nombre en Español</label>
+                            <input type="text" name="name_es" required value="{{ unit.name_es if unit else '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Descripción en Español</label>
+                            <textarea name="description_es" rows="4" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_es if unit else '' }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Other Fields -->
+                <fieldset>
+                    <legend class="font-bold text-lg mb-4">معلومات إضافية</legend>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الفئة العمرية</label>
+                            <input type="text" name="age_range" placeholder="مثال: 7-10"
+                                value="{{ unit.age_range if unit else '' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">الأيقونة</label>
+                            <input type="text" name="icon" value="{{ unit.icon if unit else 'scout' }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">ترتيب العرض</label>
+                            <input type="number" name="order" value="{{ unit.order if unit else 0 }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">صورة الوحدة</label>
+                            <input type="file" name="image" accept="image/*"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Buttons -->
+                <div class="flex gap-4">
+                    <button type="submit" class="btn-primary">حفظ</button>
+                    <a href="{{ url_for('admin_units') }}"
+                        class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

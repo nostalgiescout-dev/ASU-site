@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% set ui = {
+    'ar': {
+        'title': 'الصفحة الرئيسية',
+        'kicker': 'منصة رقمية بروح كشفية',
+        'cta_primary': 'ابحث عن مجموعة قريبة',
+        'cta_secondary': 'تعرّف علينا',
+        'stats_members': 'أعضاء',
+        'stats_units': 'وحدات',
+        'stats_groups': 'مجموعات',
+        'stats_since': 'منذ',
+        'explore_title': 'استكشف المنصة',
+        'explore_copy': 'مسارات سريعة للوصول إلى أهم الأقسام.',
+        'label_mission': 'الرسالة',
+        'label_vision': 'الرؤية',
+        'value_service': 'الخدمة',
+        'value_service_copy': 'أثر وقيم',
+        'value_adventure': 'المغامرة',
+        'value_adventure_copy': 'تعلّم ميداني',
+        'value_community': 'المجتمع',
+        'value_community_copy': 'روح الفريق',
+        'value_skills': 'المهارات',
+        'value_skills_copy': 'تطوّر وقيادة',
+        'tile_units': 'الوحدات',
+        'tile_units_copy': 'تعرف على الوحدات حسب الفئة العمرية.',
+        'tile_clubs': 'الأندية',
+        'tile_clubs_copy': 'اكتشف الأندية والأنشطة المتخصصة.',
+        'tile_activities': 'الأنشطة',
+        'tile_activities_copy': 'تابع الفعاليات القادمة والمميزة.',
+        'tile_groups': 'البحث عن مجموعة',
+        'tile_groups_copy': 'اعثر على أقرب مجموعة وتواصل معها.',
+        'tile_about': 'عن الجمعية',
+        'tile_about_copy': 'رؤيتنا ورسالتنا وقيمنا الأساسية.',
+        'section_units': 'وحداتنا',
+        'section_units_copy': 'مراحل مختلفة لتجربة غنية بالتعلم والمغامرة والعمل الجماعي.',
+        'section_clubs': 'أنديتنا',
+        'section_clubs_copy': 'مجالات متنوعة تجمع الشباب حول اهتمامات مشتركة.',
+        'section_activities': 'أحدث الأنشطة',
+        'section_activities_copy': 'آخر الفعاليات والأنشطة التي تمت إضافتها.',
+        'view_all': 'عرض الكل',
+        'no_units': 'لا توجد وحدات متاحة حالياً',
+        'no_clubs': 'لا توجد أندية متاحة حالياً',
+        'no_activities': 'لا توجد أنشطة متاحة حالياً'
+    },
+    'en': {
+        'title': 'Home',
+        'kicker': 'A digital platform with a scouting spirit',
+        'cta_primary': 'Find a nearby group',
+        'cta_secondary': 'About us',
+        'stats_members': 'Members',
+        'stats_units': 'Units',
+        'stats_groups': 'Groups',
+        'stats_since': 'Since',
+        'explore_title': 'Explore',
+        'explore_copy': 'Quick paths to the key sections.',
+        'label_mission': 'Mission',
+        'label_vision': 'Vision',
+        'value_service': 'Service',
+        'value_service_copy': 'Impact & values',
+        'value_adventure': 'Adventure',
+        'value_adventure_copy': 'Outdoor learning',
+        'value_community': 'Community',
+        'value_community_copy': 'Team spirit',
+        'value_skills': 'Skills',
+        'value_skills_copy': 'Grow & lead',
+        'tile_units': 'Units',
+        'tile_units_copy': 'Browse units by age range.',
+        'tile_clubs': 'Clubs',
+        'tile_clubs_copy': 'Discover specialized clubs and themes.',
+        'tile_activities': 'Activities',
+        'tile_activities_copy': 'See upcoming and featured events.',
+        'tile_groups': 'Find a group',
+        'tile_groups_copy': 'Locate the nearest group and contact them.',
+        'tile_about': 'About',
+        'tile_about_copy': 'Our mission, vision, and values.',
+        'section_units': 'Our units',
+        'section_units_copy': 'Different stages for a rich journey of learning, adventure, and teamwork.',
+        'section_clubs': 'Our clubs',
+        'section_clubs_copy': 'Diverse themes bringing young people together around shared interests.',
+        'section_activities': 'Latest activities',
+        'section_activities_copy': 'Recent events and activities added to the platform.',
+        'view_all': 'View all',
+        'no_units': 'No units available right now',
+        'no_clubs': 'No clubs available right now',
+        'no_activities': 'No activities available right now'
+    },
+    'fr': {
+        'title': 'Accueil',
+        'kicker': 'Une plateforme numérique à l’esprit scout',
+        'cta_primary': 'Trouver un groupe',
+        'cta_secondary': 'À propos',
+        'stats_members': 'Membres',
+        'stats_units': 'Unités',
+        'stats_groups': 'Groupes',
+        'stats_since': 'Depuis',
+        'explore_title': 'Explorer',
+        'explore_copy': 'Accès rapide aux sections clés.',
+        'label_mission': 'Mission',
+        'label_vision': 'Vision',
+        'value_service': 'Service',
+        'value_service_copy': 'Impact & valeurs',
+        'value_adventure': 'Aventure',
+        'value_adventure_copy': 'Apprentissage terrain',
+        'value_community': 'Communauté',
+        'value_community_copy': 'Esprit d’équipe',
+        'value_skills': 'Compétences',
+        'value_skills_copy': 'Grandir & diriger',
+        'tile_units': 'Unités',
+        'tile_units_copy': 'Voir les unités par tranche d’âge.',
+        'tile_clubs': 'Clubs',
+        'tile_clubs_copy': 'Découvrir les clubs spécialisés.',
+        'tile_activities': 'Activités',
+        'tile_activities_copy': 'Consulter les événements à venir.',
+        'tile_groups': 'Trouver un groupe',
+        'tile_groups_copy': 'Localiser un groupe et le contacter.',
+        'tile_about': 'À propos',
+        'tile_about_copy': 'Notre mission, vision et valeurs.',
+        'section_units': 'Nos unités',
+        'section_units_copy': 'Des étapes différentes pour apprendre, explorer et grandir ensemble.',
+        'section_clubs': 'Nos clubs',
+        'section_clubs_copy': 'Des thèmes variés autour d’intérêts communs.',
+        'section_activities': 'Activités récentes',
+        'section_activities_copy': 'Dernières activités ajoutées sur la plateforme.',
+        'view_all': 'Tout voir',
+        'no_units': 'Aucune unité disponible',
+        'no_clubs': 'Aucun club disponible',
+        'no_activities': 'Aucune activité disponible'
+    },
+    'es': {
+        'title': 'Inicio',
+        'kicker': 'Una plataforma digital con espíritu scout',
+        'cta_primary': 'Buscar un grupo',
+        'cta_secondary': 'Sobre la asociación',
+        'stats_members': 'Miembros',
+        'stats_units': 'Unidades',
+        'stats_groups': 'Grupos',
+        'stats_since': 'Desde',
+        'explore_title': 'Explorar',
+        'explore_copy': 'Accesos rápidos a las secciones principales.',
+        'label_mission': 'Misión',
+        'label_vision': 'Visión',
+        'value_service': 'Servicio',
+        'value_service_copy': 'Impacto y valores',
+        'value_adventure': 'Aventura',
+        'value_adventure_copy': 'Aprendizaje al aire libre',
+        'value_community': 'Comunidad',
+        'value_community_copy': 'Espíritu de equipo',
+        'value_skills': 'Habilidades',
+        'value_skills_copy': 'Crecer y liderar',
+        'tile_units': 'Unidades',
+        'tile_units_copy': 'Ver unidades por rango de edad.',
+        'tile_clubs': 'Clubes',
+        'tile_clubs_copy': 'Descubre clubes y temas especializados.',
+        'tile_activities': 'Actividades',
+        'tile_activities_copy': 'Consulta próximos eventos.',
+        'tile_groups': 'Buscar un grupo',
+        'tile_groups_copy': 'Ubica el grupo más cercano y contáctalo.',
+        'tile_about': 'Sobre',
+        'tile_about_copy': 'Nuestra misión, visión y valores.',
+        'section_units': 'Nuestras unidades',
+        'section_units_copy': 'Etapas distintas para aprender, explorar y trabajar en equipo.',
+        'section_clubs': 'Nuestros clubes',
+        'section_clubs_copy': 'Temas diversos alrededor de intereses compartidos.',
+        'section_activities': 'Últimas actividades',
+        'section_activities_copy': 'Eventos y actividades recientes añadidas a la plataforma.',
+        'view_all': 'Ver todo',
+        'no_units': 'No hay unidades disponibles',
+        'no_clubs': 'No hay clubes disponibles',
+        'no_activities': 'No hay actividades disponibles'
+    }
+} %}
+
+{% set t = ui.get(current_lang, ui['ar']) %}
+{% set arrow_icon = 'arrow_back' if current_lang == 'ar' else 'arrow_forward' %}
+{% set arrow_nudge = 'group-hover:-translate-x-0.5' if current_lang == 'ar' else 'group-hover:translate-x-0.5' %}
+{% set hero_title = translate_field(association, 'hero_title') %}
+{% set hero_description = translate_field(association, 'hero_description') %}
+{% set hero_image = association.hero_image if association else '' %}
+
+{% set mission = translate_field(association, 'mission') %}
+{% set vision = translate_field(association, 'vision') %}
+
+{% block title %}{{ t.title }}{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden pb-14 pt-6 sm:pb-16 sm:pt-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+                <p class="section-kicker mb-4">{{ t.kicker }}</p>
+                <h1 class="font-headline text-4xl font-black leading-[1.05] text-on-surface sm:text-5xl">
+                    {{ hero_title or t.title }}
+                </h1>
+                {% if hero_description %}
+                <p class="mt-5 max-w-2xl text-lg leading-8 text-on-surface/70">
+                    {{ hero_description }}
+                </p>
+                {% endif %}
+
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href="{{ url_for('find_group') }}" class="btn-primary px-6 py-3 text-sm">
+                        <span class="material-symbols-outlined text-base">near_me</span>
+                        {{ t.cta_primary }}
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn-secondary px-6 py-3 text-sm">
+                        <span class="material-symbols-outlined text-base">info</span>
+                        {{ t.cta_secondary }}
+                    </a>
+                </div>
+
+                <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <div class="surface-card rounded-3xl px-5 py-4">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.stats_members }}</p>
+                        <p class="mt-1 text-2xl font-black text-on-surface">{{ association.total_members if association else 0 }}</p>
+                    </div>
+                    <div class="surface-card rounded-3xl px-5 py-4">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.stats_units }}</p>
+                        <p class="mt-1 text-2xl font-black text-on-surface">{{ association.total_units if association else 0 }}</p>
+                    </div>
+                    <div class="surface-card rounded-3xl px-5 py-4">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.stats_groups }}</p>
+                        <p class="mt-1 text-2xl font-black text-on-surface">{{ association.total_groups if association else 0 }}</p>
+                    </div>
+                    <div class="surface-card rounded-3xl px-5 py-4">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.stats_since }}</p>
+                        <p class="mt-1 text-2xl font-black text-on-surface">{{ association.established_year if association else 2000 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="surface-card overflow-hidden rounded-[2rem]">
+                    {% if hero_image %}
+                    <div class="flex h-[420px] w-full items-center justify-center bg-white/70 p-6 sm:h-[460px] sm:p-10">
+                        <img src="{{ hero_image }}" alt="{{ hero_title }}" class="max-h-full w-full object-contain" />
+                    </div>
+                    {% else %}
+                    <div class="flex h-[420px] w-full items-center justify-center bg-gradient-to-br from-primary/20 via-surface-highest to-secondary/20 sm:h-[460px]">
+                        <div class="grid grid-cols-2 gap-4 p-10 text-on-surface/70">
+                            <div class="rounded-3xl bg-white/70 p-6 shadow-ambient">
+                                <span class="material-symbols-outlined text-4xl text-primary">volunteer_activism</span>
+                                <p class="mt-3 font-black">{{ t.value_service }}</p>
+                                <p class="mt-1 text-sm">{{ t.value_service_copy }}</p>
+                            </div>
+                            <div class="rounded-3xl bg-white/70 p-6 shadow-ambient">
+                                <span class="material-symbols-outlined text-4xl text-secondary">explore</span>
+                                <p class="mt-3 font-black">{{ t.value_adventure }}</p>
+                                <p class="mt-1 text-sm">{{ t.value_adventure_copy }}</p>
+                            </div>
+                            <div class="rounded-3xl bg-white/70 p-6 shadow-ambient">
+                                <span class="material-symbols-outlined text-4xl text-success">groups</span>
+                                <p class="mt-3 font-black">{{ t.value_community }}</p>
+                                <p class="mt-1 text-sm">{{ t.value_community_copy }}</p>
+                            </div>
+                            <div class="rounded-3xl bg-white/70 p-6 shadow-ambient">
+                                <span class="material-symbols-outlined text-4xl text-primary">school</span>
+                                <p class="mt-3 font-black">{{ t.value_skills }}</p>
+                                <p class="mt-1 text-sm">{{ t.value_skills_copy }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if mission or vision %}
+                <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                    <div class="surface-card rounded-3xl px-6 py-5">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.label_mission }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/70">{{ mission }}</p>
+                    </div>
+                    <div class="surface-card rounded-3xl px-6 py-5">
+                        <p class="text-xs font-black uppercase tracking-[0.2em] text-on-surface/50">{{ t.label_vision }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/70">{{ vision }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pb-4 pt-2 sm:pb-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+                <h2 class="section-title text-3xl">{{ t.explore_title }}</h2>
+                <p class="section-subtitle mt-3 max-w-2xl">{{ t.explore_copy }}</p>
+            </div>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="{{ url_for('units') }}" class="card-hover surface-card group rounded-3xl p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-xl font-black text-on-surface">{{ t.tile_units }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/65">{{ t.tile_units_copy }}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[34px] text-primary/80 transition group-hover:text-primary">groups</span>
+                </div>
+            </a>
+            <a href="{{ url_for('clubs') }}" class="card-hover surface-card group rounded-3xl p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-xl font-black text-on-surface">{{ t.tile_clubs }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/65">{{ t.tile_clubs_copy }}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[34px] text-secondary/80 transition group-hover:text-secondary">palette</span>
+                </div>
+            </a>
+            <a href="{{ url_for('activities') }}" class="card-hover surface-card group rounded-3xl p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-xl font-black text-on-surface">{{ t.tile_activities }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/65">{{ t.tile_activities_copy }}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[34px] text-primary/80 transition group-hover:text-primary">event</span>
+                </div>
+            </a>
+            <a href="{{ url_for('find_group') }}" class="card-hover surface-card group rounded-3xl p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-xl font-black text-on-surface">{{ t.tile_groups }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/65">{{ t.tile_groups_copy }}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[34px] text-success/80 transition group-hover:text-success">near_me</span>
+                </div>
+            </a>
+            <a href="{{ url_for('about') }}" class="card-hover surface-card group rounded-3xl p-6 sm:col-span-2">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-xl font-black text-on-surface">{{ t.tile_about }}</p>
+                        <p class="mt-2 text-sm leading-7 text-on-surface/65">{{ t.tile_about_copy }}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[34px] text-secondary/80 transition group-hover:text-secondary">info</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+                <h2 class="section-title text-3xl">{{ t.section_units }}</h2>
+                <p class="section-subtitle mt-3 max-w-2xl">{{ t.section_units_copy }}</p>
+            </div>
+            <a href="{{ url_for('units') }}" class="inline-flex items-center gap-2 font-bold text-primary hover:text-primary/80">
+                {{ t.view_all }}
+                <span class="material-symbols-outlined text-sm">{{ arrow_icon }}</span>
+            </a>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {% if units and units|length > 0 %}
+            {% for unit in units[:4] %}
+            <div class="surface-card card-hover rounded-3xl p-6">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <span class="material-symbols-outlined text-[28px]">{{ unit.icon or 'group' }}</span>
+                </div>
+                <p class="text-lg font-black text-on-surface">{{ translate_field(unit, 'name') }}</p>
+                <p class="mt-2 text-sm leading-7 text-on-surface/65 line-clamp-3">{{ translate_field(unit, 'description') }}</p>
+                <p class="mt-4 text-sm font-bold text-on-surface/70">{{ unit.age_range }}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="surface-card rounded-3xl p-8 text-center text-on-surface/70 sm:col-span-2 lg:col-span-4">
+                {{ t.no_units }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="pb-12 sm:pb-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+                <h2 class="section-title text-3xl">{{ t.section_clubs }}</h2>
+                <p class="section-subtitle mt-3 max-w-2xl">{{ t.section_clubs_copy }}</p>
+            </div>
+            <a href="{{ url_for('clubs') }}" class="inline-flex items-center gap-2 font-bold text-secondary hover:text-secondary/80">
+                {{ t.view_all }}
+                <span class="material-symbols-outlined text-sm">{{ arrow_icon }}</span>
+            </a>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {% if clubs and clubs|length > 0 %}
+            {% for club in clubs[:3] %}
+            <a href="{{ url_for('club_detail', club_id=club.id) }}" class="surface-card card-hover group overflow-hidden rounded-3xl">
+                {% if club.image_url %}
+                <img src="{{ club.image_url }}" alt="{{ translate_field(club, 'name') }}" class="h-40 w-full object-cover" />
+                {% else %}
+                <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-secondary/15 to-surface-highest">
+                    <span class="material-symbols-outlined text-6xl text-secondary/35">palette</span>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <p class="text-xl font-black text-secondary">{{ translate_field(club, 'name') }}</p>
+                    <p class="mt-2 text-sm leading-7 text-on-surface/65 line-clamp-3">{{ translate_field(club, 'description') }}</p>
+                    <div class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary">
+                        <span>{{ t.view_all }}</span>
+                        <span class="material-symbols-outlined text-sm transition {{ arrow_nudge }}">{{ arrow_icon }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <div class="surface-card rounded-3xl p-8 text-center text-on-surface/70 sm:col-span-2 lg:col-span-3">
+                {{ t.no_clubs }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="pb-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+                <h2 class="section-title text-3xl">{{ t.section_activities }}</h2>
+                <p class="section-subtitle mt-3 max-w-2xl">{{ t.section_activities_copy }}</p>
+            </div>
+            <a href="{{ url_for('activities') }}" class="inline-flex items-center gap-2 font-bold text-primary hover:text-primary/80">
+                {{ t.view_all }}
+                <span class="material-symbols-outlined text-sm">{{ arrow_icon }}</span>
+            </a>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {% if activities and activities|length > 0 %}
+            {% for activity in activities[:3] %}
+            {% set title = translate_field(activity, 'title') %}
+            {% set description = translate_field(activity, 'description') %}
+            <a href="{{ url_for('activity_detail', activity_id=activity.id) }}" class="surface-card card-hover group overflow-hidden rounded-3xl">
+                {% if activity.image_url %}
+                <img src="{{ activity.image_url }}" alt="{{ title }}" class="h-40 w-full object-cover" />
+                {% else %}
+                <div class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-primary/15 to-surface-highest">
+                    <span class="material-symbols-outlined text-6xl text-primary/35">event</span>
+                </div>
+                {% endif %}
+                <div class="p-6">
+                    <p class="text-lg font-black text-on-surface">{{ title }}</p>
+                    <p class="mt-2 text-sm leading-7 text-on-surface/65 line-clamp-3">{{ description }}</p>
+                    <div class="mt-5 flex items-center justify-between text-sm text-on-surface/55">
+                        <span class="inline-flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                            {{ activity.date.strftime('%d/%m/%Y') if activity.date else '' }}
+                        </span>
+                        <span class="inline-flex items-center gap-2 font-bold text-primary">
+                            <span>{{ t.view_all }}</span>
+                            <span class="material-symbols-outlined text-sm transition {{ arrow_nudge }}">{{ arrow_icon }}</span>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <div class="surface-card rounded-3xl p-8 text-center text-on-surface/70 sm:col-span-2 lg:col-span-3">
+                {{ t.no_activities }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

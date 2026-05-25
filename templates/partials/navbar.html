@@ -1,0 +1,69 @@
+<header class="sticky top-0 z-50 px-3 pt-3 sm:px-5">
+    {% set _endpoint = request.endpoint or '' %}
+    <div class="glass-nav mx-auto flex max-w-7xl items-center justify-between rounded-[2rem] px-4 py-3 sm:px-6">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-primary/10">
+                <img src="{{ url_for('static', filename='images/brand-logo.png') }}" alt="{{ text.brand_name }}" class="h-10 w-10 object-contain" />
+            </div>
+            <div>
+                <p class="font-headline text-lg font-black">A.S.U</p>
+                <p class="text-xs text-on-surface/60">{{ text.brand_name }}</p>
+            </div>
+        </a>
+
+        <nav class="hidden flex-col gap-4 lg:flex lg:flex-row lg:gap-6">
+            <a href="{{ url_for('home') }}" class="nav-link {% if _endpoint == 'home' %}is-active{% endif %}">{{ text.nav_home }}</a>
+            <a href="{{ url_for('units') }}" class="nav-link {% if _endpoint == 'units' %}is-active{% endif %}">{{ text.nav_units }}</a>
+            <a href="{{ url_for('clubs') }}" class="nav-link {% if _endpoint == 'clubs' %}is-active{% endif %}">{{ text.nav_clubs }}</a>
+            <a href="{{ url_for('activities') }}" class="nav-link {% if _endpoint == 'activities' %}is-active{% endif %}">{{ text.nav_activities }}</a>
+            <a href="{{ url_for('find_group') }}" class="nav-link {% if _endpoint == 'find_group' %}is-active{% endif %}">{{ text.nav_find_group }}</a>
+            <a href="{{ url_for('about') }}" class="nav-link {% if _endpoint == 'about' %}is-active{% endif %}">{{ text.nav_about }}</a>
+        </nav>
+
+        <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/40 text-on-surface shadow-sm transition hover:bg-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 lg:hidden" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false" data-mobile-menu-button>
+            <span class="material-symbols-outlined text-[26px]">menu</span>
+        </button>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+            <div class="lang-menu">
+                <button type="button" class="lang-button" aria-label="{{ text.choose_language }}" aria-haspopup="true" aria-expanded="false">
+                    <span class="material-symbols-outlined text-[28px]">language</span>
+                </button>
+                <div class="lang-dropdown text-right">
+                    <a href="{{ url_for('set_lang', lang='ar') }}" class="lang-option {% if current_lang == 'ar' %}is-active{% endif %}">{{ text.lang_ar }}</a>
+                    <a href="{{ url_for('set_lang', lang='en') }}" class="lang-option {% if current_lang == 'en' %}is-active{% endif %}">{{ text.lang_en }}</a>
+                    <a href="{{ url_for('set_lang', lang='fr') }}" class="lang-option {% if current_lang == 'fr' %}is-active{% endif %}">{{ text.lang_fr }}</a>
+                    <a href="{{ url_for('set_lang', lang='es') }}" class="lang-option {% if current_lang == 'es' %}is-active{% endif %}">{{ text.lang_es }}</a>
+                </div>
+            </div>
+
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary px-4 py-2 text-sm">{{ text.dashboard }}</a>
+            <a href="{{ url_for('admin_logout') }}" class="btn-primary px-4 py-2 text-sm">{{ text.logout }}</a>
+            {% else %}
+            <a href="{{ url_for('admin_login') }}" class="btn-primary px-4 py-2 text-sm">{{ text.login }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="glass-nav mx-auto mt-3 hidden max-w-7xl rounded-[2rem] px-4 py-4 sm:px-6 lg:hidden" data-mobile-menu>
+        <div class="flex flex-col gap-3">
+            <a href="{{ url_for('home') }}" class="mobile-nav-link {% if _endpoint == 'home' %}is-active{% endif %}">{{ text.nav_home }}</a>
+            <a href="{{ url_for('units') }}" class="mobile-nav-link {% if _endpoint == 'units' %}is-active{% endif %}">{{ text.nav_units }}</a>
+            <a href="{{ url_for('clubs') }}" class="mobile-nav-link {% if _endpoint == 'clubs' %}is-active{% endif %}">{{ text.nav_clubs }}</a>
+            <a href="{{ url_for('activities') }}" class="mobile-nav-link {% if _endpoint == 'activities' %}is-active{% endif %}">{{ text.nav_activities }}</a>
+            <a href="{{ url_for('find_group') }}" class="mobile-nav-link {% if _endpoint == 'find_group' %}is-active{% endif %}">{{ text.nav_find_group }}</a>
+            <a href="{{ url_for('about') }}" class="mobile-nav-link {% if _endpoint == 'about' %}is-active{% endif %}">{{ text.nav_about }}</a>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-3">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary px-4 py-2 text-sm">{{ text.dashboard }}</a>
+            <a href="{{ url_for('admin_logout') }}" class="btn-primary px-4 py-2 text-sm">{{ text.logout }}</a>
+            {% else %}
+            <a href="{{ url_for('admin_login') }}" class="btn-primary px-4 py-2 text-sm">{{ text.login }}</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+

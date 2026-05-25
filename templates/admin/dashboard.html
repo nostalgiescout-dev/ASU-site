@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة التحكم - جمعية كشافة فقط{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow-md sticky top-16 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-black text-gray-800">لوحة التحكم الإدارية</h1>
+                <p class="text-gray-600 text-sm">مرحباً بك، {{ current_user.full_name }}</p>
+            </div>
+            <a href="{{ url_for('admin_logout') }}"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined">logout</span>
+                تسجيل الخروج
+            </a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Stats Cards -->
+        <div class="grid md:grid-cols-5 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">الوحدات</p>
+                        <h3 class="text-3xl font-black text-primary">{{ stats.total_units }}</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">layers</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">الأندية</p>
+                        <h3 class="text-3xl font-black text-secondary">{{ stats.total_clubs }}</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-secondary">palette</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">الأنشطة</p>
+                        <h3 class="text-3xl font-black text-purple-600">{{ stats.total_activities }}</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-purple-600">event</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">المجموعات</p>
+                        <h3 class="text-3xl font-black text-success">{{ stats.total_groups }}</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-success">location_on</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">المستخدمين</p>
+                        <h3 class="text-3xl font-black text-orange-600">{{ stats.total_users }}</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-orange-600">people</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-lg shadow-md mb-8 overflow-hidden">
+            <div class="flex border-b">
+                <a href="{{ url_for('admin_units') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">layers</span>
+                    إدارة الوحدات
+                </a>
+                <a href="{{ url_for('admin_clubs') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">palette</span>
+                    إدارة الأندية
+                </a>
+                <a href="{{ url_for('admin_activities') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">event</span>
+                    إدارة الأنشطة
+                </a>
+                <a href="{{ url_for('admin_groups') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">location_on</span>
+                    إدارة المجموعات
+                </a>
+                <a href="{{ url_for('admin_users') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">people</span>
+                    إدارة المستخدمين
+                </a>
+                <a href="{{ url_for('admin_settings') }}"
+                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">settings</span>
+                    الإعدادات
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-black mb-6">آخر الأنشطة المضافة</h2>
+            <div class="space-y-4">
+                {% for activity in recent_activities %}
+                <div class="border-l-4 border-primary pl-4 py-2">
+                    <h3 class="font-bold">{{ activity.title_ar }}</h3>
+                    <p class="text-sm text-gray-600">{{ activity.date.strftime('%d/%m/%Y') }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

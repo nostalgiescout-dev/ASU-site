@@ -1,0 +1,43 @@
+<footer class="footer-surface relative z-10 mt-16 text-white">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+        <div class="grid gap-10 md:grid-cols-4">
+            <div class="md:col-span-2">
+                <div class="mb-5 flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white/10">
+                        <img src="{{ url_for('static', filename='images/brand-logo.png') }}" alt="{{ text.brand_name }}" class="h-10 w-10 object-contain" />
+                    </div>
+                    <div>
+                        <p class="font-headline text-xl font-black">A.S.U</p>
+                        <p class="text-sm text-white/60">{{ text.footer_tagline }}</p>
+                    </div>
+                </div>
+                <p class="max-w-xl text-sm leading-8 text-white/70">{{ text.footer_copy }}</p>
+            </div>
+
+            <div>
+                <h3 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-white/55">{{ text.links }}</h3>
+                <div class="space-y-3 text-sm text-white/70">
+                    <a href="{{ url_for('home') }}" class="block transition hover:text-white">{{ text.nav_home }}</a>
+                    <a href="{{ url_for('units') }}" class="block transition hover:text-white">{{ text.nav_units }}</a>
+                    <a href="{{ url_for('activities') }}" class="block transition hover:text-white">{{ text.nav_activities }}</a>
+                    <a href="{{ url_for('find_group') }}" class="block transition hover:text-white">{{ text.nav_find_group }}</a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="mb-4 text-sm font-black uppercase tracking-[0.2em] text-white/55">{{ text.contact }}</h3>
+                <div class="space-y-3 text-sm leading-7 text-white/70">
+                    <p>{{ text.location }}</p>
+                    <p>info@scouts-only.org</p>
+                    <p dir="ltr">+212 XXX XXX XXX</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/45 md:flex-row md:items-center md:justify-between">
+            <p>&copy; 2026 {{ text.copyright }}</p>
+            <p>{{ text.footer_note }}</p>
+        </div>
+    </div>
+</footer>
+

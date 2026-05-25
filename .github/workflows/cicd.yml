@@ -1,0 +1,72 @@
+name: "CI/CD: test then deploy"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: cicd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Smoke check (compile)
+        run: |
+          python -m compileall -q .
+
+  deploy:
+    needs: [test]
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload project to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          debug: true
+          # scp-action expects a comma-separated list (single string).
+          source: "app.py,models.py,requirements.txt,babel.cfg,create_users.py,recommender.py,users.json,static,templates,translations,Dockerfile.prod,docker-compose.prod.yml,.dockerignore"
+          target: ${{ secrets.VPS_APP_DIR }}
+          strip_components: 0
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            set -e
+            mkdir -p "${{ secrets.VPS_APP_DIR }}"
+            cd "${{ secrets.VPS_APP_DIR }}"
+
+            # Provision runtime secrets/config expected by the Flask app.
+            # Store the full env file content BASE64-encoded in GitHub secret APP_ENV_B64.
+            printf "%s" "${{ secrets.APP_ENV_B64 }}" | base64 -d --ignore-garbage > .env
+
+            docker compose -f docker-compose.prod.yml up -d --build

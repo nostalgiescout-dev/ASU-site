@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if group %}تعديل مجموعة{% else %}إضافة مجموعة جديدة{%
+            endif %}</h1>
+
+        <form method="POST" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold mb-2">اسم المجموعة</label>
+                <input type="text" name="name" required value="{{ group.name if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">المدينة بالعربية</label>
+                <input type="text" name="city_ar" required value="{{ group.city_ar if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">City in English</label>
+                <input type="text" name="city_en" required value="{{ group.city_en if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2">خط العرض (Latitude)</label>
+                    <input type="number" name="latitude" step="0.0001" required
+                        value="{{ group.latitude if group else '' }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="34.0209">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2">خط الطول (Longitude)</label>
+                    <input type="number" name="longitude" step="0.0001" required
+                        value="{{ group.longitude if group else '' }}"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="-6.8416">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">العنوان</label>
+                <input type="text" name="address" value="{{ group.address if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">رقم الهاتف</label>
+                <input type="tel" name="phone" value="{{ group.phone if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
+                <input type="email" name="email" value="{{ group.email if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">اسم قائد المجموعة</label>
+                <input type="text" name="leader_name" value="{{ group.leader_name if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">هاتف القائد</label>
+                <input type="tel" name="leader_phone" value="{{ group.leader_phone if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">عدد الأعضاء</label>
+                <input type="number" name="members_count" value="{{ group.members_count if group else 0 }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">الوحدات النشطة (CSV)</label>
+                <input type="text" name="units_active" value="{{ group.units_active if group else '' }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="أشبال، كشاف، متقدم">
+            </div>
+
+            <div class="flex gap-4">
+                <button type="submit" class="btn-primary">حفظ</button>
+                <a href="{{ url_for('admin_groups') }}"
+                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

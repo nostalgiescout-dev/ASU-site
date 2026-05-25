@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% set ui = {
+'ar': {
+'title': 'الأندية - جمعية كشافة فقط',
+'page_title': 'الأندية والنوادي',
+'page_copy': 'اكتشف الأندية والمجالات التي تهتم بها.',
+'activities_count_one': 'نشاط',
+'activities_count_many': 'أنشطة',
+'discover_club': 'اكتشف النادي',
+'cta_title': 'انضم إلى النادي الذي يهمك',
+'cta_copy': 'أنديتنا المتخصصة تجمع الشباب حول اهتمامات مشتركة وتوفر فضاءً للتجربة والإبداع وتبادل الخبرات.',
+'cta_button': 'ابحث عن مجموعتك القريبة'
+},
+'en': {
+'title': 'Clubs - A.S.U',
+'page_title': 'Clubs and Communities',
+'page_copy': 'Explore the clubs and themes that match your interests.',
+'activities_count_one': 'activity',
+'activities_count_many': 'activities',
+'discover_club': 'Discover the club',
+'cta_title': 'Join the club that fits you',
+'cta_copy': 'Our specialized clubs bring young people together around shared interests and offer space for
+experimentation, creativity, and exchange.',
+'cta_button': 'Find your nearby group'
+},
+'fr': {
+'title': 'Clubs - A.S.U',
+'page_title': 'Clubs et communautés',
+'page_copy': 'Découvrez les clubs et les domaines qui vous intéressent.',
+'activities_count_one': 'activité',
+'activities_count_many': 'activités',
+'discover_club': 'Découvrir le club',
+'cta_title': 'Rejoignez le club qui vous ressemble',
+'cta_copy': "Nos clubs spécialisés réunissent les jeunes autour d'intérêts communs et offrent un espace
+d'expérimentation, de créativité et de partage.",
+'cta_button': 'Trouver votre groupe proche'
+},
+'es': {
+'title': 'Clubes - A.S.U',
+'page_title': 'Clubes y comunidades',
+'page_copy': 'Descubre los clubes y áreas que más te interesan.',
+'activities_count_one': 'actividad',
+'activities_count_many': 'actividades',
+'discover_club': 'Descubrir el club',
+'cta_title': 'Únete al club que te inspira',
+'cta_copy': 'Nuestros clubes especializados reúnen a jóvenes con intereses comunes y ofrecen un espacio para
+experimentar, crear y compartir.',
+'cta_button': 'Encuentra tu grupo cercano'
+}
+} %}
+{% set page = ui.get(current_lang, ui['ar']) %}
+{% set arrow_icon = 'arrow_back' if current_lang == 'ar' else 'arrow_forward' %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-r from-secondary to-accent py-14 text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <h1 class="font-headline text-4xl font-black leading-[1.05] sm:text-5xl">{{ page.page_title }}</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-8 text-white/85">{{ page.page_copy }}</p>
+    </div>
+</section>
+
+<section class="surface-panel py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="grid gap-8 md:grid-cols-3">
+            {% for club in clubs %}
+            {% set club_name = translate_field(club, 'name') %}
+            {% set club_description = translate_field(club, 'description') %}
+            {% set activity_count = club.activities|length %}
+            {% set count_label = page.activities_count_one if activity_count == 1 else page.activities_count_many %}
+            <div class="surface-card card-hover overflow-hidden rounded-[2rem] border border-on-surface/5">
+                <div class="h-1 w-full bg-gradient-to-r from-secondary to-accent"></div>
+                {% if club.image_url %}
+                <img src="{{ club.image_url }}" alt="{{ club_name }}" class="h-40 w-full object-cover">
+                {% else %}
+                <div
+                    class="flex h-40 w-full items-center justify-center bg-gradient-to-br from-secondary/20 to-orange-100">
+                    <span class="material-symbols-outlined text-6xl text-secondary/30">palette</span>
+                </div>
+                {% endif %}
+
+                <div class="p-6">
+                    <h3 class="mb-2 text-2xl font-black text-secondary">{{ club_name }}</h3>
+                    <p class="mb-6 line-clamp-3 text-sm leading-7 text-on-surface/70">{{ club_description }}</p>
+
+                    <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary/10 px-3 py-1 text-sm font-bold text-secondary">
+                        <span class="material-symbols-outlined text-sm">event</span>
+                        <span>{{ activity_count }} {{ count_label }}</span>
+                    </div>
+
+                    <a href="{{ url_for('club_detail', club_id=club.id) }}"
+                        class="inline-flex items-center gap-2 font-bold text-secondary hover:text-secondary/80">
+                        {{ page.discover_club }}
+                        <span class="material-symbols-outlined text-sm">{{ arrow_icon }}</span>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6">
+        <h2 class="section-title mb-5">{{ page.cta_title }}</h2>
+        <p class="section-subtitle mx-auto max-w-2xl">{{ page.cta_copy }}</p>
+
+        <div class="mt-8">
+            <a href="{{ url_for('find_group') }}" class="btn-primary px-7 py-3 text-sm">
+                <span class="material-symbols-outlined text-base">near_me</span>
+                {{ page.cta_button }}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

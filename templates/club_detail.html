@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% set ui = {
+'ar': {
+'title_suffix': 'جمعية كشافة فقط',
+'club_label': 'نادي',
+'about_title': 'عن النادي',
+'activities_title': 'أنشطة النادي',
+'no_activities': 'لا توجد أنشطة حالياً.'
+},
+'en': {
+'title_suffix': 'A.S.U',
+'club_label': 'Club',
+'about_title': 'About the club',
+'activities_title': 'Club Activities',
+'no_activities': 'No activities yet.'
+},
+'fr': {
+'title_suffix': 'A.S.U',
+'club_label': 'Club',
+'about_title': 'À propos du club',
+'activities_title': 'Activités du club',
+'no_activities': 'Aucune activité pour le moment.'
+},
+'es': {
+'title_suffix': 'A.S.U',
+'club_label': 'Club',
+'about_title': 'Sobre el club',
+'activities_title': 'Actividades del club',
+'no_activities': 'No hay actividades todavía.'
+}
+} %}
+{% set text = ui.get(current_lang, ui['ar']) %}
+{% set club_name = translate_field(club, 'name') %}
+{% set club_description = translate_field(club, 'description') %}
+
+{% block title %}{{ club_name }} - {{ text.title_suffix }}{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-r from-primary to-secondary py-14 text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm uppercase tracking-[0.3em] opacity-80">{{ text.club_label }}</p>
+                <h1 class="mt-3 font-headline text-4xl font-black leading-[1.05] sm:text-5xl">{{ club_name }}</h1>
+                <p class="mt-4 max-w-3xl text-lg leading-8 text-white/85">{{ club_description }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="surface-panel py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 class="section-title mb-8">{{ text.activities_title }}</h2>
+        {% if activities and activities|length > 0 %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for activity in activities %}
+            {% set activity_title = translate_field(activity, 'title') %}
+            {% set activity_description = translate_field(activity, 'description') %}
+            <a href="{{ url_for('activity_detail', activity_id=activity.id) }}" class="surface-card card-hover block rounded-[2rem] border border-on-surface/5 p-6">
+                <h3 class="mb-2 text-lg font-black text-on-surface">{{ activity_title }}</h3>
+                <p class="mb-4 line-clamp-3 text-sm leading-7 text-on-surface/70">{{ activity_description }}</p>
+                <p class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                    <span class="material-symbols-outlined text-sm">calendar_today</span>
+                    {{ activity.date.strftime('%Y-%m-%d') if activity.date else '' }}
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="surface-card rounded-[2rem] border border-on-surface/5 p-8 text-center">
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <span class="material-symbols-outlined text-3xl">event_busy</span>
+            </div>
+            <p class="text-on-surface/70">{{ text.no_activities }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

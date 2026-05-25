@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    env_file:
+      - ./.env
+    environment:
+      - SCOUTS_ONLY_ENV=production
+      - DATABASE_URL=${DATABASE_URL:-sqlite:////app/data/scouts_only.db}
+    volumes:
+      - app_data:/app/data
+      - uploads_data:/app/uploads
+    ports:
+      - "127.0.0.1:8081:5000"
+    restart: unless-stopped
+
+volumes:
+  app_data:
+  uploads_data:
+

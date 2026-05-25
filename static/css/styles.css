@@ -1,0 +1,11 @@
+/* Small global tweaks (Tailwind provides most styles). */
+
+:focus-visible {
+    outline: 2px solid rgba(13, 99, 27, 0.45);
+    outline-offset: 3px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
