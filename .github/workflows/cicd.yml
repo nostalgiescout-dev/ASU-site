@@ -50,6 +50,8 @@ jobs:
           printf "%s" "${{ secrets.VPS_SSH_KEY }}" > /tmp/deploy_key
           sed -i 's/\r$//' /tmp/deploy_key
           ssh-keygen -yf /tmp/deploy_key | ssh-keygen -lf -
+          echo "Testing SSH auth with the same key (should print the remote username):"
+          ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i /tmp/deploy_key -p ${{ secrets.VPS_PORT || 22 }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "whoami"
           rm -f /tmp/deploy_key
 
 =======
