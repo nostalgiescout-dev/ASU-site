@@ -42,16 +42,21 @@ jobs:
 
       - name: Prepare SSH key
         run: |
-          echo "${{ secrets.VPS_SSH_KEY }}" > .deploy_key
-          sed -i 's/\r$//' .deploy_key
-          chmod 600 .deploy_key
+          # Optional sanity check: print a fingerprint for the key used by the deploy job.
+          # Do NOT keep the private key as a repo file, and do NOT chmod it 0644
+          # (OpenSSH will refuse to use it if it's accessible by others).
+          umask 077
+          printf "%s" "${{ secrets.VPS_SSH_KEY }}" > /tmp/deploy_key
+          sed -i 's/\r$//' /tmp/deploy_key
+          ssh-keygen -yf /tmp/deploy_key | ssh-keygen -lf -
+          rm -f /tmp/deploy_key
 
       - name: Upload project to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: .deploy_key
+          key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
           debug: true
           # scp-action expects a comma-separated list (single string).
@@ -64,7 +69,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: .deploy_key
+          key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
           script: |
             set -e
