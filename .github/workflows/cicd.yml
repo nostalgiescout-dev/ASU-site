@@ -78,9 +78,42 @@ jobs:
 
           ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "$port" "$user@$host" "mkdir -p '$target'"
 
+          paths=(
+            app.py
+            models.py
+            requirements.txt
+            babel.cfg
+            create_users.py
+            recommender.py
+            users.json
+            static
+            templates
+            translations
+            Dockerfile.prod
+            docker-compose.prod.yml
+            .dockerignore
+          )
+
+          existing=()
+          missing=()
+          for p in "${paths[@]}"; do
+            if [[ -e "$p" ]]; then
+              existing+=("$p")
+            else
+              missing+=("$p")
+            fi
+          done
+
+          if (( ${#missing[@]} )); then
+            echo "Skipping missing paths: ${missing[*]}"
+          fi
+          if (( ${#existing[@]} == 0 )); then
+            echo "No deploy artifacts found in workspace; aborting."
+            exit 1
+          fi
+
           scp -P "$port" -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -r \
-            app.py models.py requirements.txt babel.cfg create_users.py recommender.py users.json \
-            static templates translations Dockerfile.prod docker-compose.prod.yml .dockerignore \
+            "${existing[@]}" \
             "$user@$host:$target/"
 
       - name: Deploy on VPS (docker compose)
