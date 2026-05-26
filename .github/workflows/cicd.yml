@@ -125,5 +125,15 @@ jobs:
           user="${{ secrets.VPS_USER }}"
           target="${{ secrets.VPS_APP_DIR }}"
 
-          # Write .env on the VPS from base64 secret
-          ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "$port" "$user@$host" "mkdir -p '$target' && cd '$target' && printf '%s' '${{ secrets.APP_ENV_B64 }}' | base64 -d --ignore-garbage > .env && docker compose -f docker-compose.prod.yml up -d --build"
+          # Write .env locally from secret, then upload it (avoids quoting/base64 issues on the VPS).
+          # If APP_ENV_B64 is not actually base64, fall back to treating it as plain text.
+          if printf "%s" "${{ secrets.APP_ENV_B64 }}" | base64 -d --ignore-garbage > .env 2>/dev/null; then
+            echo ".env created from APP_ENV_B64 (base64)"
+          else
+            printf "%s" "${{ secrets.APP_ENV_B64 }}" > .env
+            echo ".env created from APP_ENV_B64 (plain text fallback)"
+          fi
+
+          scp -P "$port" -o IdentitiesOnly=yes -i ~/.ssh/deploy_key .env "$user@$host:$target/.env"
+
+          ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "$port" "$user@$host" "cd '$target' && docker compose -f docker-compose.prod.yml up -d --build"
