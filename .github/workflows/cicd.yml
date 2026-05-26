@@ -40,7 +40,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-<<<<<<< HEAD
       - name: Prepare SSH key
         run: |
           # Optional sanity check: print a fingerprint for the key used by the deploy job.
@@ -54,8 +53,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i /tmp/deploy_key -p ${{ secrets.VPS_PORT || 22 }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "whoami"
           rm -f /tmp/deploy_key
 
-=======
->>>>>>> 3d6f291 (update)
       - name: Upload project to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
