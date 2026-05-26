@@ -40,46 +40,51 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare SSH key
+      - name: Prepare SSH
+        shell: bash
         run: |
-          # Optional sanity check: print a fingerprint for the key used by the deploy job.
-          # Do NOT keep the private key as a repo file, and do NOT chmod it 0644
-          # (OpenSSH will refuse to use it if it's accessible by others).
-          umask 077
-          printf "%s" "${{ secrets.VPS_SSH_KEY }}" > /tmp/deploy_key
-          sed -i 's/\r$//' /tmp/deploy_key
-          ssh-keygen -yf /tmp/deploy_key | ssh-keygen -lf -
-          echo "Testing SSH auth with the same key (should print the remote username):"
-          ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -i /tmp/deploy_key -p ${{ secrets.VPS_PORT || 22 }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "whoami"
-          rm -f /tmp/deploy_key
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
 
-      - name: Upload project to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          debug: true
-          # scp-action expects a comma-separated list (single string).
-          source: "app.py,models.py,requirements.txt,babel.cfg,create_users.py,recommender.py,users.json,static,templates,translations,Dockerfile.prod,docker-compose.prod.yml,.dockerignore"
-          target: ${{ secrets.VPS_APP_DIR }}
-          strip_components: 0
+          # Use OpenSSH client directly (avoids key-format parsing issues in some SCP/SSH actions).
+          printf "%s" "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          sed -i 's/\r$//' ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-      - name: Deploy on VPS
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          script: |
-            set -e
-            mkdir -p "${{ secrets.VPS_APP_DIR }}"
-            cd "${{ secrets.VPS_APP_DIR }}"
+          # Trust the server host key for this run (prevents interactive prompt).
+          ssh-keyscan -p "${{ secrets.VPS_PORT || 22 }}" -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
 
-            # Provision runtime secrets/config expected by the Flask app.
-            # Store the full env file content BASE64-encoded in GitHub secret APP_ENV_B64.
-            printf "%s" "${{ secrets.APP_ENV_B64 }}" | base64 -d --ignore-garbage > .env
+          echo "Key fingerprint (sanity check):"
+          ssh-keygen -yf ~/.ssh/deploy_key | ssh-keygen -lf -
 
-            docker compose -f docker-compose.prod.yml up -d --build
+          echo "SSH auth check:"
+          ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "${{ secrets.VPS_PORT || 22 }}" "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" "whoami"
+
+      - name: Upload project to VPS (scp)
+        shell: bash
+        run: |
+          set -euo pipefail
+          port="${{ secrets.VPS_PORT || 22 }}"
+          host="${{ secrets.VPS_HOST }}"
+          user="${{ secrets.VPS_USER }}"
+          target="${{ secrets.VPS_APP_DIR }}"
+
+          ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "$port" "$user@$host" "mkdir -p '$target'"
+
+          scp -P "$port" -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -r \
+            app.py models.py requirements.txt babel.cfg create_users.py recommender.py users.json \
+            static templates translations Dockerfile.prod docker-compose.prod.yml .dockerignore \
+            "$user@$host:$target/"
+
+      - name: Deploy on VPS (docker compose)
+        shell: bash
+        run: |
+          set -euo pipefail
+          port="${{ secrets.VPS_PORT || 22 }}"
+          host="${{ secrets.VPS_HOST }}"
+          user="${{ secrets.VPS_USER }}"
+          target="${{ secrets.VPS_APP_DIR }}"
+
+          # Write .env on the VPS from base64 secret
+          ssh -o IdentitiesOnly=yes -i ~/.ssh/deploy_key -p "$port" "$user@$host" "mkdir -p '$target' && cd '$target' && printf '%s' '${{ secrets.APP_ENV_B64 }}' | base64 -d --ignore-garbage > .env && docker compose -f docker-compose.prod.yml up -d --build"
