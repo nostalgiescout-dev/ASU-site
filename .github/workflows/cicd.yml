@@ -48,9 +48,15 @@ jobs:
           chmod 700 ~/.ssh
 
           # Use OpenSSH client directly (avoids key-format parsing issues in some SCP/SSH actions).
-          printf "%s" "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          # Add a trailing newline (some SSH tools are picky about missing final newline).
+          printf "%s\n" "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           sed -i 's/\r$//' ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+
+          echo "Key file sanity (safe):"
+          echo "  first: $(head -n 1 ~/.ssh/deploy_key)"
+          echo "  last : $(tail -n 1 ~/.ssh/deploy_key)"
+          echo "  lines: $(wc -l < ~/.ssh/deploy_key)  bytes: $(wc -c < ~/.ssh/deploy_key)"
 
           # Trust the server host key for this run (prevents interactive prompt).
           ssh-keyscan -p "${{ secrets.VPS_PORT || 22 }}" -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
