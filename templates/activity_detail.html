@@ -8,12 +8,19 @@
         'date': 'التاريخ',
         'location': 'المكان',
         'club': 'النادي',
-        'views': 'مشاهدات',
+        'views': 'المشاهدات',
+        'registration': 'التسجيل',
+        'participants': 'الحد الأقصى للمشاركين',
+        'contact': 'التواصل',
+        'featured': 'نشاط مميز',
         'unscheduled': 'تاريخ غير محدد',
         'status_upcoming': 'قادم',
-        'status_ongoing': 'جاري',
+        'status_ongoing': 'جارٍ',
         'status_completed': 'منتهي',
         'watch_video': 'مشاهدة الفيديو',
+        'register_now': 'سجل الآن',
+        'email': 'البريد الإلكتروني',
+        'phone': 'الهاتف',
         'next_title': 'الخطوة التالية',
         'next_copy': 'ابحث عن مجموعة قريبة للمشاركة في الأنشطة القادمة.',
         'next_find_group': 'ابحث عن مجموعة'
@@ -26,11 +33,18 @@
         'location': 'Location',
         'club': 'Club',
         'views': 'Views',
+        'registration': 'Registration',
+        'participants': 'Participant limit',
+        'contact': 'Contact',
+        'featured': 'Featured activity',
         'unscheduled': 'Date not set',
         'status_upcoming': 'Upcoming',
         'status_ongoing': 'Ongoing',
         'status_completed': 'Completed',
         'watch_video': 'Watch video',
+        'register_now': 'Register now',
+        'email': 'Email',
+        'phone': 'Phone',
         'next_title': 'Next step',
         'next_copy': 'Find a nearby group to join upcoming activities.',
         'next_find_group': 'Find a group'
@@ -43,11 +57,18 @@
         'location': 'Lieu',
         'club': 'Club',
         'views': 'Vues',
+        'registration': 'Inscription',
+        'participants': 'Limite de participants',
+        'contact': 'Contact',
+        'featured': 'Activité en vedette',
         'unscheduled': 'Date non définie',
         'status_upcoming': 'À venir',
         'status_ongoing': 'En cours',
         'status_completed': 'Terminé',
         'watch_video': 'Voir la vidéo',
+        'register_now': 'S’inscrire',
+        'email': 'E-mail',
+        'phone': 'Téléphone',
         'next_title': 'Prochaine étape',
         'next_copy': 'Trouvez un groupe proche pour participer aux activités à venir.',
         'next_find_group': 'Trouver un groupe'
@@ -60,11 +81,18 @@
         'location': 'Lugar',
         'club': 'Club',
         'views': 'Vistas',
+        'registration': 'Registro',
+        'participants': 'Límite de participantes',
+        'contact': 'Contacto',
+        'featured': 'Actividad destacada',
         'unscheduled': 'Fecha no definida',
         'status_upcoming': 'Próximo',
         'status_ongoing': 'En curso',
         'status_completed': 'Finalizado',
         'watch_video': 'Ver video',
+        'register_now': 'Registrarse',
+        'email': 'Correo',
+        'phone': 'Teléfono',
         'next_title': 'Siguiente paso',
         'next_copy': 'Encuentra un grupo cercano para participar en próximas actividades.',
         'next_find_group': 'Buscar un grupo'
@@ -77,6 +105,7 @@
 {% set activity_location = translate_field(activity, 'location') %}
 {% set status_label = page['status_' ~ activity.status] if page['status_' ~ activity.status] is defined else activity.status %}
 {% set back_icon = 'arrow_forward' if current_lang == 'ar' else 'arrow_back' %}
+{% set embed_video_url = get_video_embed_url(activity.video_url) %}
 
 {% block title %}{{ activity_title }} - {{ page.title_suffix }}{% endblock %}
 
@@ -89,8 +118,16 @@
         </a>
 
         <div class="mt-6">
-            <div class="mb-3 inline-flex items-center rounded-full bg-white/15 px-4 py-2 text-xs font-black tracking-[0.2em] uppercase">
-                {{ status_label }}
+            <div class="mb-3 flex flex-wrap items-center gap-3">
+                <div class="inline-flex items-center rounded-full bg-white/15 px-4 py-2 text-xs font-black tracking-[0.2em] uppercase">
+                    {{ status_label }}
+                </div>
+                {% if activity.featured %}
+                <div class="inline-flex items-center gap-2 rounded-full bg-amber-300/20 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-amber-100">
+                    <span class="material-symbols-outlined text-sm">star</span>
+                    {{ page.featured }}
+                </div>
+                {% endif %}
             </div>
             <h1 class="font-headline text-4xl font-black leading-tight md:text-5xl">{{ activity_title }}</h1>
             {% if activity_location %}
@@ -104,7 +141,7 @@
 </section>
 
 <section class="surface-panel py-16">
-    <div class="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+    <div class="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <div class="surface-card overflow-hidden rounded-[2rem]">
             {% if activity.image_url %}
             <img src="{{ activity.image_url }}" alt="{{ activity_title }}" class="h-[360px] w-full object-cover" />
@@ -118,11 +155,20 @@
                 <h2 class="mb-4 text-2xl font-black text-on-surface">{{ page.details }}</h2>
                 <p class="whitespace-pre-line text-base leading-8 text-on-surface/75">{{ activity_description }}</p>
 
-                {% if activity.video_url %}
+                {% if activity.registration_url %}
+                <div class="mt-8">
+                    <a href="{{ activity.registration_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary px-5 py-3 text-sm">
+                        <span class="material-symbols-outlined text-base">how_to_reg</span>
+                        {{ page.register_now }}
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if embed_video_url %}
                 <div class="mt-8">
                     <p class="mb-3 text-sm font-black uppercase tracking-[0.2em] text-on-surface/50">{{ page.watch_video }}</p>
                     <div class="overflow-hidden rounded-2xl border border-on-surface/10 bg-black/5">
-                        <iframe class="aspect-video w-full" src="{{ activity.video_url }}" title="{{ activity_title }}" allowfullscreen></iframe>
+                        <iframe class="aspect-video w-full" src="{{ embed_video_url }}" title="{{ activity_title }}" allowfullscreen></iframe>
                     </div>
                 </div>
                 {% endif %}
@@ -131,12 +177,12 @@
 
         <aside class="space-y-4">
             <div class="surface-card rounded-[2rem] p-7">
-                <div class="space-y-4 text-sm">
+                <div class="space-y-5 text-sm">
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-primary">calendar_today</span>
                         <div>
                             <p class="font-black text-on-surface">{{ page.date }}</p>
-                            <p class="text-on-surface/70">{{ activity.date.strftime('%d/%m/%Y') if activity.date else page.unscheduled }}</p>
+                            <p class="text-on-surface/70">{{ activity.date.strftime('%d/%m/%Y %H:%M') if activity.date else page.unscheduled }}</p>
                         </div>
                     </div>
 
@@ -162,6 +208,16 @@
                     </div>
                     {% endif %}
 
+                    {% if activity.max_participants %}
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary">groups</span>
+                        <div>
+                            <p class="font-black text-on-surface">{{ page.participants }}</p>
+                            <p class="text-on-surface/70">{{ activity.max_participants }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-primary">visibility</span>
                         <div>
@@ -171,6 +227,45 @@
                     </div>
                 </div>
             </div>
+
+            {% if activity.registration_url or activity.contact_email or activity.contact_phone %}
+            <div class="surface-card rounded-[2rem] p-7">
+                <p class="text-sm font-black uppercase tracking-[0.2em] text-on-surface/50">{{ page.contact }}</p>
+                <div class="mt-4 space-y-4 text-sm">
+                    {% if activity.registration_url %}
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary">link</span>
+                        <div>
+                            <p class="font-black text-on-surface">{{ page.registration }}</p>
+                            <a href="{{ activity.registration_url }}" target="_blank" rel="noopener noreferrer" class="font-bold text-primary hover:text-primary/80">
+                                {{ page.register_now }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if activity.contact_email %}
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary">mail</span>
+                        <div>
+                            <p class="font-black text-on-surface">{{ page.email }}</p>
+                            <a href="mailto:{{ activity.contact_email }}" class="text-on-surface/70 hover:text-primary">{{ activity.contact_email }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if activity.contact_phone %}
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary">call</span>
+                        <div>
+                            <p class="font-black text-on-surface">{{ page.phone }}</p>
+                            <a href="tel:{{ activity.contact_phone }}" class="text-on-surface/70 hover:text-primary">{{ activity.contact_phone }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
 
             <div class="surface-card rounded-[2rem] p-7">
                 <p class="text-sm font-black uppercase tracking-[0.2em] text-on-surface/50">{{ page.next_title }}</p>

@@ -3,118 +3,151 @@
 {% block title %}{% if unit %}تعديل الوحدة{% else %}إضافة وحدة جديدة{% endif %} - لوحة التحكم{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50">
-    <div class="max-w-2xl mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-black text-gray-800 mb-8">
-                {% if unit %}تعديل الوحدة{% else %}إضافة وحدة جديدة{% endif %}
-            </h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set name_ar = form_data.get('name_ar', unit.name_ar if unit else '') if form_data else (unit.name_ar if unit else '') %}
+{% set name_en = form_data.get('name_en', unit.name_en if unit else '') if form_data else (unit.name_en if unit else '') %}
+{% set name_fr = form_data.get('name_fr', unit.name_fr if unit else '') if form_data else (unit.name_fr if unit else '') %}
+{% set name_es = form_data.get('name_es', unit.name_es if unit else '') if form_data else (unit.name_es if unit else '') %}
+{% set description_ar = form_data.get('description_ar', unit.description_ar if unit else '') if form_data else (unit.description_ar if unit else '') %}
+{% set description_en = form_data.get('description_en', unit.description_en if unit else '') if form_data else (unit.description_en if unit else '') %}
+{% set description_fr = form_data.get('description_fr', unit.description_fr if unit else '') if form_data else (unit.description_fr if unit else '') %}
+{% set description_es = form_data.get('description_es', unit.description_es if unit else '') if form_data else (unit.description_es if unit else '') %}
+{% set age_range = form_data.get('age_range', unit.age_range if unit else '') if form_data else (unit.age_range if unit else '') %}
+{% set icon = form_data.get('icon', unit.icon if unit else 'scout') if form_data else (unit.icon if unit else 'scout') %}
+{% set order = form_data.get('order', unit.order if unit else 0) if form_data else (unit.order if unit else 0) %}
 
-            <form method="POST" enctype="multipart/form-data" class="space-y-6">
-                <!-- Arabic Fields -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">بيانات عربية</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الاسم بالعربية</label>
-                            <input type="text" name="name_ar" required value="{{ unit.name_ar if unit else '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
-                            <textarea name="description_ar" rows="4" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_ar if unit else '' }}</textarea>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- English Fields -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">English Fields</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Name in English</label>
-                            <input type="text" name="name_en" required value="{{ unit.name_en if unit else '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Description in English</label>
-                            <textarea name="description_en" rows="4" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_en if unit else '' }}</textarea>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- French Fields -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">Champs Français</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Nom en Français</label>
-                            <input type="text" name="name_fr" required value="{{ unit.name_fr if unit else '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Description en Français</label>
-                            <textarea name="description_fr" rows="4" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_fr if unit else '' }}</textarea>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Spanish Fields -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">Campos en Español</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Nombre en Español</label>
-                            <input type="text" name="name_es" required value="{{ unit.name_es if unit else '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Descripción en Español</label>
-                            <textarea name="description_es" rows="4" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ unit.description_es if unit else '' }}</textarea>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Other Fields -->
-                <fieldset>
-                    <legend class="font-bold text-lg mb-4">معلومات إضافية</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الفئة العمرية</label>
-                            <input type="text" name="age_range" placeholder="مثال: 7-10"
-                                value="{{ unit.age_range if unit else '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الأيقونة</label>
-                            <input type="text" name="icon" value="{{ unit.icon if unit else 'scout' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">ترتيب العرض</label>
-                            <input type="number" name="order" value="{{ unit.order if unit else 0 }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">صورة الوحدة</label>
-                            <input type="file" name="image" accept="image/*"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Buttons -->
-                <div class="flex gap-4">
-                    <button type="submit" class="btn-primary">حفظ</button>
-                    <a href="{{ url_for('admin_units') }}"
-                        class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</a>
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">layers</span>
+                        Unit Editor
+                    </span>
+                    <h1 class="admin-title">{% if unit %}تعديل الوحدة{% else %}إضافة وحدة جديدة{% endif %}</h1>
+                    <p class="admin-copy">تنسيق أكثر احترافية لإدارة الوحدات الكشفية والمحتوى متعدد اللغات مع إبراز الفئة العمرية والترتيب العام.</p>
                 </div>
-            </form>
-        </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_units') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للقائمة
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" enctype="multipart/form-data" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الأسماء متعددة اللغات</h2>
+                            <p class="admin-section-copy">أضف أسماء الوحدة في اللغات الأربع حتى تبقى البيانات متسقة عبر الموقع ولوحة الإدارة.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="name_ar" class="admin-label">الاسم بالعربية</label>
+                            <input id="name_ar" name="name_ar" type="text" required class="admin-input" value="{{ name_ar }}">
+                        </div>
+                        <div>
+                            <label for="name_en" class="admin-label">Name in English</label>
+                            <input id="name_en" name="name_en" type="text" required class="admin-input" value="{{ name_en }}">
+                        </div>
+                        <div>
+                            <label for="name_fr" class="admin-label">Nom en Français</label>
+                            <input id="name_fr" name="name_fr" type="text" required class="admin-input" value="{{ name_fr }}">
+                        </div>
+                        <div>
+                            <label for="name_es" class="admin-label">Nombre en Espanol</label>
+                            <input id="name_es" name="name_es" type="text" required class="admin-input" value="{{ name_es }}">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الأوصاف متعددة اللغات</h2>
+                            <p class="admin-section-copy">الوصف الجيد يجعل الوحدة أسهل للفهم عند عرضها للزوار أو للإدارة الداخلية.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="description_ar" class="admin-label">الوصف بالعربية</label>
+                            <textarea id="description_ar" name="description_ar" rows="6" required class="admin-textarea">{{ description_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_en" class="admin-label">Description in English</label>
+                            <textarea id="description_en" name="description_en" rows="6" required class="admin-textarea">{{ description_en }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_fr" class="admin-label">Description en Français</label>
+                            <textarea id="description_fr" name="description_fr" rows="6" required class="admin-textarea">{{ description_fr }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_es" class="admin-label">Descripcion en Espanol</label>
+                            <textarea id="description_es" name="description_es" rows="6" required class="admin-textarea">{{ description_es }}</textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">معلومات إضافية</h2>
+                            <p class="admin-section-copy">حدد العمر المناسب وصورة الوحدة والأيقونة وترتيب الظهور في القوائم.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        {% if unit and unit.image_url %}
+                        <div class="admin-preview" data-image-preview-wrapper>
+                            <img src="{{ unit.image_url }}" alt="معاينة صورة الوحدة" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% else %}
+                        <div class="hidden admin-preview" data-image-preview-wrapper>
+                            <img src="" alt="معاينة صورة الوحدة" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <label for="age_range" class="admin-label">الفئة العمرية</label>
+                            <input id="age_range" name="age_range" type="text" class="admin-input" value="{{ age_range }}" placeholder="مثال: 7-10">
+                        </div>
+
+                        <div>
+                            <label for="icon" class="admin-label">الأيقونة</label>
+                            <input id="icon" name="icon" type="text" class="admin-input" value="{{ icon }}" placeholder="scout">
+                        </div>
+
+                        <div>
+                            <label for="order" class="admin-label">ترتيب العرض</label>
+                            <input id="order" name="order" type="number" class="admin-input" value="{{ order }}" min="0" step="1">
+                        </div>
+
+                        <div>
+                            <label for="image" class="admin-label">صورة الوحدة</label>
+                            <input id="image" name="image" type="file" accept="image/*" class="admin-input file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-secondary" data-image-preview-input data-image-preview-wrapper-selector="[data-image-preview-wrapper]">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            {% if unit %}حفظ التعديلات{% else %}إنشاء الوحدة{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_units') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
+            </div>
+        </form>
     </div>
-</div>
+</section>
 {% endblock %}

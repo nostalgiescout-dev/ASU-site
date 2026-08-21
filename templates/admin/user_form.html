@@ -1,62 +1,110 @@
 {% extends "base.html" %}
 
+{% block title %}{% if user %}تعديل المستخدم{% else %}إضافة مستخدم جديد{% endif %} - لوحة التحكم{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if user %}تعديل مستخدم{% else %}إضافة مستخدم جديد{% endif
-            %}</h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set username = form_data.get('username', user.username if user else '') if form_data else (user.username if user else '') %}
+{% set email = form_data.get('email', user.email if user else '') if form_data else (user.email if user else '') %}
+{% set full_name = form_data.get('full_name', user.full_name if user else '') if form_data else (user.full_name if user else '') %}
+{% set role = form_data.get('role', user.role if user else 'editor') if form_data else (user.role if user else 'editor') %}
+{% set is_active = form_data.get('is_active') == 'on' if form_data else (user.is_active if user else True) %}
 
-        <form method="POST" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold mb-2">اسم المستخدم</label>
-                <input type="text" name="username" required value="{{ user.username if user else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">manage_accounts</span>
+                        User Editor
+                    </span>
+                    <h1 class="admin-title">{% if user %}تعديل المستخدم{% else %}إضافة مستخدم جديد{% endif %}</h1>
+                    <p class="admin-copy">نموذج أكثر وضوحًا لإدارة الأدوار والصلاحيات وحالة الحساب مع تركيز على سهولة الاستخدام وسلامة البيانات.</p>
+                </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_users') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للقائمة
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">بيانات الحساب</h2>
+                            <p class="admin-section-copy">أدخل معلومات التعريف الأساسية للحساب الذي سيستخدم لوحة الإدارة.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="username" class="admin-label">اسم المستخدم</label>
+                            <input id="username" name="username" type="text" required class="admin-input" value="{{ username }}" {% if user %}readonly{% endif %}>
+                            {% if user %}
+                            <p class="admin-help">اسم المستخدم ثابت حاليًا في شاشة التعديل حسب السلوك الحالي للنظام.</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="email" class="admin-label">البريد الإلكتروني</label>
+                            <input id="email" name="email" type="email" required class="admin-input" value="{{ email }}">
+                        </div>
+                        <div>
+                            <label for="full_name" class="admin-label">الاسم الكامل</label>
+                            <input id="full_name" name="full_name" type="text" class="admin-input" value="{{ full_name }}">
+                        </div>
+                        <div>
+                            <label for="password" class="admin-label">{% if user %}كلمة مرور جديدة{% else %}كلمة المرور{% endif %}</label>
+                            <input id="password" name="password" type="password" {% if not user %}required{% endif %} class="admin-input">
+                            <p class="admin-help">{% if user %}اترك الحقل فارغًا إذا كنت لا تريد تغيير كلمة المرور الحالية.{% else %}هذا الحقل مطلوب عند إنشاء مستخدم جديد.{% endif %}</p>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
-                <input type="email" name="email" required value="{{ user.email if user else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الدور والحالة</h2>
+                            <p class="admin-section-copy">اختر مستوى الوصول المناسب ثم حدّد ما إذا كان الحساب نشطًا أو معطلًا.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="role" class="admin-label">الدور</label>
+                            <select id="role" name="role" class="admin-select">
+                                <option value="viewer" {% if role == 'viewer' %}selected{% endif %}>مشاهد (Viewer)</option>
+                                <option value="editor" {% if role == 'editor' %}selected{% endif %}>محرر (Editor)</option>
+                                <option value="admin" {% if role == 'admin' %}selected{% endif %}>مسؤول (Admin)</option>
+                            </select>
+                        </div>
+                        <label class="admin-checkbox-row">
+                            <input type="checkbox" name="is_active" class="admin-checkbox" {% if is_active %}checked{% endif %}>
+                            <span>
+                                <span class="admin-label !mb-1">الحساب نشط</span>
+                                <span class="admin-help">إلغاء التفعيل يمنع استخدام الحساب مع الاحتفاظ ببياناته داخل النظام.</span>
+                            </span>
+                        </label>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الاسم الكامل</label>
-                <input type="text" name="full_name" value="{{ user.full_name if user else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">{% if user %}كلمة مرور جديدة (اترك فارغاً لعدم التغيير){%
-                    else %}كلمة المرور{% endif %}</label>
-                <input type="password" name="password" {% if not user %}required{% endif %}
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">الدور</label>
-                <select name="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <option value="viewer" {% if user and user.role=='viewer' %}selected{% endif %}>مشاهد (Viewer)
-                    </option>
-                    <option value="editor" {% if user and user.role=='editor' %}selected{% endif %}>محرر (Editor)
-                    </option>
-                    <option value="admin" {% if user and user.role=='admin' %}selected{% endif %}>مسؤول (Admin)</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block flex items-center gap-2 mb-2">
-                    <input type="checkbox" name="is_active" value="1" {% if not user or user.is_active %}checked{% endif
-                        %} class="w-4 h-4">
-                    <span class="text-sm font-bold">نشط</span>
-                </label>
-            </div>
-
-            <div class="flex gap-4">
-                <button type="submit" class="btn-primary">حفظ</button>
-                <a href="{{ url_for('admin_users') }}"
-                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            {% if user %}حفظ التعديلات{% else %}إنشاء المستخدم{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_users') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
             </div>
         </form>
     </div>
-</div>
+</section>
 {% endblock %}

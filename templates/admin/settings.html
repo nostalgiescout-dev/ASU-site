@@ -3,107 +3,164 @@
 {% block title %}الإعدادات - لوحة التحكم{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50">
-    <div class="max-w-2xl mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-black text-gray-800 mb-8">إعدادات الموقع</h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set hero_title_ar = form_data.get('hero_title_ar', home_page.hero_title_ar or '') if form_data else (home_page.hero_title_ar or '') %}
+{% set hero_title_en = form_data.get('hero_title_en', home_page.hero_title_en or '') if form_data else (home_page.hero_title_en or '') %}
+{% set hero_description_ar = form_data.get('hero_description_ar', home_page.hero_description_ar or '') if form_data else (home_page.hero_description_ar or '') %}
+{% set hero_description_en = form_data.get('hero_description_en', home_page.hero_description_en or '') if form_data else (home_page.hero_description_en or '') %}
+{% set mission_ar = form_data.get('mission_ar', home_page.mission_ar or '') if form_data else (home_page.mission_ar or '') %}
+{% set mission_en = form_data.get('mission_en', home_page.mission_en or '') if form_data else (home_page.mission_en or '') %}
+{% set vision_ar = form_data.get('vision_ar', home_page.vision_ar or '') if form_data else (home_page.vision_ar or '') %}
+{% set vision_en = form_data.get('vision_en', home_page.vision_en or '') if form_data else (home_page.vision_en or '') %}
+{% set total_members = form_data.get('total_members', home_page.total_members or 0) if form_data else (home_page.total_members or 0) %}
+{% set total_units = form_data.get('total_units', home_page.total_units or 0) if form_data else (home_page.total_units or 0) %}
+{% set total_groups = form_data.get('total_groups', home_page.total_groups or 0) if form_data else (home_page.total_groups or 0) %}
+{% set established_year = form_data.get('established_year', home_page.established_year or 2000) if form_data else (home_page.established_year or 2000) %}
 
-            <form method="POST" enctype="multipart/form-data" class="space-y-6">
-                <!-- Hero Section -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">قسم البطل (Hero)</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">العنوان بالعربية</label>
-                            <input type="text" name="hero_title_ar" value="{{ home_page.hero_title_ar or '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Hero Title in English</label>
-                            <input type="text" name="hero_title_en" value="{{ home_page.hero_title_en or '' }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
-                            <textarea name="hero_description_ar" rows="3"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.hero_description_ar or '' }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Hero Description in English</label>
-                            <textarea name="hero_description_en" rows="3"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.hero_description_en or '' }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">صورة البطل</label>
-                            <input type="file" name="hero_image" accept="image/*"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Mission & Vision -->
-                <fieldset class="border-b-2 pb-6">
-                    <legend class="font-bold text-lg mb-4">الرسالة والرؤية</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الرسالة بالعربية</label>
-                            <textarea name="mission_ar" rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.mission_ar or '' }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Mission in English</label>
-                            <textarea name="mission_en" rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.mission_en or '' }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">الرؤية بالعربية</label>
-                            <textarea name="vision_ar" rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.vision_ar or '' }}</textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">Vision in English</label>
-                            <textarea name="vision_en" rows="4"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ home_page.vision_en or '' }}</textarea>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Statistics -->
-                <fieldset>
-                    <legend class="font-bold text-lg mb-4">الإحصائيات</legend>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold mb-2">عدد الكشافين</label>
-                            <input type="number" name="total_members" value="{{ home_page.total_members or 0 }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">عدد الوحدات</label>
-                            <input type="number" name="total_units" value="{{ home_page.total_units or 0 }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">عدد المجموعات</label>
-                            <input type="number" name="total_groups" value="{{ home_page.total_groups or 0 }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold mb-2">سنة التأسيس</label>
-                            <input type="number" name="established_year"
-                                value="{{ home_page.established_year or 2000 }}" min="1900"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Buttons -->
-                <div class="flex gap-4">
-                    <button type="submit" class="btn-primary">حفظ الإعدادات</button>
-                    <a href="{{ url_for('admin_dashboard') }}"
-                        class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</a>
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">tune</span>
+                        Site Settings
+                    </span>
+                    <h1 class="admin-title">إعدادات الموقع</h1>
+                    <p class="admin-copy">لوحة إعدادات أوضح لإدارة قسم البطل والنصوص الرئيسية والإحصائيات العامة مع معاينة أفضل للصورة.</p>
                 </div>
-            </form>
-        </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_dashboard') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للوحة التحكم
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" enctype="multipart/form-data" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">قسم البطل</h2>
+                            <p class="admin-section-copy">العنوان والوصف والصورة الرئيسية التي تشكل الانطباع الأول في الصفحة الرئيسية.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="hero_title_ar" class="admin-label">العنوان بالعربية</label>
+                            <input id="hero_title_ar" name="hero_title_ar" type="text" class="admin-input" value="{{ hero_title_ar }}">
+                        </div>
+                        <div>
+                            <label for="hero_title_en" class="admin-label">Hero Title in English</label>
+                            <input id="hero_title_en" name="hero_title_en" type="text" class="admin-input" value="{{ hero_title_en }}">
+                        </div>
+                        <div>
+                            <label for="hero_description_ar" class="admin-label">الوصف بالعربية</label>
+                            <textarea id="hero_description_ar" name="hero_description_ar" rows="5" class="admin-textarea">{{ hero_description_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="hero_description_en" class="admin-label">Hero Description in English</label>
+                            <textarea id="hero_description_en" name="hero_description_en" rows="5" class="admin-textarea">{{ hero_description_en }}</textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الرسالة والرؤية</h2>
+                            <p class="admin-section-copy">نصوص المؤسسة الأساسية التي تظهر للمستخدمين وتحتاج إلى صياغة واضحة ومتسقة.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="mission_ar" class="admin-label">الرسالة بالعربية</label>
+                            <textarea id="mission_ar" name="mission_ar" rows="5" class="admin-textarea">{{ mission_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="mission_en" class="admin-label">Mission in English</label>
+                            <textarea id="mission_en" name="mission_en" rows="5" class="admin-textarea">{{ mission_en }}</textarea>
+                        </div>
+                        <div>
+                            <label for="vision_ar" class="admin-label">الرؤية بالعربية</label>
+                            <textarea id="vision_ar" name="vision_ar" rows="5" class="admin-textarea">{{ vision_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="vision_en" class="admin-label">Vision in English</label>
+                            <textarea id="vision_en" name="vision_en" rows="5" class="admin-textarea">{{ vision_en }}</textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">صورة البطل</h2>
+                            <p class="admin-section-copy">استخدم صورة واضحة ومتوافقة مع الهوية البصرية للموقع.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        {% if home_page.hero_image %}
+                        <div class="admin-preview" data-image-preview-wrapper>
+                            <img src="{{ home_page.hero_image }}" alt="معاينة صورة البطل" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% else %}
+                        <div class="hidden admin-preview" data-image-preview-wrapper>
+                            <img src="" alt="معاينة صورة البطل" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <label for="hero_image" class="admin-label">صورة البطل</label>
+                            <input id="hero_image" name="hero_image" type="file" accept="image/*" class="admin-input file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-secondary" data-image-preview-input data-image-preview-wrapper-selector="[data-image-preview-wrapper]">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الإحصائيات العامة</h2>
+                            <p class="admin-section-copy">أرقام سريعة تظهر في الواجهة العامة ويمكن تحديثها من هنا دون تعقيد.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="total_members" class="admin-label">عدد الكشافين</label>
+                            <input id="total_members" name="total_members" type="number" class="admin-input" value="{{ total_members }}" min="0" step="1">
+                        </div>
+                        <div>
+                            <label for="total_units" class="admin-label">عدد الوحدات</label>
+                            <input id="total_units" name="total_units" type="number" class="admin-input" value="{{ total_units }}" min="0" step="1">
+                        </div>
+                        <div>
+                            <label for="total_groups" class="admin-label">عدد المجموعات</label>
+                            <input id="total_groups" name="total_groups" type="number" class="admin-input" value="{{ total_groups }}" min="0" step="1">
+                        </div>
+                        <div>
+                            <label for="established_year" class="admin-label">سنة التأسيس</label>
+                            <input id="established_year" name="established_year" type="number" class="admin-input" value="{{ established_year }}" min="1900" step="1">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            حفظ الإعدادات
+                        </button>
+                        <a href="{{ url_for('admin_dashboard') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
+            </div>
+        </form>
     </div>
-</div>
+</section>
 {% endblock %}

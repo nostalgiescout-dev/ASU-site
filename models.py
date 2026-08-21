@@ -162,10 +162,16 @@ class Activity(db.Model):
     
     image_url = db.Column(db.String(255))
     video_url = db.Column(db.String(255))  # YouTube or other video embed
+    registration_url = db.Column(db.String(255))
+    max_participants = db.Column(db.Integer)
+    contact_email = db.Column(db.String(120))
+    contact_phone = db.Column(db.String(50))
     
     club_id = db.Column(db.String(36), db.ForeignKey('clubs.id'), nullable=True)
     
     status = db.Column(db.String(20), default='upcoming')  # upcoming, ongoing, completed
+    featured = db.Column(db.Boolean, default=False)
+    is_published = db.Column(db.Boolean, default=True)
     views = db.Column(db.Integer, default=0)
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -193,7 +199,13 @@ class Activity(db.Model):
             },
             'image_url': self.image_url,
             'video_url': self.video_url,
+            'registration_url': self.registration_url,
+            'max_participants': self.max_participants,
+            'contact_email': self.contact_email,
+            'contact_phone': self.contact_phone,
             'status': self.status,
+            'featured': self.featured,
+            'is_published': self.is_published,
             'views': self.views
         }
 

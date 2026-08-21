@@ -4,57 +4,61 @@
     'ar': {
         'title': 'الأنشطة والفعاليات - جمعية كشافة فقط',
         'page_title': 'الأنشطة والفعاليات',
-        'page_copy': 'اكتشف جميع الأنشطة والفعاليات القادمة.',
+        'page_copy': 'اكتشف جميع الأنشطة والفعاليات القادمة والمنشورة.',
         'status_upcoming': 'قادم',
-        'status_ongoing': 'جاري',
+        'status_ongoing': 'جارٍ',
         'status_completed': 'منتهي',
+        'featured': 'مميز',
         'unscheduled': 'تاريخ غير محدد',
         'read_more': 'اقرأ المزيد',
         'previous': 'السابق',
         'next': 'التالي',
-        'empty_title': 'لا توجد أنشطة حاليًا',
+        'empty_title': 'لا توجد أنشطة منشورة حاليًا',
         'empty_copy': 'يرجى العودة لاحقًا للاطلاع على الأنشطة الجديدة.'
     },
     'en': {
         'title': 'Activities and Events - A.S.U',
         'page_title': 'Activities and Events',
-        'page_copy': 'Discover upcoming activities and events.',
+        'page_copy': 'Discover published upcoming activities and events.',
         'status_upcoming': 'Upcoming',
         'status_ongoing': 'Ongoing',
         'status_completed': 'Completed',
+        'featured': 'Featured',
         'unscheduled': 'Date not set',
         'read_more': 'Read more',
         'previous': 'Previous',
         'next': 'Next',
-        'empty_title': 'No activities available right now',
+        'empty_title': 'No published activities available right now',
         'empty_copy': 'Please check back later for new activities.'
     },
     'fr': {
         'title': 'Activités et événements - A.S.U',
         'page_title': 'Activités et événements',
-        'page_copy': 'Découvrez les activités et événements à venir.',
+        'page_copy': 'Découvrez les activités et événements publiés à venir.',
         'status_upcoming': 'À venir',
         'status_ongoing': 'En cours',
         'status_completed': 'Terminé',
+        'featured': 'En vedette',
         'unscheduled': 'Date non définie',
         'read_more': 'Lire la suite',
         'previous': 'Précédent',
         'next': 'Suivant',
-        'empty_title': 'Aucune activité pour le moment',
+        'empty_title': 'Aucune activité publiée pour le moment',
         'empty_copy': 'Revenez plus tard pour découvrir les nouvelles activités.'
     },
     'es': {
         'title': 'Actividades y eventos - A.S.U',
         'page_title': 'Actividades y eventos',
-        'page_copy': 'Descubre las próximas actividades y eventos.',
+        'page_copy': 'Descubre las próximas actividades y eventos publicados.',
         'status_upcoming': 'Próximo',
         'status_ongoing': 'En curso',
         'status_completed': 'Finalizado',
+        'featured': 'Destacado',
         'unscheduled': 'Fecha no definida',
         'read_more': 'Leer más',
         'previous': 'Anterior',
         'next': 'Siguiente',
-        'empty_title': 'No hay actividades por ahora',
+        'empty_title': 'No hay actividades publicadas por ahora',
         'empty_copy': 'Vuelve más tarde para ver nuevas actividades.'
     }
 } %}
@@ -98,8 +102,11 @@
                 {% endif %}
 
                 <div class="p-6">
-                    <div class="mb-3 flex items-center gap-2">
+                    <div class="mb-3 flex flex-wrap items-center gap-2">
                         <span class="rounded-full px-3 py-1 text-xs font-black {{ badge_class }}">{{ status_label }}</span>
+                        {% if activity.featured %}
+                        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-black text-amber-700">{{ page.featured }}</span>
+                        {% endif %}
                     </div>
 
                     <h3 class="mb-2 text-lg font-black text-on-surface">{{ activity_title }}</h3>
@@ -133,7 +140,7 @@
             <a href="{{ url_for('activities', page=activities.prev_num) }}" class="btn-secondary px-4 py-2 text-sm">{{ page.previous }}</a>
             {% endif %}
 
-            {% for page_num in activities.iter_pages(left_edge=1, left_margin=1, right_margin=1, right_edge=1) %}
+            {% for page_num in activities.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
             {% if page_num %}
             {% if page_num == activities.page %}
             <span class="rounded-full bg-primary px-4 py-2 text-sm font-black text-white">{{ page_num }}</span>

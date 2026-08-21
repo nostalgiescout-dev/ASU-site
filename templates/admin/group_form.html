@@ -1,93 +1,142 @@
 {% extends "base.html" %}
 
+{% block title %}{% if group %}تعديل المجموعة{% else %}إضافة مجموعة جديدة{% endif %} - لوحة التحكم{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if group %}تعديل مجموعة{% else %}إضافة مجموعة جديدة{%
-            endif %}</h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set name = form_data.get('name', group.name if group else '') if form_data else (group.name if group else '') %}
+{% set city_ar = form_data.get('city_ar', group.city_ar if group else '') if form_data else (group.city_ar if group else '') %}
+{% set city_en = form_data.get('city_en', group.city_en if group else '') if form_data else (group.city_en if group else '') %}
+{% set latitude = form_data.get('latitude', group.latitude if group else '') if form_data else (group.latitude if group else '') %}
+{% set longitude = form_data.get('longitude', group.longitude if group else '') if form_data else (group.longitude if group else '') %}
+{% set address = form_data.get('address', group.address if group else '') if form_data else (group.address if group else '') %}
+{% set phone = form_data.get('phone', group.phone if group else '') if form_data else (group.phone if group else '') %}
+{% set email = form_data.get('email', group.email if group else '') if form_data else (group.email if group else '') %}
+{% set leader_name = form_data.get('leader_name', group.leader_name if group else '') if form_data else (group.leader_name if group else '') %}
+{% set leader_phone = form_data.get('leader_phone', group.leader_phone if group else '') if form_data else (group.leader_phone if group else '') %}
+{% set members_count = form_data.get('members_count', group.members_count if group else 0) if form_data else (group.members_count if group else 0) %}
+{% set units_active = form_data.get('units_active', group.units_active if group else '') if form_data else (group.units_active if group else '') %}
 
-        <form method="POST" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold mb-2">اسم المجموعة</label>
-                <input type="text" name="name" required value="{{ group.name if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">المدينة بالعربية</label>
-                <input type="text" name="city_ar" required value="{{ group.city_ar if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">City in English</label>
-                <input type="text" name="city_en" required value="{{ group.city_en if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-4">
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
                 <div>
-                    <label class="block text-sm font-bold mb-2">خط العرض (Latitude)</label>
-                    <input type="number" name="latitude" step="0.0001" required
-                        value="{{ group.latitude if group else '' }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="34.0209">
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">location_city</span>
+                        Group Editor
+                    </span>
+                    <h1 class="admin-title">{% if group %}تعديل المجموعة{% else %}إضافة مجموعة جديدة{% endif %}</h1>
+                    <p class="admin-copy">تنظيم أفضل لبيانات المجموعة والموقع والقائد وجهات التواصل داخل تجربة إدارة أكثر وضوحًا.</p>
                 </div>
-                <div>
-                    <label class="block text-sm font-bold mb-2">خط الطول (Longitude)</label>
-                    <input type="number" name="longitude" step="0.0001" required
-                        value="{{ group.longitude if group else '' }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="-6.8416">
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_groups') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للقائمة
+                    </a>
                 </div>
             </div>
+        </header>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">العنوان</label>
-                <input type="text" name="address" value="{{ group.address if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">البيانات الأساسية</h2>
+                            <p class="admin-section-copy">أدخل اسم المجموعة والمدينة باللغتين حتى تبقى المعلومات واضحة للإدارة والزوار.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="name" class="admin-label">اسم المجموعة</label>
+                            <input id="name" name="name" type="text" required class="admin-input" value="{{ name }}">
+                        </div>
+                        <div>
+                            <label for="members_count" class="admin-label">عدد الأعضاء</label>
+                            <input id="members_count" name="members_count" type="number" min="0" step="1" class="admin-input" value="{{ members_count }}">
+                        </div>
+                        <div>
+                            <label for="city_ar" class="admin-label">المدينة بالعربية</label>
+                            <input id="city_ar" name="city_ar" type="text" required class="admin-input" value="{{ city_ar }}">
+                        </div>
+                        <div>
+                            <label for="city_en" class="admin-label">City in English</label>
+                            <input id="city_en" name="city_en" type="text" required class="admin-input" value="{{ city_en }}">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الموقع والعنوان</h2>
+                            <p class="admin-section-copy">استخدم إحداثيات دقيقة وعنوانًا واضحًا لتسهيل الوصول للمجموعة على الخريطة أو في التواصل الداخلي.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="latitude" class="admin-label">خط العرض (Latitude)</label>
+                            <input id="latitude" name="latitude" type="number" step="0.0001" required class="admin-input" value="{{ latitude }}" placeholder="34.0209">
+                        </div>
+                        <div>
+                            <label for="longitude" class="admin-label">خط الطول (Longitude)</label>
+                            <input id="longitude" name="longitude" type="number" step="0.0001" required class="admin-input" value="{{ longitude }}" placeholder="-6.8416">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="admin-label">العنوان</label>
+                            <input id="address" name="address" type="text" class="admin-input" value="{{ address }}">
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">رقم الهاتف</label>
-                <input type="tel" name="phone" value="{{ group.phone if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">التواصل والقيادة</h2>
+                            <p class="admin-section-copy">سجّل معلومات التواصل الأساسية والقائد والمسؤوليات المرتبطة بالمجموعة.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="phone" class="admin-label">رقم الهاتف</label>
+                            <input id="phone" name="phone" type="tel" class="admin-input" value="{{ phone }}">
+                        </div>
+                        <div>
+                            <label for="email" class="admin-label">البريد الإلكتروني</label>
+                            <input id="email" name="email" type="email" class="admin-input" value="{{ email }}">
+                        </div>
+                        <div>
+                            <label for="leader_name" class="admin-label">اسم قائد المجموعة</label>
+                            <input id="leader_name" name="leader_name" type="text" class="admin-input" value="{{ leader_name }}">
+                        </div>
+                        <div>
+                            <label for="leader_phone" class="admin-label">هاتف القائد</label>
+                            <input id="leader_phone" name="leader_phone" type="tel" class="admin-input" value="{{ leader_phone }}">
+                        </div>
+                        <div>
+                            <label for="units_active" class="admin-label">الوحدات النشطة</label>
+                            <input id="units_active" name="units_active" type="text" class="admin-input" value="{{ units_active }}" placeholder="أشبال، كشاف، متقدم">
+                            <p class="admin-help">يمكن إدخال الوحدات النشطة بصيغة نصية مفصولة بفواصل.</p>
+                        </div>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">البريد الإلكتروني</label>
-                <input type="email" name="email" value="{{ group.email if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">اسم قائد المجموعة</label>
-                <input type="text" name="leader_name" value="{{ group.leader_name if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">هاتف القائد</label>
-                <input type="tel" name="leader_phone" value="{{ group.leader_phone if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">عدد الأعضاء</label>
-                <input type="number" name="members_count" value="{{ group.members_count if group else 0 }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">الوحدات النشطة (CSV)</label>
-                <input type="text" name="units_active" value="{{ group.units_active if group else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="أشبال، كشاف، متقدم">
-            </div>
-
-            <div class="flex gap-4">
-                <button type="submit" class="btn-primary">حفظ</button>
-                <a href="{{ url_for('admin_groups') }}"
-                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            {% if group %}حفظ التعديلات{% else %}إنشاء المجموعة{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_groups') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
             </div>
         </form>
     </div>
-</div>
+</section>
 {% endblock %}

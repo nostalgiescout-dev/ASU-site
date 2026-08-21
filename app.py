@@ -4,23 +4,33 @@ Main Flask application with routes for public website and admin dashboard
 """
 
 import os
+import csv
+import re
 import secrets
+from io import StringIO
 from datetime import datetime, timedelta
 from functools import wraps
+from urllib.parse import parse_qs, urlparse
 from werkzeug.utils import secure_filename
 from flask import (
     Flask, render_template, request, redirect, url_for, 
-    session, flash, jsonify, abort, send_from_directory
+    session, flash, jsonify, abort, send_from_directory, Response
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_babel import Babel, gettext as _
+from sqlalchemy import inspect, or_, text
+from sqlalchemy.orm import joinedload
 from models import db, User, Unit, Club, Activity, Group, HomePage
 
 # Configuration
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'webm'}
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
+ACTIVITY_STATUSES = {'upcoming', 'ongoing', 'completed'}
+EMAIL_PATTERN = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+CURRENT_DATE = datetime(2026, 8, 21)
+_activity_schema_ready = False
 
 def _get_env_name():
     value = (os.environ.get('SCOUTS_ONLY_ENV') or os.environ.get('FLASK_ENV') or 'development').strip().lower()
@@ -91,11 +101,22 @@ babel = Babel(app, locale_selector=get_locale)
 @app.context_processor
 def inject_locale():
     """Inject locale and helper functions into templates"""
+    def current_query_url(endpoint, **updates):
+        values = request.args.to_dict(flat=True)
+        for key, value in updates.items():
+            if value in (None, ''):
+                values.pop(key, None)
+            else:
+                values[key] = value
+        return url_for(endpoint, **values)
+
     return {
         'get_locale': get_locale,
         'translate_field': get_translated_field,
         'current_lang': get_locale(),
-        'supported_langs': app.config['BABEL_SUPPORTED_LOCALES']
+        'supported_langs': app.config['BABEL_SUPPORTED_LOCALES'],
+        'get_video_embed_url': get_video_embed_url,
+        'current_query_url': current_query_url
     }
 
 @login_manager.user_loader
@@ -105,6 +126,248 @@ def load_user(user_id):
 def allowed_file(filename):
     """Check if file extension is allowed"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def get_today_start():
+    """Return the start of today for activity comparisons."""
+    return CURRENT_DATE.replace(hour=0, minute=0, second=0, microsecond=0)
+
+def normalize_optional_text(value):
+    """Trim optional text values and collapse blanks to None."""
+    if value is None:
+        return None
+    value = value.strip()
+    return value or None
+
+def require_text(value, label):
+    """Validate required text fields."""
+    cleaned = normalize_optional_text(value)
+    if not cleaned:
+        raise ValueError(f'يرجى إدخال {label}.')
+    return cleaned
+
+def parse_activity_datetime(value):
+    """Parse the admin activity datetime-local input safely."""
+    cleaned = normalize_optional_text(value)
+    if not cleaned:
+        raise ValueError('يرجى تحديد تاريخ ووقت النشاط.')
+    try:
+        return datetime.fromisoformat(cleaned)
+    except ValueError as exc:
+        raise ValueError('صيغة تاريخ النشاط غير صحيحة.') from exc
+
+def suggest_activity_status(activity_date):
+    """Suggest a status from the activity date relative to today."""
+    if not activity_date:
+        return 'upcoming'
+
+    today = get_today_start().date()
+    activity_day = activity_date.date()
+    if activity_day < today:
+        return 'completed'
+    if activity_day == today:
+        return 'ongoing'
+    return 'upcoming'
+
+def validate_url(value, label):
+    """Validate optional HTTP(S) URLs."""
+    cleaned = normalize_optional_text(value)
+    if not cleaned:
+        return None
+
+    parsed = urlparse(cleaned)
+    if parsed.scheme not in {'http', 'https'} or not parsed.netloc:
+        raise ValueError(f'{label} يجب أن يكون رابطًا صحيحًا يبدأ بـ http أو https.')
+    return cleaned
+
+def validate_email(value):
+    """Validate optional email values."""
+    cleaned = normalize_optional_text(value)
+    if not cleaned:
+        return None
+    if not EMAIL_PATTERN.match(cleaned):
+        raise ValueError('يرجى إدخال بريد إلكتروني صالح للتواصل.')
+    return cleaned
+
+def validate_optional_positive_int(value, label):
+    """Validate optional positive integer values."""
+    cleaned = normalize_optional_text(value)
+    if not cleaned:
+        return None
+    try:
+        parsed = int(cleaned)
+    except ValueError as exc:
+        raise ValueError(f'{label} يجب أن يكون رقمًا صحيحًا.') from exc
+    if parsed < 1:
+        raise ValueError(f'{label} يجب أن يكون أكبر من صفر.')
+    return parsed
+
+def get_video_embed_url(video_url):
+    """Convert common video URLs to embeddable URLs when possible."""
+    cleaned = normalize_optional_text(video_url)
+    if not cleaned:
+        return None
+
+    parsed = urlparse(cleaned)
+    host = parsed.netloc.lower()
+
+    if 'youtube.com' in host:
+        if parsed.path.startswith('/embed/'):
+            return cleaned
+        video_id = parse_qs(parsed.query).get('v', [''])[0]
+        if video_id:
+            return f'https://www.youtube.com/embed/{video_id}'
+    if 'youtu.be' in host:
+        video_id = parsed.path.strip('/')
+        if video_id:
+            return f'https://www.youtube.com/embed/{video_id}'
+    if 'vimeo.com' in host and parsed.path.strip('/').isdigit():
+        return f'https://player.vimeo.com/video/{parsed.path.strip("/")}'
+
+    return cleaned
+
+def save_uploaded_activity_image(activity, file_storage):
+    """Store an uploaded activity image if a valid file was provided."""
+    if not file_storage or not file_storage.filename:
+        return
+    if not allowed_file(file_storage.filename):
+        raise ValueError('صيغة الصورة غير مدعومة. استخدم png أو jpg أو jpeg أو gif أو webp.')
+
+    filename = secure_filename(f"activity_{activity.id}_{file_storage.filename}")
+    file_storage.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    activity.image_url = f"/uploads/{filename}"
+
+def apply_activity_form_data(activity, form, files):
+    """Validate and assign admin activity form values to a model instance."""
+    activity_date = parse_activity_datetime(form.get('date'))
+    selected_status = normalize_optional_text(form.get('status'))
+    suggested_status = suggest_activity_status(activity_date)
+
+    activity.title_ar = require_text(form.get('title_ar'), 'العنوان بالعربية')
+    activity.title_en = require_text(form.get('title_en'), 'العنوان بالإنجليزية')
+    activity.title_fr = require_text(form.get('title_fr'), 'العنوان بالفرنسية')
+    activity.title_es = require_text(form.get('title_es'), 'العنوان بالإسبانية')
+    activity.description_ar = require_text(form.get('description_ar'), 'الوصف بالعربية')
+    activity.description_en = require_text(form.get('description_en'), 'الوصف بالإنجليزية')
+    activity.description_fr = require_text(form.get('description_fr'), 'الوصف بالفرنسية')
+    activity.description_es = require_text(form.get('description_es'), 'الوصف بالإسبانية')
+
+    activity.date = activity_date
+    activity.location_ar = normalize_optional_text(form.get('location_ar'))
+    activity.location_en = normalize_optional_text(form.get('location_en'))
+    activity.video_url = validate_url(form.get('video_url'), 'رابط الفيديو')
+    activity.registration_url = validate_url(form.get('registration_url'), 'رابط التسجيل')
+    activity.club_id = normalize_optional_text(form.get('club_id'))
+    activity.max_participants = validate_optional_positive_int(form.get('max_participants'), 'الحد الأقصى للمشاركين')
+    activity.contact_email = validate_email(form.get('contact_email'))
+    activity.contact_phone = normalize_optional_text(form.get('contact_phone'))
+    activity.featured = form.get('featured') == 'on'
+    activity.is_published = form.get('is_published') == 'on'
+    activity.status = selected_status if selected_status in ACTIVITY_STATUSES else suggested_status
+
+    save_uploaded_activity_image(activity, files.get('image'))
+    return suggested_status
+
+def duplicate_activity_title(value, locale):
+    """Append a lightweight copy suffix for duplicated activities."""
+    suffixes = {
+        'ar': ' (نسخة)',
+        'en': ' (Copy)',
+        'fr': ' (Copie)',
+        'es': ' (Copia)'
+    }
+    return f'{value}{suffixes.get(locale, " (Copy)")}' if value else value
+
+def get_activity_filters(args):
+    """Extract normalized admin filter values from query params."""
+    return {
+        'search': (args.get('search') or '').strip(),
+        'status': (args.get('status') or '').strip(),
+        'club_id': (args.get('club_id') or '').strip(),
+        'featured': (args.get('featured') or '').strip(),
+        'published': (args.get('published') or '').strip(),
+        'sort': (args.get('sort') or 'desc').strip().lower()
+    }
+
+def build_activity_admin_query(filters):
+    """Build the filtered admin activities query."""
+    query = Activity.query.options(joinedload(Activity.club))
+
+    if filters['search']:
+        search_term = f"%{filters['search']}%"
+        query = query.filter(
+            or_(
+                Activity.title_ar.ilike(search_term),
+                Activity.title_en.ilike(search_term),
+                Activity.title_fr.ilike(search_term),
+                Activity.title_es.ilike(search_term)
+            )
+        )
+
+    if filters['status'] in ACTIVITY_STATUSES:
+        query = query.filter(Activity.status == filters['status'])
+
+    if filters['club_id']:
+        query = query.filter(Activity.club_id == filters['club_id'])
+
+    if filters['featured'] == 'yes':
+        query = query.filter(Activity.featured.is_(True))
+    elif filters['featured'] == 'no':
+        query = query.filter(Activity.featured.is_(False))
+
+    if filters['published'] == 'yes':
+        query = query.filter(Activity.is_published.is_(True))
+    elif filters['published'] == 'no':
+        query = query.filter(Activity.is_published.is_(False))
+
+    sort_expression = Activity.date.asc() if filters['sort'] == 'asc' else Activity.date.desc()
+    return query.order_by(sort_expression, Activity.created_at.desc())
+
+def get_safe_redirect_target(default_endpoint='admin_activities'):
+    """Return a local redirect target after admin quick actions."""
+    target = request.form.get('next') or request.args.get('next')
+    if target and target.startswith('/'):
+        return target
+    return url_for(default_endpoint)
+
+def ensure_activity_schema():
+    """Add missing activity columns when migrations are not configured."""
+    global _activity_schema_ready
+
+    if _activity_schema_ready:
+        return
+
+    db.create_all()
+    inspector = inspect(db.engine)
+    existing_tables = set(inspector.get_table_names())
+    if 'activities' not in existing_tables:
+        _activity_schema_ready = True
+        return
+
+    existing_columns = {column['name'] for column in inspector.get_columns('activities')}
+    alter_statements = {
+        'featured': "ALTER TABLE activities ADD COLUMN featured BOOLEAN DEFAULT 0",
+        'registration_url': "ALTER TABLE activities ADD COLUMN registration_url VARCHAR(255)",
+        'max_participants': "ALTER TABLE activities ADD COLUMN max_participants INTEGER",
+        'is_published': "ALTER TABLE activities ADD COLUMN is_published BOOLEAN DEFAULT 1",
+        'contact_email': "ALTER TABLE activities ADD COLUMN contact_email VARCHAR(120)",
+        'contact_phone': "ALTER TABLE activities ADD COLUMN contact_phone VARCHAR(50)"
+    }
+
+    with db.engine.begin() as connection:
+        for column_name, statement in alter_statements.items():
+            if column_name not in existing_columns:
+                connection.execute(text(statement))
+        if 'is_published' not in existing_columns:
+            connection.execute(text("UPDATE activities SET is_published = 1 WHERE is_published IS NULL"))
+        if 'featured' not in existing_columns:
+            connection.execute(text("UPDATE activities SET featured = 0 WHERE featured IS NULL"))
+
+    _activity_schema_ready = True
+
+@app.before_request
+def ensure_schema_before_requests():
+    """Ensure the runtime schema is compatible before serving requests."""
+    ensure_activity_schema()
 
 def admin_required(f):
     """Decorator to require admin role"""
@@ -131,13 +394,25 @@ def home():
 
     units = Unit.query.order_by(Unit.order).all()
     clubs = Club.query.order_by(Club.order).all()
-    activities = Activity.query.order_by(Activity.date.desc()).all()
+    today = get_today_start()
+    public_activity_query = Activity.query.filter(Activity.is_published.is_(True))
+    featured_upcoming_activities = public_activity_query.filter(
+        Activity.featured.is_(True),
+        Activity.date >= today
+    ).order_by(Activity.date.asc()).limit(3).all()
+    upcoming_activities = public_activity_query.filter(Activity.date >= today).order_by(Activity.date.asc()).limit(6).all()
+    activities = upcoming_activities
+    if not activities:
+        activities = public_activity_query.order_by(Activity.date.desc()).limit(6).all()
+    if not featured_upcoming_activities and upcoming_activities:
+        featured_upcoming_activities = upcoming_activities[:3]
 
     return render_template(
         'home.html',
         units=units,
         clubs=clubs,
         activities=activities,
+        featured_upcoming_activities=featured_upcoming_activities,
         association=association
     )
 
@@ -163,22 +438,32 @@ def clubs():
 def club_detail(club_id):
     """Display single club details with activities"""
     club = Club.query.get_or_404(club_id)
-    activities = Activity.query.filter_by(club_id=club_id).order_by(Activity.date.desc()).all()
+    activities = Activity.query.filter(
+        Activity.club_id == club_id,
+        Activity.is_published.is_(True)
+    ).order_by(Activity.date.desc()).all()
     return render_template('club_detail.html', club=club, activities=activities)
 
 @app.route('/activities')
 def activities():
     """Display all activities/events"""
     page = request.args.get('page', 1, type=int)
-    activities = Activity.query.order_by(Activity.date.desc()).paginate(page=page, per_page=12)
+    activities = Activity.query.filter(
+        Activity.is_published.is_(True)
+    ).order_by(Activity.date.desc()).paginate(page=page, per_page=12, error_out=False)
     return render_template('activities.html', activities=activities)
 
 @app.route('/activity/<activity_id>')
 def activity_detail(activity_id):
     """Display single activity details"""
-    activity = Activity.query.get_or_404(activity_id)
-    activity.views += 1
-    db.session.commit()
+    is_admin_preview = current_user.is_authenticated and current_user.role == 'admin'
+    activity_query = Activity.query.filter(Activity.id == activity_id)
+    if not is_admin_preview:
+        activity_query = activity_query.filter(Activity.is_published.is_(True))
+    activity = activity_query.first_or_404()
+    if not is_admin_preview:
+        activity.views += 1
+        db.session.commit()
     return render_template('activity_detail.html', activity=activity)
 
 @app.route('/find-group')
@@ -489,9 +774,66 @@ def admin_delete_club(club_id):
 @login_required
 @admin_required
 def admin_activities():
-    """List all activities"""
-    activities = Activity.query.order_by(Activity.date.desc()).all()
-    return render_template('admin/activities.html', activities=activities)
+    """List all activities with search, filters, and pagination."""
+    filters = get_activity_filters(request.args)
+    page = request.args.get('page', 1, type=int)
+    activities = build_activity_admin_query(filters).paginate(page=page, per_page=12, error_out=False)
+    stats = {
+        'upcoming': Activity.query.filter(Activity.status == 'upcoming').count(),
+        'ongoing': Activity.query.filter(Activity.status == 'ongoing').count(),
+        'completed': Activity.query.filter(Activity.status == 'completed').count(),
+        'featured': Activity.query.filter(Activity.featured.is_(True)).count(),
+        'published': Activity.query.filter(Activity.is_published.is_(True)).count()
+    }
+    current_url = url_for('admin_activities', **request.args.to_dict(flat=True))
+    return render_template(
+        'admin/activities.html',
+        activities=activities,
+        clubs=Club.query.order_by(Club.name_ar.asc()).all(),
+        filters=filters,
+        stats=stats,
+        current_url=current_url
+    )
+
+@app.route('/admin/activities/export')
+@login_required
+@admin_required
+def admin_export_activities():
+    """Export activities as CSV using the current admin filters."""
+    filters = get_activity_filters(request.args)
+    output = StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        'id', 'title_ar', 'title_en', 'title_fr', 'title_es', 'date', 'club',
+        'status', 'featured', 'is_published', 'views', 'registration_url',
+        'max_participants', 'contact_email', 'contact_phone'
+    ])
+
+    for activity in build_activity_admin_query(filters).all():
+        writer.writerow([
+            activity.id,
+            activity.title_ar,
+            activity.title_en,
+            activity.title_fr,
+            activity.title_es,
+            activity.date.isoformat() if activity.date else '',
+            activity.club.name_ar if activity.club else '',
+            activity.status,
+            'yes' if activity.featured else 'no',
+            'yes' if activity.is_published else 'no',
+            activity.views,
+            activity.registration_url or '',
+            activity.max_participants or '',
+            activity.contact_email or '',
+            activity.contact_phone or ''
+        ])
+
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    return Response(
+        output.getvalue(),
+        mimetype='text/csv; charset=utf-8',
+        headers={'Content-Disposition': f'attachment; filename=activities_{timestamp}.csv'}
+    )
 
 @app.route('/admin/activities/create', methods=['GET', 'POST'])
 @login_required
@@ -502,30 +844,8 @@ def admin_create_activity():
     
     if request.method == 'POST':
         try:
-            activity = Activity(
-                title_ar=request.form.get('title_ar'),
-                title_en=request.form.get('title_en'),
-                title_fr=request.form.get('title_fr'),
-                title_es=request.form.get('title_es'),
-                description_ar=request.form.get('description_ar'),
-                description_en=request.form.get('description_en'),
-                description_fr=request.form.get('description_fr'),
-                description_es=request.form.get('description_es'),
-                date=datetime.fromisoformat(request.form.get('date')),
-                location_ar=request.form.get('location_ar'),
-                location_en=request.form.get('location_en'),
-                video_url=request.form.get('video_url'),
-                club_id=request.form.get('club_id') or None,
-                status=request.form.get('status', 'upcoming')
-            )
-            
-            if 'image' in request.files:
-                file = request.files['image']
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(f"activity_{activity.id}_{file.filename}")
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    activity.image_url = f"/uploads/{filename}"
-            
+            activity = Activity()
+            suggested_status = apply_activity_form_data(activity, request.form, request.files)
             db.session.add(activity)
             db.session.commit()
             flash('تم إنشاء النشاط بنجاح', 'success')
@@ -534,7 +854,7 @@ def admin_create_activity():
             db.session.rollback()
             flash(f'خطأ: {str(e)}', 'error')
     
-    return render_template('admin/activity_form.html', clubs=clubs)
+    return render_template('admin/activity_form.html', clubs=clubs, suggested_status='upcoming')
 
 @app.route('/admin/activities/<activity_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -546,28 +866,7 @@ def admin_edit_activity(activity_id):
     
     if request.method == 'POST':
         try:
-            activity.title_ar = request.form.get('title_ar')
-            activity.title_en = request.form.get('title_en')
-            activity.title_fr = request.form.get('title_fr')
-            activity.title_es = request.form.get('title_es')
-            activity.description_ar = request.form.get('description_ar')
-            activity.description_en = request.form.get('description_en')
-            activity.description_fr = request.form.get('description_fr')
-            activity.description_es = request.form.get('description_es')
-            activity.date = datetime.fromisoformat(request.form.get('date'))
-            activity.location_ar = request.form.get('location_ar')
-            activity.location_en = request.form.get('location_en')
-            activity.video_url = request.form.get('video_url')
-            activity.club_id = request.form.get('club_id') or None
-            activity.status = request.form.get('status', 'upcoming')
-            
-            if 'image' in request.files:
-                file = request.files['image']
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(f"activity_{activity.id}_{file.filename}")
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    activity.image_url = f"/uploads/{filename}"
-            
+            suggested_status = apply_activity_form_data(activity, request.form, request.files)
             db.session.commit()
             flash('تم تحديث النشاط بنجاح', 'success')
             return redirect(url_for('admin_activities'))
@@ -575,7 +874,12 @@ def admin_edit_activity(activity_id):
             db.session.rollback()
             flash(f'خطأ: {str(e)}', 'error')
     
-    return render_template('admin/activity_form.html', activity=activity, clubs=clubs)
+    return render_template(
+        'admin/activity_form.html',
+        activity=activity,
+        clubs=clubs,
+        suggested_status=suggest_activity_status(activity.date)
+    )
 
 @app.route('/admin/activities/<activity_id>/delete', methods=['POST'])
 @login_required
@@ -586,7 +890,63 @@ def admin_delete_activity(activity_id):
     db.session.delete(activity)
     db.session.commit()
     flash('تم حذف النشاط بنجاح', 'success')
-    return redirect(url_for('admin_activities'))
+    return redirect(get_safe_redirect_target())
+
+@app.route('/admin/activities/<activity_id>/mark-completed', methods=['POST'])
+@login_required
+@admin_required
+def admin_mark_activity_completed(activity_id):
+    """Quick action to mark an activity as completed."""
+    activity = Activity.query.get_or_404(activity_id)
+    activity.status = 'completed'
+    db.session.commit()
+    flash('تم تحديث حالة النشاط إلى منتهي.', 'success')
+    return redirect(get_safe_redirect_target())
+
+@app.route('/admin/activities/<activity_id>/toggle-featured', methods=['POST'])
+@login_required
+@admin_required
+def admin_toggle_activity_featured(activity_id):
+    """Quick action to toggle featured state."""
+    activity = Activity.query.get_or_404(activity_id)
+    activity.featured = not bool(activity.featured)
+    db.session.commit()
+    flash('تم تحديث تمييز النشاط.', 'success')
+    return redirect(get_safe_redirect_target())
+
+@app.route('/admin/activities/<activity_id>/duplicate', methods=['POST'])
+@login_required
+@admin_required
+def admin_duplicate_activity(activity_id):
+    """Create a draft copy of an activity."""
+    activity = Activity.query.get_or_404(activity_id)
+    duplicated = Activity(
+        title_ar=duplicate_activity_title(activity.title_ar, 'ar'),
+        title_en=duplicate_activity_title(activity.title_en, 'en'),
+        title_fr=duplicate_activity_title(activity.title_fr, 'fr'),
+        title_es=duplicate_activity_title(activity.title_es, 'es'),
+        description_ar=activity.description_ar,
+        description_en=activity.description_en,
+        description_fr=activity.description_fr,
+        description_es=activity.description_es,
+        date=activity.date,
+        location_ar=activity.location_ar,
+        location_en=activity.location_en,
+        image_url=activity.image_url,
+        video_url=activity.video_url,
+        registration_url=activity.registration_url,
+        max_participants=activity.max_participants,
+        is_published=False,
+        featured=False,
+        contact_email=activity.contact_email,
+        contact_phone=activity.contact_phone,
+        club_id=activity.club_id,
+        status=suggest_activity_status(activity.date)
+    )
+    db.session.add(duplicated)
+    db.session.commit()
+    flash('تم إنشاء نسخة جديدة من النشاط كمسودة غير منشورة.', 'success')
+    return redirect(get_safe_redirect_target())
 
 # --- Groups Management ---
 @app.route('/admin/groups')

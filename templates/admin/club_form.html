@@ -1,78 +1,148 @@
 {% extends "base.html" %}
 
+{% block title %}{% if club %}تعديل النادي{% else %}إضافة نادي جديد{% endif %} - لوحة التحكم{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if club %}تعديل نادي{% else %}إضافة نادي جديد{% endif %}
-        </h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set name_ar = form_data.get('name_ar', club.name_ar if club else '') if form_data else (club.name_ar if club else '') %}
+{% set name_en = form_data.get('name_en', club.name_en if club else '') if form_data else (club.name_en if club else '') %}
+{% set name_fr = form_data.get('name_fr', club.name_fr if club else '') if form_data else (club.name_fr if club else '') %}
+{% set name_es = form_data.get('name_es', club.name_es if club else '') if form_data else (club.name_es if club else '') %}
+{% set description_ar = form_data.get('description_ar', club.description_ar if club else '') if form_data else (club.description_ar if club else '') %}
+{% set description_en = form_data.get('description_en', club.description_en if club else '') if form_data else (club.description_en if club else '') %}
+{% set description_fr = form_data.get('description_fr', club.description_fr if club else '') if form_data else (club.description_fr if club else '') %}
+{% set description_es = form_data.get('description_es', club.description_es if club else '') if form_data else (club.description_es if club else '') %}
+{% set icon = form_data.get('icon', club.icon if club else 'palette') if form_data else (club.icon if club else 'palette') %}
+{% set order = form_data.get('order', club.order if club else 0) if form_data else (club.order if club else 0) %}
 
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold mb-2">الاسم بالعربية</label>
-                <input type="text" name="name_ar" required value="{{ club.name_ar if club else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">palette</span>
+                        Club Editor
+                    </span>
+                    <h1 class="admin-title">{% if club %}تعديل النادي{% else %}إضافة نادي جديد{% endif %}</h1>
+                    <p class="admin-copy">نموذج مرتب لإنشاء نادي أو تحسين بياناته بلغات متعددة مع صورة وأيقونة وترتيب واضح داخل الإدارة.</p>
+                </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_clubs') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للقائمة
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" enctype="multipart/form-data" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الأسماء متعددة اللغات</h2>
+                            <p class="admin-section-copy">استخدم أسماء متناسقة لكل لغة ليتعرف الزوار على النادي بوضوح في كل واجهة.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="name_ar" class="admin-label">الاسم بالعربية</label>
+                            <input id="name_ar" name="name_ar" type="text" required class="admin-input" value="{{ name_ar }}">
+                        </div>
+                        <div>
+                            <label for="name_en" class="admin-label">English Name</label>
+                            <input id="name_en" name="name_en" type="text" required class="admin-input" value="{{ name_en }}">
+                        </div>
+                        <div>
+                            <label for="name_fr" class="admin-label">Nom en Français</label>
+                            <input id="name_fr" name="name_fr" type="text" required class="admin-input" value="{{ name_fr }}">
+                        </div>
+                        <div>
+                            <label for="name_es" class="admin-label">Nombre en Espanol</label>
+                            <input id="name_es" name="name_es" type="text" required class="admin-input" value="{{ name_es }}">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الأوصاف متعددة اللغات</h2>
+                            <p class="admin-section-copy">أضف وصفًا موجزًا ومهنيًا لكل لغة لشرح نشاط النادي وتخصصه.</p>
+                        </div>
+                    </div>
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="description_ar" class="admin-label">الوصف بالعربية</label>
+                            <textarea id="description_ar" name="description_ar" rows="6" required class="admin-textarea">{{ description_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_en" class="admin-label">English Description</label>
+                            <textarea id="description_en" name="description_en" rows="6" required class="admin-textarea">{{ description_en }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_fr" class="admin-label">Description en Français</label>
+                            <textarea id="description_fr" name="description_fr" rows="6" required class="admin-textarea">{{ description_fr }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_es" class="admin-label">Descripcion en Espanol</label>
+                            <textarea id="description_es" name="description_es" rows="6" required class="admin-textarea">{{ description_es }}</textarea>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
-                <textarea name="description_ar" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ club.description_ar if club else '' }}</textarea>
-            </div>
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الهوية البصرية</h2>
+                            <p class="admin-section-copy">اختر أيقونة مناسبة وأضف صورة تمثل النادي داخل لوحة الإدارة والواجهة العامة.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        {% if club and club.image_url %}
+                        <div class="admin-preview" data-image-preview-wrapper>
+                            <img src="{{ club.image_url }}" alt="معاينة صورة النادي" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% else %}
+                        <div class="hidden admin-preview" data-image-preview-wrapper>
+                            <img src="" alt="معاينة صورة النادي" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
+                        {% endif %}
 
-            <div>
-                <label class="block text-sm font-bold mb-2">English Name</label>
-                <input type="text" name="name_en" required value="{{ club.name_en if club else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                        <div>
+                            <label for="image" class="admin-label">صورة النادي</label>
+                            <input id="image" name="image" type="file" accept="image/*" class="admin-input file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-secondary" data-image-preview-input data-image-preview-wrapper-selector="[data-image-preview-wrapper]">
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">English Description</label>
-                <textarea name="description_en" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ club.description_en if club else '' }}</textarea>
-            </div>
+                        <div>
+                            <label for="icon" class="admin-label">اسم الأيقونة</label>
+                            <input id="icon" name="icon" type="text" class="admin-input" value="{{ icon }}" placeholder="Material Symbols icon name">
+                            <p class="admin-help">مثال: `palette` أو `sports_basketball` أو `campaign`.</p>
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">French Name (Nom)</label>
-                <input type="text" name="name_fr" required value="{{ club.name_fr if club else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                        <div>
+                            <label for="order" class="admin-label">ترتيب العرض</label>
+                            <input id="order" name="order" type="number" class="admin-input" value="{{ order }}" min="0" step="1">
+                        </div>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">French Description</label>
-                <textarea name="description_fr" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ club.description_fr if club else '' }}</textarea>
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">Spanish Name (Nombre)</label>
-                <input type="text" name="name_es" required value="{{ club.name_es if club else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">Spanish Description</label>
-                <textarea name="description_es" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ club.description_es if club else '' }}</textarea>
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">Icon</label>
-                <input type="text" name="icon" value="{{ club.icon if club else 'palette' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Material icon name">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">Image</label>
-                <input type="file" name="image" accept="image/*"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div class="flex gap-4">
-                <button type="submit" class="btn-primary">حفظ</button>
-                <a href="{{ url_for('admin_clubs') }}"
-                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            {% if club %}حفظ التعديلات{% else %}إنشاء النادي{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_clubs') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
             </div>
         </form>
     </div>
-</div>
+</section>
 {% endblock %}

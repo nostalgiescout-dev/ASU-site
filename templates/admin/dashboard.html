@@ -3,135 +3,197 @@
 {% block title %}لوحة التحكم - جمعية كشافة فقط{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <div class="bg-white shadow-md sticky top-16 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-black text-gray-800">لوحة التحكم الإدارية</h1>
-                <p class="text-gray-600 text-sm">مرحباً بك، {{ current_user.full_name }}</p>
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">shield_person</span>
+                        A.S.U Admin
+                    </span>
+                    <h1 class="admin-title">لوحة التحكم الإدارية</h1>
+                    <p class="admin-copy">
+                        مساحة عمل موحدة لإدارة الأنشطة والأندية والوحدات والمجموعات والمستخدمين مع نفس الهوية الزرقاء والسطوح الهادئة للموقع العام.
+                    </p>
+                    <p class="mt-3 text-sm font-bold text-white/80">مرحبًا، {{ current_user.full_name }}</p>
+                </div>
+
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_create_activity') }}" class="admin-btn-secondary">
+                        <span class="material-symbols-outlined text-base">add_circle</span>
+                        نشاط جديد
+                    </a>
+                    <a href="{{ url_for('admin_settings') }}" class="admin-btn-secondary">
+                        <span class="material-symbols-outlined text-base">tune</span>
+                        إعدادات الموقع
+                    </a>
+                    <a href="{{ url_for('admin_logout') }}" class="admin-btn-danger">
+                        <span class="material-symbols-outlined text-base">logout</span>
+                        تسجيل الخروج
+                    </a>
+                </div>
             </div>
-            <a href="{{ url_for('admin_logout') }}"
-                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
-                <span class="material-symbols-outlined">logout</span>
-                تسجيل الخروج
-            </a>
-        </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <section class="admin-section">
+            <div class="admin-section-heading">
+                <div>
+                    <h2 class="admin-section-title">نظرة سريعة</h2>
+                    <p class="admin-section-copy">ملخص فوري لحجم المحتوى الذي تتم إدارته داخل لوحة A.S.U.</p>
+                </div>
+            </div>
+
+            <div class="admin-stat-grid sm:grid-cols-2 xl:grid-cols-5">
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">الوحدات</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.total_units }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-primary/10 p-3 text-primary">layers</span>
+                    </div>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">الأندية</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.total_clubs }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-[#dbe9f8] p-3 text-primary">palette</span>
+                    </div>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">الأنشطة</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.total_activities }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-amber-100 p-3 text-[#b38100]">event</span>
+                    </div>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">المجموعات</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.total_groups }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-emerald-100 p-3 text-emerald-700">location_on</span>
+                    </div>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">المستخدمون</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.total_users }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-rose-100 p-3 text-rose-700">people</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+                <div class="admin-form-card">
+                    <div class="admin-section-heading !mb-4">
+                        <div>
+                            <h2 class="admin-section-title">إجراءات سريعة</h2>
+                            <p class="admin-section-copy">اختصارات عملية لأكثر المهام تكرارًا داخل الإدارة.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <a href="{{ url_for('admin_create_activity') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">calendar_add_on</span>
+                            إضافة نشاط
+                        </a>
+                        <a href="{{ url_for('admin_create_club') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">add_photo_alternate</span>
+                            إضافة نادٍ
+                        </a>
+                        <a href="{{ url_for('admin_create_unit') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">add_box</span>
+                            إضافة وحدة
+                        </a>
+                        <a href="{{ url_for('admin_create_group') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">pin_drop</span>
+                            إضافة مجموعة
+                        </a>
+                        <a href="{{ url_for('admin_create_user') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">person_add</span>
+                            إضافة مستخدم
+                        </a>
+                        <a href="{{ url_for('admin_settings') }}" class="admin-btn-secondary justify-start">
+                            <span class="material-symbols-outlined text-base">tune</span>
+                            تحديث الإعدادات
+                        </a>
+                    </div>
+                </div>
+
+                <div class="admin-form-card">
+                    <div class="admin-section-heading !mb-4">
+                        <div>
+                            <h2 class="admin-section-title">آخر الأنشطة المضافة</h2>
+                            <p class="admin-section-copy">أحدث العناصر التي دخلت إلى النظام ويمكن الوصول إليها مباشرة.</p>
+                        </div>
+                        <a href="{{ url_for('admin_activities') }}" class="admin-link-button">
+                            عرض الكل
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    {% if recent_activities %}
+                    <div class="space-y-3">
+                        {% for activity in recent_activities %}
+                        {% set status_label = 'قادم' %}
+                        {% if activity.status == 'ongoing' %}
+                            {% set status_label = 'جارٍ' %}
+                        {% elif activity.status == 'completed' %}
+                            {% set status_label = 'منتهي' %}
+                        {% endif %}
+                        <article class="rounded-[1.2rem] border border-slate-200 bg-slate-50 p-4 transition hover:border-primary/20 hover:bg-white">
+                            <div class="flex flex-wrap items-start justify-between gap-3">
+                                <div class="min-w-0">
+                                    <h3 class="truncate text-base font-black text-slate-900">{{ activity.title_ar }}</h3>
+                                    <p class="mt-1 text-sm text-slate-500">{{ activity.date.strftime('%d/%m/%Y %H:%M') if activity.date else 'غير محدد' }}</p>
+                                </div>
+                                <span class="admin-badge {% if activity.status == 'completed' %}bg-slate-200 text-slate-700{% elif activity.status == 'ongoing' %}bg-emerald-100 text-emerald-700{% else %}bg-primary/10 text-primary{% endif %}">
+                                    {{ status_label }}
+                                </span>
+                            </div>
+                            <div class="mt-4 flex flex-wrap gap-3">
+                                <a href="{{ url_for('admin_edit_activity', activity_id=activity.id) }}" class="admin-link-button">تعديل</a>
+                                {% if activity.is_published %}
+                                <a href="{{ url_for('activity_detail', activity_id=activity.id) }}" class="admin-link-button">معاينة عامة</a>
+                                {% else %}
+                                <span class="admin-link-button cursor-not-allowed text-slate-400">غير منشور</span>
+                                {% endif %}
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="admin-empty">
+                        <div class="admin-empty-icon">
+                            <span class="material-symbols-outlined text-4xl">event_busy</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900">لا توجد أنشطة بعد</h3>
+                            <p class="mt-2 max-w-lg text-sm leading-7 text-slate-600">ابدأ بإضافة أول نشاط ليظهر هنا ضمن أحدث العناصر.</p>
+                        </div>
+                        <a href="{{ url_for('admin_create_activity') }}" class="admin-btn-primary">إضافة نشاط</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
     </div>
-
-    <!-- Content -->
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <!-- Stats Cards -->
-        <div class="grid md:grid-cols-5 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">الوحدات</p>
-                        <h3 class="text-3xl font-black text-primary">{{ stats.total_units }}</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary">layers</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">الأندية</p>
-                        <h3 class="text-3xl font-black text-secondary">{{ stats.total_clubs }}</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-secondary">palette</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">الأنشطة</p>
-                        <h3 class="text-3xl font-black text-purple-600">{{ stats.total_activities }}</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-purple-600">event</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">المجموعات</p>
-                        <h3 class="text-3xl font-black text-success">{{ stats.total_groups }}</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-success">location_on</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">المستخدمين</p>
-                        <h3 class="text-3xl font-black text-orange-600">{{ stats.total_users }}</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-orange-600">people</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="bg-white rounded-lg shadow-md mb-8 overflow-hidden">
-            <div class="flex border-b">
-                <a href="{{ url_for('admin_units') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">layers</span>
-                    إدارة الوحدات
-                </a>
-                <a href="{{ url_for('admin_clubs') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">palette</span>
-                    إدارة الأندية
-                </a>
-                <a href="{{ url_for('admin_activities') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">event</span>
-                    إدارة الأنشطة
-                </a>
-                <a href="{{ url_for('admin_groups') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">location_on</span>
-                    إدارة المجموعات
-                </a>
-                <a href="{{ url_for('admin_users') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">people</span>
-                    إدارة المستخدمين
-                </a>
-                <a href="{{ url_for('admin_settings') }}"
-                    class="px-6 py-4 font-medium text-gray-700 hover:text-primary border-b-2 border-transparent hover:border-primary transition-colors flex items-center gap-2">
-                    <span class="material-symbols-outlined">settings</span>
-                    الإعدادات
-                </a>
-            </div>
-        </div>
-
-        <!-- Recent Activities -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-black mb-6">آخر الأنشطة المضافة</h2>
-            <div class="space-y-4">
-                {% for activity in recent_activities %}
-                <div class="border-l-4 border-primary pl-4 py-2">
-                    <h3 class="font-bold">{{ activity.title_ar }}</h3>
-                    <p class="text-sm text-gray-600">{{ activity.date.strftime('%d/%m/%Y') }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 {% endblock %}

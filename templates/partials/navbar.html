@@ -1,69 +1,99 @@
-<header class="sticky top-0 z-50 px-3 pt-3 sm:px-5">
-    {% set _endpoint = request.endpoint or '' %}
-    <div class="glass-nav mx-auto flex max-w-7xl items-center justify-between rounded-[2rem] px-4 py-3 sm:px-6">
-        <a href="{{ url_for('home') }}" class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-primary/10">
-                <img src="{{ url_for('static', filename='images/brand-logo.png') }}" alt="{{ text.brand_name }}" class="h-10 w-10 object-contain" />
-            </div>
-            <div>
-                <p class="font-headline text-lg font-black">A.S.U</p>
-                <p class="text-xs text-on-surface/60">{{ text.brand_name }}</p>
-            </div>
-        </a>
+{% set _endpoint = request.endpoint or '' %}
 
-        <nav class="hidden flex-col gap-4 lg:flex lg:flex-row lg:gap-6">
-            <a href="{{ url_for('home') }}" class="nav-link {% if _endpoint == 'home' %}is-active{% endif %}">{{ text.nav_home }}</a>
-            <a href="{{ url_for('units') }}" class="nav-link {% if _endpoint == 'units' %}is-active{% endif %}">{{ text.nav_units }}</a>
-            <a href="{{ url_for('clubs') }}" class="nav-link {% if _endpoint == 'clubs' %}is-active{% endif %}">{{ text.nav_clubs }}</a>
-            <a href="{{ url_for('activities') }}" class="nav-link {% if _endpoint == 'activities' %}is-active{% endif %}">{{ text.nav_activities }}</a>
-            <a href="{{ url_for('find_group') }}" class="nav-link {% if _endpoint == 'find_group' %}is-active{% endif %}">{{ text.nav_find_group }}</a>
-            <a href="{{ url_for('about') }}" class="nav-link {% if _endpoint == 'about' %}is-active{% endif %}">{{ text.nav_about }}</a>
-        </nav>
+<header class="asu-header sticky top-0 z-50">
+    <div class="asu-header-top">
+        <div class="asu-container asu-header-top-inner">
+            <a href="{{ url_for('home') }}" class="asu-brand">
+                <span class="asu-brand-logo">
+                    <img src="{{ url_for('static', filename='images/brand-logo.png') }}" alt="{{ text.brand_name }}" class="h-12 w-12 object-contain" />
+                </span>
+                <span>
+                    <span class="asu-brand-title">A.S.U</span>
+                    <span class="asu-brand-subtitle">Only Scouts Association</span>
+                </span>
+            </a>
 
-        <button type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/40 text-on-surface shadow-sm transition hover:bg-white/70 focus-visible:ring-2 focus-visible:ring-primary/50 lg:hidden" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false" data-mobile-menu-button>
-            <span class="material-symbols-outlined text-[26px]">menu</span>
-        </button>
-
-        <div class="flex items-center gap-2 sm:gap-3">
-            <div class="lang-menu">
-                <button type="button" class="lang-button" aria-label="{{ text.choose_language }}" aria-haspopup="true" aria-expanded="false">
-                    <span class="material-symbols-outlined text-[28px]">language</span>
+            <div class="asu-header-actions">
+                {% if not is_admin_page %}
+                <a href="{{ url_for('find_group') }}" class="asu-header-link hidden lg:inline-flex">
+                    <span class="material-symbols-outlined text-[20px]">person_pin_circle</span>
+                    Find a Group
+                </a>
+                <a href="{{ url_for('about') }}" class="asu-header-link hidden lg:inline-flex">
+                    <span class="material-symbols-outlined text-[20px]">favorite</span>
+                    Donate
+                </a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('admin_logout') }}" class="asu-header-link hidden lg:inline-flex">
+                    <span class="material-symbols-outlined text-[20px]">account_circle</span>
+                    Logout
+                </a>
+                {% else %}
+                <a href="{{ url_for('admin_login') }}" class="asu-header-link hidden lg:inline-flex">
+                    <span class="material-symbols-outlined text-[20px]">account_circle</span>
+                    Login
+                </a>
+                {% endif %}
+                {% if not is_admin_page %}
+                <a href="{{ url_for('find_group') }}" class="asu-join-button hidden md:inline-flex">Join Now</a>
+                {% endif %}
+                {% if not is_admin_page %}
+                <button type="button" class="asu-mobile-toggle xl:hidden" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false" data-mobile-menu-button>
+                    <span class="material-symbols-outlined text-[24px]">menu</span>
                 </button>
-                <div class="lang-dropdown text-right">
-                    <a href="{{ url_for('set_lang', lang='ar') }}" class="lang-option {% if current_lang == 'ar' %}is-active{% endif %}">{{ text.lang_ar }}</a>
-                    <a href="{{ url_for('set_lang', lang='en') }}" class="lang-option {% if current_lang == 'en' %}is-active{% endif %}">{{ text.lang_en }}</a>
-                    <a href="{{ url_for('set_lang', lang='fr') }}" class="lang-option {% if current_lang == 'fr' %}is-active{% endif %}">{{ text.lang_fr }}</a>
-                    <a href="{{ url_for('set_lang', lang='es') }}" class="lang-option {% if current_lang == 'es' %}is-active{% endif %}">{{ text.lang_es }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if not is_admin_page %}
+    <div class="asu-header-bottom">
+        <div class="asu-container asu-header-bottom-inner">
+            <nav class="asu-main-nav hidden xl:flex">
+                <a href="{{ url_for('units') }}" class="asu-main-nav-link {% if _endpoint == 'units' %}is-active{% endif %}">Programs</a>
+                <a href="{{ url_for('home') }}#mission-values" class="asu-main-nav-link">Safety</a>
+                <a href="{{ url_for('clubs') }}" class="asu-main-nav-link {% if _endpoint == 'clubs' %}is-active{% endif %}">Activities</a>
+                <a href="{{ url_for('about') }}" class="asu-main-nav-link {% if _endpoint == 'about' %}is-active{% endif %}">About</a>
+                <a href="{{ url_for('home') }}#welcome" class="asu-main-nav-link">Training</a>
+                <a href="{{ url_for('home') }}#footer-links" class="asu-main-nav-link">Resources</a>
+                <a href="{{ url_for('activities') }}" class="asu-main-nav-link {% if _endpoint == 'activities' %}is-active{% endif %}">Outdoor Programs</a>
+                <a href="{{ url_for('home') }}#contact" class="asu-main-nav-link">Partners</a>
+            </nav>
+
+            <a href="{{ url_for('home') }}#newsletter" class="asu-search-link hidden xl:inline-flex" aria-label="Search resources">
+                <span class="material-symbols-outlined text-[24px]">search</span>
+            </a>
+        </div>
+
+        <div id="mobile-menu" class="asu-mobile-menu hidden xl:hidden" data-mobile-menu>
+            <div class="asu-container">
+                <div class="asu-mobile-panel">
+                    <div class="asu-mobile-links">
+                        <a href="{{ url_for('units') }}" class="asu-mobile-link">Programs</a>
+                        <a href="{{ url_for('home') }}#mission-values" class="asu-mobile-link">Safety</a>
+                        <a href="{{ url_for('clubs') }}" class="asu-mobile-link">Activities</a>
+                        <a href="{{ url_for('about') }}" class="asu-mobile-link">About</a>
+                        <a href="{{ url_for('home') }}#welcome" class="asu-mobile-link">Training</a>
+                        <a href="{{ url_for('home') }}#footer-links" class="asu-mobile-link">Resources</a>
+                        <a href="{{ url_for('activities') }}" class="asu-mobile-link">Outdoor Programs</a>
+                        <a href="{{ url_for('home') }}#contact" class="asu-mobile-link">Partners</a>
+                    </div>
+
+                    <div class="asu-mobile-actions">
+                        <a href="{{ url_for('find_group') }}" class="asu-mobile-cta asu-mobile-cta--ghost">Find a Group</a>
+                        <a href="{{ url_for('about') }}" class="asu-mobile-cta asu-mobile-cta--ghost">Donate</a>
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="asu-mobile-cta asu-mobile-cta--ghost">Dashboard</a>
+                        <a href="{{ url_for('admin_logout') }}" class="asu-mobile-cta asu-mobile-cta--solid">Logout</a>
+                        {% else %}
+                        <a href="{{ url_for('admin_login') }}" class="asu-mobile-cta asu-mobile-cta--ghost">Login</a>
+                        <a href="{{ url_for('find_group') }}" class="asu-mobile-cta asu-mobile-cta--solid">Join Now</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-
-            {% if current_user.is_authenticated %}
-            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary px-4 py-2 text-sm">{{ text.dashboard }}</a>
-            <a href="{{ url_for('admin_logout') }}" class="btn-primary px-4 py-2 text-sm">{{ text.logout }}</a>
-            {% else %}
-            <a href="{{ url_for('admin_login') }}" class="btn-primary px-4 py-2 text-sm">{{ text.login }}</a>
-            {% endif %}
         </div>
     </div>
-
-    <div id="mobile-menu" class="glass-nav mx-auto mt-3 hidden max-w-7xl rounded-[2rem] px-4 py-4 sm:px-6 lg:hidden" data-mobile-menu>
-        <div class="flex flex-col gap-3">
-            <a href="{{ url_for('home') }}" class="mobile-nav-link {% if _endpoint == 'home' %}is-active{% endif %}">{{ text.nav_home }}</a>
-            <a href="{{ url_for('units') }}" class="mobile-nav-link {% if _endpoint == 'units' %}is-active{% endif %}">{{ text.nav_units }}</a>
-            <a href="{{ url_for('clubs') }}" class="mobile-nav-link {% if _endpoint == 'clubs' %}is-active{% endif %}">{{ text.nav_clubs }}</a>
-            <a href="{{ url_for('activities') }}" class="mobile-nav-link {% if _endpoint == 'activities' %}is-active{% endif %}">{{ text.nav_activities }}</a>
-            <a href="{{ url_for('find_group') }}" class="mobile-nav-link {% if _endpoint == 'find_group' %}is-active{% endif %}">{{ text.nav_find_group }}</a>
-            <a href="{{ url_for('about') }}" class="mobile-nav-link {% if _endpoint == 'about' %}is-active{% endif %}">{{ text.nav_about }}</a>
-        </div>
-
-        <div class="mt-4 flex flex-wrap gap-3">
-            {% if current_user.is_authenticated %}
-            <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary px-4 py-2 text-sm">{{ text.dashboard }}</a>
-            <a href="{{ url_for('admin_logout') }}" class="btn-primary px-4 py-2 text-sm">{{ text.logout }}</a>
-            {% else %}
-            <a href="{{ url_for('admin_login') }}" class="btn-primary px-4 py-2 text-sm">{{ text.login }}</a>
-            {% endif %}
-        </div>
-    </div>
+    {% endif %}
 </header>
-

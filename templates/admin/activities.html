@@ -3,51 +3,365 @@
 {% block title %}إدارة الأنشطة - لوحة التحكم{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-black text-gray-800">إدارة الأنشطة</h1>
-            <a href="{{ url_for('admin_create_activity') }}" class="btn-primary flex items-center gap-2">
-                <span class="material-symbols-outlined">add</span>
-                إضافة نشاط جديد
-            </a>
-        </div>
+{% set return_to = current_url %}
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">event</span>
+                        Activities
+                    </span>
+                    <h1 class="admin-title">إدارة الأنشطة والفعاليات</h1>
+                    <p class="admin-copy">
+                        لوحة عملية لإدارة الأنشطة كأنها نظام فعاليات حديث: بحث، تصفية، معاينة، نشر، وتمييز سريع. مرجع المستقبل/الماضي هنا هو يوم الجمعة 21 أغسطس 2026.
+                    </p>
+                </div>
 
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-100 border-b-2 border-purple-600">
-                    <tr>
-                        <th class="px-6 py-4 text-right font-bold">العنوان</th>
-                        <th class="px-6 py-4 text-right font-bold">التاريخ</th>
-                        <th class="px-6 py-4 text-right font-bold">الحالة</th>
-                        <th class="px-6 py-4 text-right font-bold">الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for activity in activities %}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4">{{ activity.title_ar }}</td>
-                        <td class="px-6 py-4">{{ activity.date.strftime('%d/%m/%Y') if activity.date else 'غير محدد' }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 rounded-full text-sm font-bold bg-purple-100 text-purple-700">
-                                {{ activity.status }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ url_for('admin_edit_activity', activity_id=activity.id) }}"
-                                class="text-blue-600 hover:text-blue-800 font-bold text-sm">تعديل</a>
-                            <form method="POST" action="{{ url_for('admin_delete_activity', activity_id=activity.id) }}"
-                                style="display:inline" onsubmit="return confirm('هل تريد حذف هذا النشاط؟')">
-                                <button type="submit"
-                                    class="text-red-600 hover:text-red-800 font-bold text-sm">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_export_activities', search=filters.search, status=filters.status, club_id=filters.club_id, featured=filters.featured, published=filters.published, sort=filters.sort) }}" class="admin-btn-secondary">
+                        <span class="material-symbols-outlined text-base">download</span>
+                        تصدير CSV
+                    </a>
+                    <a href="{{ url_for('admin_create_activity') }}" class="admin-btn-primary">
+                        <span class="material-symbols-outlined text-base">add</span>
+                        إضافة نشاط
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <section class="admin-section">
+            <div class="admin-stat-grid sm:grid-cols-2 xl:grid-cols-5">
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">قادم</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.upcoming }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-primary/10 p-3 text-primary">event_upcoming</span>
+                    </div>
+                </article>
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">جارٍ</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.ongoing }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-emerald-100 p-3 text-emerald-700">schedule</span>
+                    </div>
+                </article>
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">منتهي</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.completed }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-slate-200 p-3 text-slate-700">task_alt</span>
+                    </div>
+                </article>
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">مميز</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.featured }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-amber-100 p-3 text-amber-700">star</span>
+                    </div>
+                </article>
+                <article class="admin-stat-card">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-slate-500">منشور</p>
+                            <p class="mt-4 admin-stat-value">{{ stats.published }}</p>
+                        </div>
+                        <span class="material-symbols-outlined rounded-full bg-indigo-100 p-3 text-indigo-700">public</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="admin-form-card">
+                <div class="admin-section-heading">
+                    <div>
+                        <h2 class="admin-section-title">بحث وتصفية</h2>
+                        <p class="admin-section-copy">اعثر على الأنشطة بسرعة حسب العنوان أو الحالة أو النادي أو حالة النشر والتمييز.</p>
+                    </div>
+                </div>
+
+                <form method="GET" class="admin-form-grid lg:grid-cols-6">
+                    <div class="lg:col-span-2">
+                        <label for="search" class="admin-label">البحث بالعنوان</label>
+                        <input id="search" name="search" type="search" value="{{ filters.search }}" class="admin-input" placeholder="ابحث بالعربية أو الإنجليزية أو الفرنسية أو الإسبانية">
+                    </div>
+
+                    <div>
+                        <label for="status" class="admin-label">الحالة</label>
+                        <select id="status" name="status" class="admin-select">
+                            <option value="">كل الحالات</option>
+                            <option value="upcoming" {% if filters.status == 'upcoming' %}selected{% endif %}>قادم</option>
+                            <option value="ongoing" {% if filters.status == 'ongoing' %}selected{% endif %}>جارٍ</option>
+                            <option value="completed" {% if filters.status == 'completed' %}selected{% endif %}>منتهي</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="club_id" class="admin-label">النادي</label>
+                        <select id="club_id" name="club_id" class="admin-select">
+                            <option value="">كل الأندية</option>
+                            {% for club in clubs %}
+                            <option value="{{ club.id }}" {% if filters.club_id == club.id %}selected{% endif %}>{{ club.name_ar }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="featured" class="admin-label">التمييز</label>
+                        <select id="featured" name="featured" class="admin-select">
+                            <option value="">الكل</option>
+                            <option value="yes" {% if filters.featured == 'yes' %}selected{% endif %}>المميزة فقط</option>
+                            <option value="no" {% if filters.featured == 'no' %}selected{% endif %}>غير المميزة</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="published" class="admin-label">النشر</label>
+                        <select id="published" name="published" class="admin-select">
+                            <option value="">الكل</option>
+                            <option value="yes" {% if filters.published == 'yes' %}selected{% endif %}>المنشورة فقط</option>
+                            <option value="no" {% if filters.published == 'no' %}selected{% endif %}>غير المنشورة</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="sort" class="admin-label">ترتيب التاريخ</label>
+                        <select id="sort" name="sort" class="admin-select">
+                            <option value="desc" {% if filters.sort != 'asc' %}selected{% endif %}>الأحدث أولًا</option>
+                            <option value="asc" {% if filters.sort == 'asc' %}selected{% endif %}>الأقدم أولًا</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-toolbar lg:col-span-6">
+                        <button type="submit" class="admin-btn-primary">تطبيق الفلاتر</button>
+                        <a href="{{ url_for('admin_activities') }}" class="admin-btn-ghost">إعادة تعيين</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        {% if activities.items %}
+        <section class="admin-section lg:hidden">
+            <div class="admin-list-grid">
+                {% for activity in activities.items %}
+                {% set status_label = 'قادم' %}
+                {% set status_class = 'bg-primary/10 text-primary' %}
+                {% if activity.status == 'ongoing' %}
+                    {% set status_label = 'جارٍ' %}
+                    {% set status_class = 'bg-emerald-100 text-emerald-700' %}
+                {% elif activity.status == 'completed' %}
+                    {% set status_label = 'منتهي' %}
+                    {% set status_class = 'bg-slate-200 text-slate-700' %}
+                {% endif %}
+                <article class="admin-list-card">
+                    <div class="flex gap-4">
+                        <div class="admin-media-thumb">
+                            {% if activity.image_url %}
+                            <img src="{{ activity.image_url }}" alt="{{ activity.title_ar }}">
+                            {% else %}
+                            <div class="flex h-full w-full items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined">image</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="admin-badge {{ status_class }}">{{ status_label }}</span>
+                                {% if activity.featured %}
+                                <span class="admin-badge bg-amber-100 text-amber-700">مميز</span>
+                                {% endif %}
+                                <span class="admin-badge {{ 'bg-indigo-100 text-indigo-700' if activity.is_published else 'bg-rose-100 text-rose-700' }}">
+                                    {{ 'منشور' if activity.is_published else 'مسودة' }}
+                                </span>
+                            </div>
+                            <h2 class="mt-3 truncate text-lg font-black text-slate-900">{{ activity.title_ar }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ activity.title_en }}</p>
+                            <div class="mt-3 admin-meta-list">
+                                <span>{{ activity.date.strftime('%d/%m/%Y %H:%M') if activity.date else 'غير محدد' }}</span>
+                                <span>{{ activity.club.name_ar if activity.club else 'بدون نادي' }}</span>
+                                <span>المشاهدات: {{ activity.views }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <a href="{{ url_for('admin_edit_activity', activity_id=activity.id) }}" class="admin-btn-secondary text-xs">تعديل</a>
+                        <form method="POST" action="{{ url_for('admin_toggle_activity_featured', activity_id=activity.id) }}">
+                            <input type="hidden" name="next" value="{{ return_to }}">
+                            <button type="submit" class="admin-btn-ghost text-xs">{{ 'إلغاء التمييز' if activity.featured else 'تمييز' }}</button>
+                        </form>
+                        {% if activity.status != 'completed' %}
+                        <form method="POST" action="{{ url_for('admin_mark_activity_completed', activity_id=activity.id) }}">
+                            <input type="hidden" name="next" value="{{ return_to }}">
+                            <button type="submit" class="admin-btn-ghost text-xs">منتهي</button>
+                        </form>
+                        {% endif %}
+                        <form method="POST" action="{{ url_for('admin_duplicate_activity', activity_id=activity.id) }}">
+                            <input type="hidden" name="next" value="{{ return_to }}">
+                            <button type="submit" class="admin-btn-ghost text-xs">نسخ</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin_delete_activity', activity_id=activity.id) }}" onsubmit="return confirm('هل تريد حذف هذا النشاط؟');">
+                            <input type="hidden" name="next" value="{{ return_to }}">
+                            <button type="submit" class="admin-btn-danger text-xs">حذف</button>
+                        </form>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-section hidden lg:block">
+            <div class="admin-table-card">
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>النشاط</th>
+                                <th>التاريخ</th>
+                                <th>النادي</th>
+                                <th>الحالة</th>
+                                <th>مميز</th>
+                                <th>منشور</th>
+                                <th>المشاهدات</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in activities.items %}
+                            {% set status_label = 'قادم' %}
+                            {% set status_class = 'bg-primary/10 text-primary' %}
+                            {% if activity.status == 'ongoing' %}
+                                {% set status_label = 'جارٍ' %}
+                                {% set status_class = 'bg-emerald-100 text-emerald-700' %}
+                            {% elif activity.status == 'completed' %}
+                                {% set status_label = 'منتهي' %}
+                                {% set status_class = 'bg-slate-200 text-slate-700' %}
+                            {% endif %}
+                            <tr>
+                                <td>
+                                    <div class="flex items-start gap-4">
+                                        <div class="admin-media-thumb">
+                                            {% if activity.image_url %}
+                                            <img src="{{ activity.image_url }}" alt="{{ activity.title_ar }}">
+                                            {% else %}
+                                            <div class="flex h-full w-full items-center justify-center text-slate-400">
+                                                <span class="material-symbols-outlined">image</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="truncate text-base font-black text-slate-900">{{ activity.title_ar }}</p>
+                                            <p class="mt-1 truncate text-sm text-slate-500">{{ activity.title_en }}</p>
+                                            {% if activity.registration_url %}
+                                            <a href="{{ activity.registration_url }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-secondary">
+                                                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                                                رابط التسجيل
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium text-slate-700">{{ activity.date.strftime('%d/%m/%Y %H:%M') if activity.date else 'غير محدد' }}</td>
+                                <td class="text-slate-600">{{ activity.club.name_ar if activity.club else 'بدون نادي' }}</td>
+                                <td><span class="admin-badge {{ status_class }}">{{ status_label }}</span></td>
+                                <td>
+                                    <span class="admin-badge {{ 'bg-amber-100 text-amber-700' if activity.featured else 'bg-slate-200 text-slate-600' }}">
+                                        {{ 'نعم' if activity.featured else 'لا' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="admin-badge {{ 'bg-indigo-100 text-indigo-700' if activity.is_published else 'bg-rose-100 text-rose-700' }}">
+                                        {{ 'منشور' if activity.is_published else 'مسودة' }}
+                                    </span>
+                                </td>
+                                <td class="font-bold text-slate-700">{{ activity.views }}</td>
+                                <td>
+                                    <div class="flex flex-wrap gap-3">
+                                        <a href="{{ url_for('admin_edit_activity', activity_id=activity.id) }}" class="admin-link-button">تعديل</a>
+                                        <form method="POST" action="{{ url_for('admin_toggle_activity_featured', activity_id=activity.id) }}">
+                                            <input type="hidden" name="next" value="{{ return_to }}">
+                                            <button type="submit" class="admin-link-button">{{ 'إلغاء التمييز' if activity.featured else 'تمييز' }}</button>
+                                        </form>
+                                        {% if activity.status != 'completed' %}
+                                        <form method="POST" action="{{ url_for('admin_mark_activity_completed', activity_id=activity.id) }}">
+                                            <input type="hidden" name="next" value="{{ return_to }}">
+                                            <button type="submit" class="admin-link-button">منتهي</button>
+                                        </form>
+                                        {% endif %}
+                                        <form method="POST" action="{{ url_for('admin_duplicate_activity', activity_id=activity.id) }}">
+                                            <input type="hidden" name="next" value="{{ return_to }}">
+                                            <button type="submit" class="admin-link-button">نسخ</button>
+                                        </form>
+                                        <form method="POST" action="{{ url_for('admin_delete_activity', activity_id=activity.id) }}" onsubmit="return confirm('هل تريد حذف هذا النشاط؟');">
+                                            <input type="hidden" name="next" value="{{ return_to }}">
+                                            <button type="submit" class="admin-link-button text-rose-600 hover:text-rose-700">حذف</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        {% if activities.pages > 1 %}
+        <section class="admin-section">
+            <div class="admin-toolbar justify-center">
+                {% if activities.has_prev %}
+                <a href="{{ current_query_url('admin_activities', page=activities.prev_num) }}" class="admin-btn-secondary">السابق</a>
+                {% endif %}
+
+                {% for page_num in activities.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
+                {% if page_num %}
+                {% if page_num == activities.page %}
+                <span class="admin-btn-primary">{{ page_num }}</span>
+                {% else %}
+                <a href="{{ current_query_url('admin_activities', page=page_num) }}" class="admin-btn-secondary">{{ page_num }}</a>
+                {% endif %}
+                {% else %}
+                <span class="px-2 text-slate-400">...</span>
+                {% endif %}
+                {% endfor %}
+
+                {% if activities.has_next %}
+                <a href="{{ current_query_url('admin_activities', page=activities.next_num) }}" class="admin-btn-secondary">التالي</a>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+        {% else %}
+        <section class="admin-section">
+            <div class="admin-empty">
+                <div class="admin-empty-icon">
+                    <span class="material-symbols-outlined text-4xl">event_busy</span>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900">لا توجد أنشطة مطابقة</h2>
+                    <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600">جرّب تعديل البحث أو الفلاتر، أو أضف نشاطًا جديدًا ليظهر هنا داخل لوحة الإدارة.</p>
+                </div>
+                <div class="admin-actions justify-center">
+                    <a href="{{ url_for('admin_activities') }}" class="admin-btn-secondary">إزالة الفلاتر</a>
+                    <a href="{{ url_for('admin_create_activity') }}" class="admin-btn-primary">إضافة نشاط</a>
+                </div>
+            </div>
+        </section>
+        {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}

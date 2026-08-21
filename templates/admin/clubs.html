@@ -3,44 +3,147 @@
 {% block title %}إدارة الأندية - لوحة التحكم{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-black text-gray-800">إدارة الأندية</h1>
-            <a href="{{ url_for('admin_create_club') }}" class="btn-primary flex items-center gap-2">
-                <span class="material-symbols-outlined">add</span>
-                إضافة نادي جديد
-            </a>
-        </div>
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">palette</span>
+                        Clubs
+                    </span>
+                    <h1 class="admin-title">إدارة الأندية</h1>
+                    <p class="admin-copy">واجهة أكثر وضوحًا لإدارة الأندية والصور والترتيب العام مع بطاقات وجداول متسقة مع هوية A.S.U الإدارية.</p>
+                </div>
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_create_club') }}" class="admin-btn-primary">
+                        <span class="material-symbols-outlined text-base">add</span>
+                        إضافة نادٍ جديد
+                    </a>
+                </div>
+            </div>
+        </header>
 
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-gray-100 border-b-2 border-secondary">
-                    <tr>
-                        <th class="px-6 py-4 text-right font-bold">الاسم</th>
-                        <th class="px-6 py-4 text-right font-bold">عدد الأنشطة</th>
-                        <th class="px-6 py-4 text-right font-bold">الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for club in clubs %}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4">{{ club.name_ar }}</td>
-                        <td class="px-6 py-4">{{ club.activity_count }}</td>
-                        <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ url_for('admin_edit_club', club_id=club.id) }}"
-                                class="text-blue-600 hover:text-blue-800 font-bold text-sm">تعديل</a>
-                            <form method="POST" action="{{ url_for('admin_delete_club', club_id=club.id) }}"
-                                style="display:inline" onsubmit="return confirm('هل تريد حذف هذا النادي؟')">
-                                <button type="submit"
-                                    class="text-red-600 hover:text-red-800 font-bold text-sm">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        {% include "admin/_nav.html" %}
+
+        <section class="admin-section">
+            <div class="admin-stat-grid sm:grid-cols-2 xl:grid-cols-3">
+                <article class="admin-stat-card">
+                    <p class="text-sm font-bold text-slate-500">إجمالي الأندية</p>
+                    <p class="mt-4 admin-stat-value">{{ clubs|length }}</p>
+                </article>
+                <article class="admin-stat-card">
+                    <p class="text-sm font-bold text-slate-500">أندية لها صورة</p>
+                    <p class="mt-4 admin-stat-value">{{ clubs|selectattr('image_url')|list|length }}</p>
+                </article>
+                <article class="admin-stat-card">
+                    <p class="text-sm font-bold text-slate-500">أندية مرتبطة بأنشطة</p>
+                    <p class="mt-4 admin-stat-value">{{ clubs|selectattr('activities')|list|length }}</p>
+                </article>
+            </div>
+        </section>
+
+        {% if clubs %}
+        <section class="admin-section lg:hidden">
+            <div class="admin-list-grid">
+                {% for club in clubs %}
+                <article class="admin-list-card">
+                    <div class="flex gap-4">
+                        <div class="admin-media-thumb">
+                            {% if club.image_url %}
+                            <img src="{{ club.image_url }}" alt="{{ club.name_ar }}">
+                            {% else %}
+                            <div class="flex h-full w-full items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined">image</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="admin-badge bg-primary/10 text-primary">ترتيب {{ club.order }}</span>
+                                <span class="admin-badge bg-emerald-100 text-emerald-700">{{ club.activities|length }} نشاط</span>
+                            </div>
+                            <h2 class="mt-3 text-lg font-black text-slate-900">{{ club.name_ar }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ club.name_en }}</p>
+                            <p class="mt-3 line-clamp-2 text-sm leading-7 text-slate-600">{{ club.description_ar }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        <a href="{{ url_for('admin_edit_club', club_id=club.id) }}" class="admin-btn-secondary text-xs">تعديل</a>
+                        <form method="POST" action="{{ url_for('admin_delete_club', club_id=club.id) }}" onsubmit="return confirm('هل تريد حذف هذا النادي؟');">
+                            <button type="submit" class="admin-btn-danger text-xs">حذف</button>
+                        </form>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-section hidden lg:block">
+            <div class="admin-table-card">
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>النادي</th>
+                                <th>الترتيب</th>
+                                <th>عدد الأنشطة</th>
+                                <th>الأيقونة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for club in clubs %}
+                            <tr>
+                                <td>
+                                    <div class="flex items-start gap-4">
+                                        <div class="admin-media-thumb">
+                                            {% if club.image_url %}
+                                            <img src="{{ club.image_url }}" alt="{{ club.name_ar }}">
+                                            {% else %}
+                                            <div class="flex h-full w-full items-center justify-center text-slate-400">
+                                                <span class="material-symbols-outlined">image</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-base font-black text-slate-900">{{ club.name_ar }}</p>
+                                            <p class="mt-1 text-sm text-slate-500">{{ club.name_en }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="admin-badge bg-slate-200 text-slate-700">{{ club.order }}</span></td>
+                                <td class="font-bold text-slate-700">{{ club.activities|length }}</td>
+                                <td class="text-slate-600">{{ club.icon }}</td>
+                                <td>
+                                    <div class="flex flex-wrap gap-3">
+                                        <a href="{{ url_for('admin_edit_club', club_id=club.id) }}" class="admin-link-button">تعديل</a>
+                                        <form method="POST" action="{{ url_for('admin_delete_club', club_id=club.id) }}" onsubmit="return confirm('هل تريد حذف هذا النادي؟');">
+                                            <button type="submit" class="admin-link-button text-rose-600 hover:text-rose-700">حذف</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        {% else %}
+        <section class="admin-section">
+            <div class="admin-empty">
+                <div class="admin-empty-icon">
+                    <span class="material-symbols-outlined text-4xl">palette</span>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900">لا توجد أندية بعد</h2>
+                    <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600">ابدأ بإضافة أول نادٍ ليظهر هنا مع صورته وارتباطاته بالأنشطة.</p>
+                </div>
+                <a href="{{ url_for('admin_create_club') }}" class="admin-btn-primary">إضافة نادٍ جديد</a>
+            </div>
+        </section>
+        {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}

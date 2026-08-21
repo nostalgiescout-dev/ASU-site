@@ -1,120 +1,275 @@
 {% extends "base.html" %}
 
+{% block title %}{% if activity %}تعديل النشاط{% else %}إضافة نشاط جديد{% endif %} - لوحة التحكم{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-12">
-    <div class="bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-3xl font-black text-gray-800 mb-8">{% if activity %}تعديل نشاط{% else %}إضافة نشاط جديد{% endif
-            %}</h1>
+{% set form_data = request.form if request.method == 'POST' else None %}
+{% set title_ar = form_data.get('title_ar', activity.title_ar if activity else '') if form_data else (activity.title_ar if activity else '') %}
+{% set title_en = form_data.get('title_en', activity.title_en if activity else '') if form_data else (activity.title_en if activity else '') %}
+{% set title_fr = form_data.get('title_fr', activity.title_fr if activity else '') if form_data else (activity.title_fr if activity else '') %}
+{% set title_es = form_data.get('title_es', activity.title_es if activity else '') if form_data else (activity.title_es if activity else '') %}
+{% set description_ar = form_data.get('description_ar', activity.description_ar if activity else '') if form_data else (activity.description_ar if activity else '') %}
+{% set description_en = form_data.get('description_en', activity.description_en if activity else '') if form_data else (activity.description_en if activity else '') %}
+{% set description_fr = form_data.get('description_fr', activity.description_fr if activity else '') if form_data else (activity.description_fr if activity else '') %}
+{% set description_es = form_data.get('description_es', activity.description_es if activity else '') if form_data else (activity.description_es if activity else '') %}
+{% set activity_date = form_data.get('date', activity.date.strftime('%Y-%m-%dT%H:%M') if activity and activity.date else '') if form_data else (activity.date.strftime('%Y-%m-%dT%H:%M') if activity and activity.date else '') %}
+{% set location_ar = form_data.get('location_ar', activity.location_ar if activity else '') if form_data else (activity.location_ar if activity else '') %}
+{% set location_en = form_data.get('location_en', activity.location_en if activity else '') if form_data else (activity.location_en if activity else '') %}
+{% set video_url = form_data.get('video_url', activity.video_url if activity else '') if form_data else (activity.video_url if activity else '') %}
+{% set registration_url = form_data.get('registration_url', activity.registration_url if activity else '') if form_data else (activity.registration_url if activity else '') %}
+{% set club_id = form_data.get('club_id', activity.club_id if activity else '') if form_data else (activity.club_id if activity else '') %}
+{% set max_participants = form_data.get('max_participants', activity.max_participants if activity and activity.max_participants else '') if form_data else (activity.max_participants if activity and activity.max_participants else '') %}
+{% set contact_email = form_data.get('contact_email', activity.contact_email if activity else '') if form_data else (activity.contact_email if activity else '') %}
+{% set contact_phone = form_data.get('contact_phone', activity.contact_phone if activity else '') if form_data else (activity.contact_phone if activity else '') %}
+{% set selected_status = form_data.get('status', activity.status if activity else suggested_status) if form_data else (activity.status if activity else suggested_status) %}
+{% set is_featured = form_data.get('featured') == 'on' if form_data else (activity.featured if activity else False) %}
+{% set is_published = form_data.get('is_published') == 'on' if form_data else (activity.is_published if activity else True) %}
+{% set preview_image = activity.image_url if activity and activity.image_url else '' %}
+{% set suggested_status_label = 'قادم' %}
+{% if suggested_status == 'ongoing' %}
+    {% set suggested_status_label = 'جارٍ' %}
+{% elif suggested_status == 'completed' %}
+    {% set suggested_status_label = 'منتهي' %}
+{% endif %}
 
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold mb-2">العنوان بالعربية</label>
-                <input type="text" name="title_ar" required value="{{ activity.title_ar if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+<section class="admin-shell">
+    <div class="admin-page">
+        <header class="admin-hero">
+            <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+                <div>
+                    <span class="admin-kicker">
+                        <span class="material-symbols-outlined text-sm">edit_calendar</span>
+                        Activity Editor
+                    </span>
+                    <h1 class="admin-title">{% if activity %}تعديل النشاط{% else %}إضافة نشاط جديد{% endif %}</h1>
+                    <p class="admin-copy">
+                        نموذج منظم لإدارة تفاصيل النشاط والمحتوى متعدد اللغات والنشر والوسائط. اقتراح الحالة يعتمد على يوم الجمعة 21 أغسطس 2026، مع إبقاء القرار النهائي بيد الإدارة.
+                    </p>
+                </div>
+
+                <div class="admin-actions">
+                    {% if activity and activity.is_published %}
+                    <a href="{{ url_for('activity_detail', activity_id=activity.id) }}" class="admin-btn-secondary">
+                        <span class="material-symbols-outlined text-base">open_in_new</span>
+                        معاينة عامة
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('admin_activities') }}" class="admin-btn-ghost">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        العودة للقائمة
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        {% include "admin/_nav.html" %}
+
+        <form method="POST" enctype="multipart/form-data" class="admin-form-layout">
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">العناوين متعددة اللغات</h2>
+                            <p class="admin-section-copy">حافظ على تسمية النشاط بوضوح في اللغات الأربع ليتناسق ظهوره في الواجهة العامة والإدارة.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="title_ar" class="admin-label">العنوان بالعربية</label>
+                            <input id="title_ar" name="title_ar" type="text" required class="admin-input" value="{{ title_ar }}" placeholder="مثال: مخيم صيفي للكشافة">
+                        </div>
+                        <div>
+                            <label for="title_en" class="admin-label">English Title</label>
+                            <input id="title_en" name="title_en" type="text" required class="admin-input" value="{{ title_en }}" placeholder="Example: Summer Scout Camp">
+                        </div>
+                        <div>
+                            <label for="title_fr" class="admin-label">Titre en Français</label>
+                            <input id="title_fr" name="title_fr" type="text" required class="admin-input" value="{{ title_fr }}" placeholder="Exemple : Camp d'ete scout">
+                        </div>
+                        <div>
+                            <label for="title_es" class="admin-label">Titulo en Espanol</label>
+                            <input id="title_es" name="title_es" type="text" required class="admin-input" value="{{ title_es }}" placeholder="Ejemplo: Campamento scout de verano">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الأوصاف متعددة اللغات</h2>
+                            <p class="admin-section-copy">اكتب وصفًا غنيًا ومقروءًا يشرح الهدف والأنشطة أو الفئة المستهدفة في كل لغة.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="description_ar" class="admin-label">الوصف بالعربية</label>
+                            <textarea id="description_ar" name="description_ar" rows="6" required class="admin-textarea" placeholder="أضف وصفًا واضحًا للنشاط">{{ description_ar }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_en" class="admin-label">English Description</label>
+                            <textarea id="description_en" name="description_en" rows="6" required class="admin-textarea" placeholder="Add a clear English summary">{{ description_en }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_fr" class="admin-label">Description en Français</label>
+                            <textarea id="description_fr" name="description_fr" rows="6" required class="admin-textarea" placeholder="Ajoutez une description en francais">{{ description_fr }}</textarea>
+                        </div>
+                        <div>
+                            <label for="description_es" class="admin-label">Descripcion en Espanol</label>
+                            <textarea id="description_es" name="description_es" rows="6" required class="admin-textarea" placeholder="Agregue una descripcion en espanol">{{ description_es }}</textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">البرنامج والمكان</h2>
+                            <p class="admin-section-copy">حدد الموعد والموقع وربط النشاط بالنادي المناسب مع الحفاظ على إمكانية تعديل الحالة يدويًا.</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-grid md:grid-cols-2">
+                        <div>
+                            <label for="date" class="admin-label">تاريخ ووقت النشاط</label>
+                            <input id="date" name="date" type="datetime-local" required class="admin-input" value="{{ activity_date }}" data-activity-date>
+                            <p class="admin-help">حقل مطلوب. أي تاريخ قبل الجمعة 21 أغسطس 2026 سيُعتبر ماضيًا عند اقتراح الحالة.</p>
+                        </div>
+
+                        <div>
+                            <label for="status" class="admin-label">الحالة</label>
+                            <select id="status" name="status" class="admin-select">
+                                <option value="upcoming" {% if selected_status == 'upcoming' %}selected{% endif %}>قادم</option>
+                                <option value="ongoing" {% if selected_status == 'ongoing' %}selected{% endif %}>جارٍ</option>
+                                <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>منتهي</option>
+                            </select>
+                            <p class="admin-help" data-status-suggestion data-label-upcoming="قادم" data-label-ongoing="جارٍ" data-label-completed="منتهي">
+                                الحالة المقترحة حاليًا: <span class="font-black text-primary">{{ suggested_status_label }}</span>
+                            </p>
+                        </div>
+
+                        <div>
+                            <label for="location_ar" class="admin-label">الموقع بالعربية</label>
+                            <input id="location_ar" name="location_ar" type="text" class="admin-input" value="{{ location_ar }}" placeholder="مثال: مركز التدريب الكشفي">
+                        </div>
+
+                        <div>
+                            <label for="location_en" class="admin-label">Location in English</label>
+                            <input id="location_en" name="location_en" type="text" class="admin-input" value="{{ location_en }}" placeholder="Example: Scout Training Center">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="club_id" class="admin-label">النادي المرتبط</label>
+                            <select id="club_id" name="club_id" class="admin-select">
+                                <option value="">بدون نادٍ محدد</option>
+                                {% for club in clubs %}
+                                <option value="{{ club.id }}" {% if club_id == club.id %}selected{% endif %}>{{ club.name_ar }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الوصف بالعربية</label>
-                <textarea name="description_ar" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_ar if activity else '' }}</textarea>
-            </div>
+            <div class="space-y-6">
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">النشر والتمييز</h2>
+                            <p class="admin-section-copy">تحكم في ظهور النشاط على الموقع العام وأبرز الأنشطة المهمة من لوحة الإدارة.</p>
+                        </div>
+                    </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">العنوان بالإنجليزية</label>
-                <input type="text" name="title_en" required value="{{ activity.title_en if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                    <div class="space-y-4">
+                        <label class="admin-checkbox-row">
+                            <input type="checkbox" name="featured" class="admin-checkbox" {% if is_featured %}checked{% endif %}>
+                            <span>
+                                <span class="admin-label !mb-1">نشاط مميز</span>
+                                <span class="admin-help">يُستخدم لإبراز النشاط ضمن الأقسام المميزة مثل الصفحة الرئيسية.</span>
+                            </span>
+                        </label>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الوصف بالإنجليزية</label>
-                <textarea name="description_en" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_en if activity else '' }}</textarea>
-            </div>
+                        <label class="admin-checkbox-row">
+                            <input type="checkbox" name="is_published" class="admin-checkbox" {% if is_published %}checked{% endif %}>
+                            <span>
+                                <span class="admin-label !mb-1">منشور للعامة</span>
+                                <span class="admin-help">إذا تُرك غير منشور فسيبقى مرئيًا للإدارة فقط ولن يظهر في الصفحات العامة.</span>
+                            </span>
+                        </label>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">العنوان بالفرنسية</label>
-                <input type="text" name="title_fr" required value="{{ activity.title_fr if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">التسجيل والتواصل</h2>
+                            <p class="admin-section-copy">أضف معلومات عملية تساعد الزوار على التسجيل أو الوصول إلى الجهة المنظمة.</p>
+                        </div>
+                    </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الوصف بالفرنسية</label>
-                <textarea name="description_fr" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_fr if activity else '' }}</textarea>
-            </div>
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="registration_url" class="admin-label">رابط التسجيل</label>
+                            <input id="registration_url" name="registration_url" type="url" class="admin-input" value="{{ registration_url }}" placeholder="https://example.com/register">
+                            <p class="admin-help">استخدم رابطًا يبدأ بـ `http` أو `https` إذا كان النشاط يحتاج إلى تسجيل.</p>
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">العنوان بالإسبانية</label>
-                <input type="text" name="title_es" required value="{{ activity.title_es if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                        <div>
+                            <label for="max_participants" class="admin-label">الحد الأقصى للمشاركين</label>
+                            <input id="max_participants" name="max_participants" type="number" min="1" step="1" class="admin-input" value="{{ max_participants }}" placeholder="مثال: 80">
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الوصف بالإسبانية</label>
-                <textarea name="description_es" rows="4" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">{{ activity.description_es if activity else '' }}</textarea>
-            </div>
+                        <div>
+                            <label for="contact_email" class="admin-label">بريد التواصل</label>
+                            <input id="contact_email" name="contact_email" type="email" class="admin-input" value="{{ contact_email }}" placeholder="events@asu.example">
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">التاريخ والوقت</label>
-                <input type="datetime-local" name="date" required
-                    value="{{ activity.date.isoformat() if activity and activity.date else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                        <div>
+                            <label for="contact_phone" class="admin-label">هاتف التواصل</label>
+                            <input id="contact_phone" name="contact_phone" type="tel" class="admin-input" value="{{ contact_phone }}" placeholder="+212 ...">
+                        </div>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الموقع بالعربية</label>
-                <input type="text" name="location_ar" value="{{ activity.location_ar if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                <section class="admin-form-card">
+                    <div class="admin-section-heading">
+                        <div>
+                            <h2 class="admin-section-title">الوسائط</h2>
+                            <p class="admin-section-copy">ارفع صورة مناسبة للنشاط وأضف رابط فيديو عند الحاجة لعرض محتوى إضافي.</p>
+                        </div>
+                    </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">Location in English</label>
-                <input type="text" name="location_en" value="{{ activity.location_en if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
+                    <div class="space-y-5">
+                        <div class="{% if not preview_image %}hidden {% endif %}admin-preview" data-image-preview-wrapper>
+                            <img src="{{ preview_image }}" alt="معاينة صورة النشاط" class="h-56 w-full rounded-[1rem] object-cover" data-image-preview-target>
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">رابط الفيديو (YouTube)</label>
-                <input type="url" name="video_url" value="{{ activity.video_url if activity else '' }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="https://youtube.com/...">
-            </div>
+                        <div>
+                            <label for="image" class="admin-label">صورة النشاط</label>
+                            <input id="image" name="image" type="file" accept="image/*" class="admin-input file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-secondary" data-image-preview-input data-image-preview-wrapper-selector="[data-image-preview-wrapper]">
+                            <p class="admin-help">صيَغ مناسبة: PNG و JPG و JPEG و GIF و WEBP.</p>
+                        </div>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">النادي المرتبط</label>
-                <select name="club_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <option value="">-- بدون نادي --</option>
-                    {% for club in clubs %}
-                    <option value="{{ club.id }}" {% if activity and activity.club_id==club.id %}selected{% endif %}>{{
-                        club.name_ar }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                        <div>
+                            <label for="video_url" class="admin-label">رابط الفيديو</label>
+                            <input id="video_url" name="video_url" type="url" class="admin-input" value="{{ video_url }}" placeholder="https://youtube.com/watch?v=...">
+                            <p class="admin-help">يمكن استخدام روابط YouTube أو Vimeo أو أي رابط فيديو مباشر صالح. سيُحاول النظام توليد رابط عرض مناسب عند الإمكان.</p>
+                        </div>
+                    </div>
+                </section>
 
-            <div>
-                <label class="block text-sm font-bold mb-2">الحالة</label>
-                <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <option value="upcoming" {% if activity and activity.status=='upcoming' %}selected{% endif %}>قادم
-                    </option>
-                    <option value="ongoing" {% if activity and activity.status=='ongoing' %}selected{% endif %}>جاري
-                    </option>
-                    <option value="completed" {% if activity and activity.status=='completed' %}selected{% endif %}>
-                        منتهي</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2">صورة النشاط</label>
-                <input type="file" name="image" accept="image/*"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <div class="flex gap-4">
-                <button type="submit" class="btn-primary">حفظ</button>
-                <a href="{{ url_for('admin_activities') }}"
-                    class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">إلغاء</a>
+                <section class="admin-form-card">
+                    <div class="admin-toolbar">
+                        <button type="submit" class="admin-btn-primary">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            {% if activity %}حفظ التعديلات{% else %}إنشاء النشاط{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin_activities') }}" class="admin-btn-secondary">إلغاء</a>
+                    </div>
+                </section>
             </div>
         </form>
     </div>
-</div>
+</section>
 {% endblock %}

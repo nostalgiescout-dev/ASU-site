@@ -1,0 +1,22 @@
+{% set current_admin_endpoint = request.endpoint or '' %}
+{% set admin_links = [
+    ('admin_dashboard', 'dashboard', 'dashboard', 'لوحة التحكم'),
+    ('admin_activities', 'event', 'admin_activities', 'الأنشطة'),
+    ('admin_clubs', 'palette', 'admin_clubs', 'الأندية'),
+    ('admin_units', 'layers', 'admin_units', 'الوحدات'),
+    ('admin_groups', 'location_on', 'admin_groups', 'المجموعات'),
+    ('admin_users', 'people', 'admin_users', 'المستخدمون'),
+    ('admin_settings', 'settings', 'admin_settings', 'الإعدادات')
+] %}
+
+<nav class="admin-subnav" aria-label="Admin sections">
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-7">
+        {% for endpoint, icon, active_prefix, label in admin_links %}
+        {% set is_active = current_admin_endpoint.startswith(active_prefix) %}
+        <a href="{{ url_for(endpoint) }}" class="admin-subnav-link {% if is_active %}is-active{% endif %}">
+            <span class="material-symbols-outlined text-base">{{ icon }}</span>
+            {{ label }}
+        </a>
+        {% endfor %}
+    </div>
+</nav>
